@@ -99,6 +99,7 @@ settings:
   useOwnServer: Использовать свой сервер
   ownServerHintOpenai: "Работает с Ollama, LM Studio, vLLM или любым сервером, совместимым с OpenAI. Для Ollama базовый URL — http://localhost:11434/v1."
   ownServerHintAnthropic: "Работает с прокси LiteLLM или любым сервером, совместимым с Anthropic."
+  ollamaOriginsHint: "Ollama принимает запросы только с разрешённых источников. Если он отвечает «Forbidden», задайте переменную окружения OLLAMA_ORIGINS=chrome-extension://* и перезапустите Ollama."
   apiKey: API-ключ
   showKey: Показать ключ
   hideKey: Скрыть ключ
@@ -260,6 +261,7 @@ editor:
   rewriteDiscard: Отклонить
   rewriteErrorNoApiKey: Добавьте AI API-ключ в настройках, чтобы переписывать текст.
   rewriteErrorFailed: Не удалось переписать выделенный текст. Попробуйте ещё раз.
+  rewriteErrorTruncated: Модель израсходовала лимит ответа на размышления и не вернула текст. Выберите модель без режима размышлений.
   rewriteErrorStale: Текст изменился. Выделите его снова.
   restoreSpoken: Вернуть сказанное
 

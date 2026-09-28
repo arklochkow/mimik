@@ -21,6 +21,7 @@ import { type AIApiKeys, keyFor, migrateApiKeys, withKeyFor } from '@/core/captu
 import { defaultAILanguage } from '@/core/capture/ai/language';
 import {
   AI_PROVIDERS,
+  type AIProviderConfig,
   type AIProviderKey,
   CUSTOM_MODEL_VALUE,
   DEFAULT_AI_PROVIDER,
@@ -416,7 +417,9 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
     resetAiChecks();
   };
 
-  const providerConfig = AI_PROVIDERS[provider] ?? AI_PROVIDERS[DEFAULT_AI_PROVIDER];
+  // Typed as the interface, not the literal union: `keyless` and `keyCheckPath` are optional,
+  // so a provider that omits one has no such property on its own inferred type.
+  const providerConfig: AIProviderConfig = AI_PROVIDERS[provider] ?? AI_PROVIDERS[DEFAULT_AI_PROVIDER];
   const usingCustomModel = customModel || isCustomModel(model, providerConfig);
   const voiceKey = resolveVoiceApiKey({ voiceProvider, voiceApiKey, aiProvider: provider, aiApiKey: apiKey });
   const voiceoverKey = resolveVoiceoverConfig({
@@ -544,25 +547,25 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
               <Button
                 variant="outline"
                 size="sm"
-                disabled={(!apiKey.trim() && !ownServer) || aiKeyCheck.status === 'checking'}
+                disabled={(!apiKey.trim() && !ownServer && !providerConfig.keyless) || aiKeyCheck.status === 'checking'}
                 onClick={() => {
                   if (aiKeyCheck.status !== 'checking') void aiKeyCheck.check(provider, apiKey, baseUrl, model);
                 }}
                 className="h-8 shrink-0 rounded-lg bg-card text-[11px] font-semibold"
               >
-                {i18n.t(ownServer ? 'settings.checkConnection' : 'settings.checkKey')}
+                {i18n.t(ownServer || providerConfig.keyless ? 'settings.checkConnection' : 'settings.checkKey')}
               </Button>
             </div>
             <KeyStatusNote status={aiKeyCheck.status} />
             <KeyWarningNote warning={aiKeyCheck.warning} />
             {aiKeyCheck.models && <ModelList models={aiKeyCheck.models} />}
-            {!apiKey.trim() && !ownServer && (
+            {!apiKey.trim() && !ownServer && !providerConfig.keyless && (
               <p className="mt-1.5 flex items-start gap-1.5 text-[10px] text-destructive leading-relaxed" role="alert">
                 <TriangleAlert size={11} className="shrink-0 mt-0.5" />
                 <span>{i18n.t('settings.aiNoKey')}</span>
               </p>
             )}
-            {!apiKey.trim() && ownServer && (
+            {!apiKey.trim() && (ownServer || providerConfig.keyless) && (
               <p className="mt-1.5 flex items-start gap-1.5 text-[10px] text-muted-foreground leading-relaxed">
                 <Globe size={11} className="shrink-0 mt-0.5 text-accent" />
                 <span>{i18n.t('settings.aiLocalNoKey')}</span>
@@ -615,6 +618,11 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
                 </p>
               </div>
             )}
+            {provider === 'ollama' && (
+              <p className="mt-2 text-[10px] text-muted-foreground leading-relaxed">
+                {i18n.t('settings.ollamaOriginsHint')}
+              </p>
+            )}
           </div>
 
           <div>
@@ -646,7 +654,11 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
             <Button
               variant="outline"
               size="sm"
-              disabled={aiTest.status === 'running' || !model.trim() || (!apiKey.trim() && !ownServer)}
+              disabled={
+                aiTest.status === 'running' ||
+                !model.trim() ||
+                (!apiKey.trim() && !ownServer && !providerConfig.keyless)
+              }
               onClick={() => void runAiTest()}
               className="h-8 w-full rounded-lg bg-card text-[11px] font-semibold"
             >

@@ -109,6 +109,7 @@ settings:
   useOwnServer: Eigenen Server verwenden
   ownServerHintOpenai: "Funktioniert mit Ollama, LM Studio, vLLM oder jedem OpenAI-kompatiblen Server. Bei Ollama lautet die Basis-URL http://localhost:11434/v1."
   ownServerHintAnthropic: "Funktioniert mit einem LiteLLM-Proxy oder jedem Anthropic-kompatiblen Server."
+  ollamaOriginsHint: "Ollama akzeptiert nur Anfragen von erlaubten Ursprüngen. Antwortet es mit „Forbidden“, setze OLLAMA_ORIGINS=chrome-extension://* und starte Ollama neu."
   provider: Anbieter
   model: Modell
   apiKey: API-Schlüssel
@@ -250,6 +251,7 @@ editor:
   rewriteDiscard: Verwerfen
   rewriteErrorNoApiKey: Füge in den Einstellungen einen KI-API-Schlüssel hinzu, um Text umzuschreiben.
   rewriteErrorFailed: Die Auswahl konnte nicht umgeschrieben werden. Versuche es erneut.
+  rewriteErrorTruncated: Das Modell hat sein ganzes Antwortbudget fürs Nachdenken verbraucht und keinen Text geliefert. Wähle ein Modell ohne Denkmodus.
   rewriteErrorStale: Der Text hat sich geändert. Wähle ihn erneut aus.
   generateDescription: Beschreibung erstellen
   regenerateDescription: Beschreibung neu erstellen

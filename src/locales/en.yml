@@ -99,6 +99,7 @@ settings:
   useOwnServer: Use my own server
   ownServerHintOpenai: "Works with Ollama, LM Studio, vLLM, or any OpenAI-compatible server. For Ollama, the base URL is http://localhost:11434/v1."
   ownServerHintAnthropic: "Works with a LiteLLM proxy or any Anthropic-compatible server."
+  ollamaOriginsHint: "Ollama only accepts requests from origins it allows. If it answers “Forbidden”, set OLLAMA_ORIGINS=chrome-extension://* and restart Ollama."
   apiKey: API Key
   showKey: Show key
   hideKey: Hide key
@@ -260,6 +261,7 @@ editor:
   rewriteDiscard: Discard
   rewriteErrorNoApiKey: Add an AI API key in settings to rewrite text.
   rewriteErrorFailed: Could not rewrite the selection. Try again.
+  rewriteErrorTruncated: The model spent its whole answer budget on reasoning and returned no text. Pick a model without a reasoning mode.
   rewriteErrorStale: The text changed. Select it again.
   restoreSpoken: Restore what you said
 

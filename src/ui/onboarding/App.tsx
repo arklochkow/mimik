@@ -6,6 +6,7 @@ import { type AIApiKeys, keyFor, migrateApiKeys, withKeyFor } from '@/core/captu
 import { defaultAILanguage } from '@/core/capture/ai/language';
 import {
   AI_PROVIDERS,
+  type AIProviderConfig,
   type AIProviderKey,
   CUSTOM_MODEL_VALUE,
   DEFAULT_AI_PROVIDER,
@@ -158,7 +159,9 @@ function AISetupStep({ onNext, onSkip, onBack, index, total }: StepProps) {
     return () => document.removeEventListener('visibilitychange', onVisible);
   }, []);
 
-  const providerConfig = AI_PROVIDERS[provider] ?? AI_PROVIDERS[DEFAULT_AI_PROVIDER];
+  // Typed as the interface, not the literal union: `keyless` and `keyCheckPath` are optional,
+  // so a provider that omits one has no such property on its own inferred type.
+  const providerConfig: AIProviderConfig = AI_PROVIDERS[provider] ?? AI_PROVIDERS[DEFAULT_AI_PROVIDER];
   const usingCustomModel = customModel || isCustomModel(model, providerConfig);
 
   const handleProviderChange = (newProvider: AIProviderKey) => {
@@ -286,13 +289,13 @@ function AISetupStep({ onNext, onSkip, onBack, index, total }: StepProps) {
               <div className="flex items-center gap-3 mt-2">
                 <button
                   type="button"
-                  disabled={!apiKey || aiKeyCheck.status === 'checking'}
+                  disabled={(!apiKey && !ownServer && !providerConfig.keyless) || aiKeyCheck.status === 'checking'}
                   onClick={() => {
                     if (aiKeyCheck.status !== 'checking') void aiKeyCheck.check(provider, apiKey, baseUrl, model);
                   }}
                   className="px-4 py-2 bg-card text-foreground border border-border rounded-lg font-semibold text-xs hover:border-accent hover:text-accent transition-colors disabled:opacity-50 disabled:pointer-events-none"
                 >
-                  {i18n.t('settings.checkKey')}
+                  {i18n.t(ownServer || providerConfig.keyless ? 'settings.checkConnection' : 'settings.checkKey')}
                 </button>
                 <div className="min-w-0">
                   <KeyStatusNote status={aiKeyCheck.status} />
@@ -343,6 +346,11 @@ function AISetupStep({ onNext, onSkip, onBack, index, total }: StepProps) {
                     )}
                   </p>
                 </div>
+              )}
+              {provider === 'ollama' && (
+                <p className="mt-2 text-[11px] text-muted-foreground leading-relaxed">
+                  {i18n.t('settings.ollamaOriginsHint')}
+                </p>
               )}
             </div>
 

@@ -99,6 +99,7 @@ settings:
   useOwnServer: Usar mi propio servidor
   ownServerHintOpenai: "Funciona con Ollama, LM Studio, vLLM o cualquier servidor compatible con OpenAI. Para Ollama, la URL base es http://localhost:11434/v1."
   ownServerHintAnthropic: "Funciona con un proxy LiteLLM o cualquier servidor compatible con Anthropic."
+  ollamaOriginsHint: "Ollama solo acepta solicitudes de orígenes permitidos. Si responde «Forbidden», define OLLAMA_ORIGINS=chrome-extension://* y reinicia Ollama."
   apiKey: Clave API
   showKey: Mostrar clave
   hideKey: Ocultar clave
@@ -260,6 +261,7 @@ editor:
   rewriteDiscard: Descartar
   rewriteErrorNoApiKey: "A\xF1ade una clave de API de IA en los ajustes para reescribir texto."
   rewriteErrorFailed: "No se pudo reescribir la selecci\xF3n. Int\xE9ntalo de nuevo."
+  rewriteErrorTruncated: "El modelo gastó todo su límite de respuesta en razonar y no devolvió texto. Elige un modelo sin modo de razonamiento."
   rewriteErrorStale: "El texto cambi\xF3. Vuelve a seleccionarlo."
   restoreSpoken: Restaurar lo que dijiste
 

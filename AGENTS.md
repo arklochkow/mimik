@@ -16,7 +16,27 @@ You click "Record," perform a workflow in your browser, and Mimik automatically 
 - AI descriptions: optional, user provides their own API key in settings — or points Mimik at a
   local OpenAI-compatible server, where a blank key is legitimate. A master switch (`aiEnabled`,
   on by default) turns the whole feature off, including the guide title call
+- The shipped Ollama provider is keyless on `http://localhost:11434/v1`, and any base URL typed
+  without a path is completed to `/v1` before the SDK appends `/chat/completions` —
+  `http://localhost:11434/chat/completions` is a 404 Ollama does not have. Ollama also answers
+  403 "Forbidden" to a `chrome-extension://` origin until `OLLAMA_ORIGINS` allows it
+  (`chrome-extension://*`); that one is the user's to set, so the settings screen says so
+- Every AI call spreads `localModelOptions(provider, baseUrl)` into its `generateText`/`generateObject`
+  call, and a new one must too. It asks a self-hosted server for `reasoning_effort: "none"`: without
+  it a local reasoning model spends the whole output budget on `reasoning` and returns an empty
+  `content` at `finish_reason: "length"`, a 200 that the feature above reports as "could not rewrite
+  the selected text" with the model having said nothing. Raising the budget does not help — measured
+  against Ollama, `deepseek-v4.1-flash` reasoned for 9 KB at a 2048-token limit and still returned
+  nothing, then answered in 10 tokens with the field set. Cloud providers are deliberately left
+  alone, since OpenAI rejects the field on models that do not reason
 - Export: generated client-side (no server rendering)
+- Releases are cut by hand here, and `.github/workflows/release.yml` only ever *uploads* to the
+  release that exists — it never creates one from a tag push that has no release yet, and it takes
+  both `v1.2.0` and `1.2.0`. It listens for a tag push, for a published release, and for a manual
+  run naming a tag, because the first version listened for `v*` alone and this fork tags `1.2.0`,
+  so it never ran and the release pages held nothing but GitHub's generated source archives. The
+  "Source code (zip/tar.gz)" links on every release are GitHub's own and cannot be removed; the
+  `.zip` assets next to them are the compiled extension the READMEs point at
 - No auth, no database, no hosting, no Docker
 
 ### Directory Structure

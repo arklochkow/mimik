@@ -99,6 +99,7 @@ settings:
   useOwnServer: Utiliser mon propre serveur
   ownServerHintOpenai: "Fonctionne avec Ollama, LM Studio, vLLM ou tout serveur compatible OpenAI. Pour Ollama, l'URL de base est http://localhost:11434/v1."
   ownServerHintAnthropic: "Fonctionne avec un proxy LiteLLM ou tout serveur compatible Anthropic."
+  ollamaOriginsHint: "Ollama n'accepte que les requêtes venant d'origines autorisées. S'il répond « Forbidden », définissez OLLAMA_ORIGINS=chrome-extension://* et redémarrez Ollama."
   apiKey: "Clé API"
   showKey: Afficher la clé
   hideKey: Masquer la clé
@@ -260,6 +261,7 @@ editor:
   rewriteDiscard: Abandonner
   rewriteErrorNoApiKey: "Ajoutez une cl\xE9 d'API d'IA dans les r\xE9glages pour r\xE9\xE9crire du texte."
   rewriteErrorFailed: "Impossible de r\xE9\xE9crire la s\xE9lection. R\xE9essayez."
+  rewriteErrorTruncated: "Le modèle a épuisé tout son quota de réponse en raisonnement et n'a renvoyé aucun texte. Choisissez un modèle sans mode de raisonnement."
   rewriteErrorStale: "Le texte a chang\xE9. S\xE9lectionnez-le \xE0 nouveau."
   restoreSpoken: Restaurer ce que vous avez dit
 

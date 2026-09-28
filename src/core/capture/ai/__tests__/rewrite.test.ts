@@ -63,6 +63,12 @@ describe('buildRewritePrompt', () => {
     expect(buildRewritePrompt('Click Save', 'Expand it.', 'en')).toMatch(/never introduce a UI element/i);
   });
 
+  it('lets the model leave the text alone instead of reasoning about an impossible instruction', () => {
+    const prompt = buildRewritePrompt('Выберите input', REWRITE_PRESETS.detail, 'en');
+    expect(prompt).toMatch(/return the text unchanged/i);
+    expect(prompt).toMatch(/no account of what you considered/i);
+  });
+
   it('works with every preset instruction', () => {
     for (const instruction of Object.values(REWRITE_PRESETS)) {
       expect(buildRewritePrompt('Click Save', instruction, 'en')).toContain(instruction);

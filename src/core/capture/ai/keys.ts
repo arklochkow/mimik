@@ -100,6 +100,10 @@ export function resolveAiCredential(stored: StoredAiCredentialSettings): AiCrede
 
   if (!enabled) return { provider, apiKey: '', enabled, customBaseUrl };
   if (apiKey) return { provider, apiKey, enabled, customBaseUrl };
-  if (customBaseUrl) return { provider, apiKey: LOCAL_SERVER_API_KEY, enabled, customBaseUrl };
+  // A custom base URL is a local server by presumption; a provider flagged `keyless`
+  // (Ollama) is one by definition, and says so on its own default URL.
+  if (customBaseUrl || config?.keyless === true) {
+    return { provider, apiKey: LOCAL_SERVER_API_KEY, enabled, customBaseUrl };
+  }
   return { provider, apiKey: '', enabled, customBaseUrl };
 }

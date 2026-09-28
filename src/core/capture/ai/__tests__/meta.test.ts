@@ -11,7 +11,11 @@ vi.mock('ai', () => ({
   jsonSchema: (schema: unknown) => schema,
 }));
 
-vi.mock('../provider', () => ({ createModel: () => ({ id: 'test-model' }) }));
+vi.mock('../provider', async (importOriginal) => ({
+  // `localModelOptions` stays real: it is what decides whether a call is told not to think.
+  ...(await importOriginal<typeof import('../provider')>()),
+  createModel: () => ({ id: 'test-model' }),
+}));
 
 vi.mock('@/lib/browser-api', () => ({
   localStorage: { get: vi.fn().mockResolvedValue({ aiLanguage: 'en' }) },

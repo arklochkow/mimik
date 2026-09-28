@@ -972,12 +972,11 @@ export async function exportGuideAsVideo(
   const {
     AudioBufferSource,
     BufferTarget,
+    CanvasSource,
     Mp4OutputFormat,
     Output,
     QUALITY_HIGH,
     QUALITY_MEDIUM,
-    VideoSample,
-    VideoSampleSource,
     WebMOutputFormat,
   } = await import('mediabunny');
 
@@ -1013,28 +1012,12 @@ export async function exportGuideAsVideo(
     format: mp4 ? new Mp4OutputFormat() : new WebMOutputFormat(),
     target: new BufferTarget(),
   });
-  const source = new VideoSampleSource({
+  const source = new CanvasSource(canvas, {
     codec: mp4 ? 'avc' : 'vp9',
     quality: QUALITY_HIGH,
     keyFrameInterval: KEY_FRAME_INTERVAL_SEC,
   });
   output.addVideoTrack(source);
-
-  // Each frame is snapshotted into an immutable ImageBitmap before it reaches the encoder. `CanvasSource` hands
-  // the live canvas over instead, leaving the capture to race the drawing loop — which never yields to the event
-  // loop, so nothing forces the canvas to rasterize first. Exports came out with the first step's frame filling
-  // the cover slot and the last step's frame filling the end card, dropping both branded cards from the video.
-  // An ImageBitmap is a finished copy, so the encoder reads a frame instead of whatever the canvas holds by then.
-  const sinkFrame = async (at: number, duration: number) => {
-    const bitmap = await createImageBitmap(canvas);
-    const sample = new VideoSample(bitmap, { timestamp: at, duration });
-    try {
-      await source.add(sample);
-    } finally {
-      sample.close();
-      bitmap.close();
-    }
-  };
 
   const audio = voice ? new AudioBufferSource({ codec: voice.codec, quality: QUALITY_MEDIUM }) : null;
   if (audio) output.addAudioTrack(audio);
@@ -1050,7 +1033,7 @@ export async function exportGuideAsVideo(
       brand,
       ctx,
       device,
-      sinkFrame,
+      (at, dur) => source.add(at, dur),
       controls,
     );
 

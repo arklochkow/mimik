@@ -11,7 +11,10 @@ import { aiEndpointUrl, buildTestDOMContext, describeAiTestFailure, testAiDescri
 const KEY = 'sk-test-secret-0123456789';
 const TEXT = 'Clicked the Update profile button';
 const CUSTOM_URL = 'http://localhost:11434';
-const ENDPOINT = `${CUSTOM_URL}/chat/completions`;
+// `createModel` posts `/chat/completions` onto the base it is handed, and a bare host is
+// completed to `/v1` first: `http://localhost:11434/chat/completions` is not a route Ollama has.
+const VERSIONED_URL = `${CUSTOM_URL}/v1`;
+const ENDPOINT = `${VERSIONED_URL}/chat/completions`;
 
 const payload = {
   provider: 'openai',

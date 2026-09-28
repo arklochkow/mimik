@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
   AI_PROVIDERS,
+  type AIProviderConfig,
   CUSTOM_MODEL_VALUE,
   findProvider,
   isCustomBaseUrl,
@@ -70,8 +71,11 @@ describe('every provider default is selectable', () => {
 });
 
 describe('every provider takes a custom server', () => {
-  it.each(Object.entries(AI_PROVIDERS))('%s carries a default base URL and a protocol', (_key, config) => {
-    expect(config.defaultBaseUrl).toMatch(/^https:\/\//);
+  it.each(
+    Object.entries(AI_PROVIDERS) as [string, AIProviderConfig][],
+  )('%s carries a default base URL and a protocol', (_key, config) => {
+    // A keyless provider is a local server, and localhost is plain http.
+    expect(config.defaultBaseUrl).toMatch(config.keyless ? /^http:\/\/(localhost|127\.0\.0\.1)/ : /^https:\/\//);
     expect(['openai', 'anthropic']).toContain(config.protocol);
   });
 
@@ -82,6 +86,7 @@ describe('every provider takes a custom server', () => {
       expect(keys.has('settings.useOwnServer')).toBe(true);
       expect(keys.has('settings.ownServerHintOpenai')).toBe(true);
       expect(keys.has('settings.ownServerHintAnthropic')).toBe(true);
+      expect(keys.has('settings.ollamaOriginsHint')).toBe(true);
     }
   });
 
@@ -127,6 +132,40 @@ describe('custom base URL detection', () => {
     expect(resolveBaseUrl(AI_PROVIDERS.deepseek)).toBe('https://api.deepseek.com');
     expect(resolveBaseUrl(AI_PROVIDERS.anthropic, '  ')).toBe('https://api.anthropic.com/v1');
     expect(resolveBaseUrl(AI_PROVIDERS.openai, 'http://localhost:8787/v1/')).toBe('http://localhost:8787/v1');
+  });
+
+  it('points a bare host at /v1, which is where an OpenAI-compatible server lives', () => {
+    expect(resolveBaseUrl(AI_PROVIDERS.ollama, 'http://localhost:11434')).toBe('http://localhost:11434/v1');
+    expect(resolveBaseUrl(AI_PROVIDERS.openai, 'http://localhost:8787')).toBe('http://localhost:8787/v1');
+  });
+
+  it('leaves a URL that already carries a path as typed', () => {
+    expect(resolveBaseUrl(AI_PROVIDERS.openai, 'http://localhost:8787/api/')).toBe('http://localhost:8787/api');
+  });
+
+  it("reads Ollama's own endpoint written without /v1 as that provider's default", () => {
+    expect(isCustomBaseUrl(AI_PROVIDERS.ollama, 'http://localhost:11434')).toBe(false);
+    expect(isCustomBaseUrl(AI_PROVIDERS.ollama, 'http://localhost:11434/v1')).toBe(false);
+    expect(isCustomBaseUrl(AI_PROVIDERS.ollama, 'http://localhost:11435/v1')).toBe(true);
+  });
+});
+
+describe('the local Ollama provider', () => {
+  const config: AIProviderConfig = AI_PROVIDERS.ollama;
+
+  it('is a keyless chat provider on its own localhost endpoint', () => {
+    expect(config.protocol).toBe('openai');
+    expect(config.transport).toBe('chat');
+    expect(config.keyless).toBe(true);
+    expect(config.defaultBaseUrl).toBe('http://localhost:11434/v1');
+  });
+
+  it('asks for no key check, since a local server has no key to check', () => {
+    expect(config.keyCheckPath).toBeUndefined();
+  });
+
+  it('offers the cloud model this setup runs on, with its tag intact', () => {
+    expect(config.models.map((m) => m.id)).toContain('deepseek-v4.1-flash:cloud');
   });
 });
 

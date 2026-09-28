@@ -4,7 +4,7 @@ import { localStorage } from '@/lib/browser-api';
 import { logger } from '@/lib/logger';
 import { defaultAILanguage } from './language';
 import { GUIDE_META_JSON_SUFFIX, GUIDE_META_PROMPT, getLanguageSuffix } from './prompts';
-import { createModel } from './provider';
+import { createModel, localModelOptions } from './provider';
 
 export interface GuideMeta {
   title: string;
@@ -75,6 +75,7 @@ export async function generateGuideMeta(
       schema: guideMetaSchema,
       prompt,
       maxOutputTokens: 200,
+      ...localModelOptions(provider, baseUrl),
     });
     return toGuideMeta(object.title, object.description);
   } catch (err) {
@@ -86,6 +87,7 @@ export async function generateGuideMeta(
       model: aiModel,
       prompt: prompt + GUIDE_META_JSON_SUFFIX,
       maxOutputTokens: 200,
+      ...localModelOptions(provider, baseUrl),
     });
     return parseGuideMeta(text);
   } catch (err) {

@@ -99,6 +99,7 @@ settings:
   useOwnServer: 使用自己的服务器
   ownServerHintOpenai: "支持 Ollama、LM Studio、vLLM 或任何兼容 OpenAI 的服务器。使用 Ollama 时，基础 URL 为 http://localhost:11434/v1。"
   ownServerHintAnthropic: "支持 LiteLLM 代理或任何兼容 Anthropic 的服务器。"
+  ollamaOriginsHint: "Ollama 只接受来自允许来源的请求。如果它返回“Forbidden”，请设置 OLLAMA_ORIGINS=chrome-extension://* 并重启 Ollama。"
   apiKey: API 密钥
   showKey: 显示密钥
   hideKey: 隐藏密钥
@@ -260,6 +261,7 @@ editor:
   rewriteDiscard: 丢弃
   rewriteErrorNoApiKey: 请在设置中添加 AI API 密钥以改写文本。
   rewriteErrorFailed: 无法改写选中文本。请重试。
+  rewriteErrorTruncated: 模型把全部回答额度用在了推理上，没有返回文本。请选择不带推理模式的模型。
   rewriteErrorStale: 文本已变化。请重新选择。
   restoreSpoken: 恢复你说过的内容
 

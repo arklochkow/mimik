@@ -7,8 +7,6 @@ const rec = vi.hoisted(() => ({
   calls: [] as { m: string; a: unknown[] }[],
   added: [] as { at: number; dur: number }[],
   closed: 0,
-  samplesClosed: 0,
-  snapshots: [] as unknown[],
   containers: ['mp4'] as ('mp4' | 'webm')[],
   probed: [] as string[],
   started: 0,
@@ -74,20 +72,9 @@ vi.mock('mediabunny', () => ({
       return rec.buffer ? new ArrayBuffer(16) : null;
     }
   },
-  VideoSample: class {
-    timestamp: number;
-    duration: number;
-    constructor(_data: unknown, init: { timestamp: number; duration?: number }) {
-      this.timestamp = init.timestamp;
-      this.duration = init.duration ?? 0;
-    }
-    close() {
-      rec.samplesClosed += 1;
-    }
-  },
-  VideoSampleSource: class {
-    async add(sample: { timestamp: number; duration: number }) {
-      rec.added.push({ at: sample.timestamp, dur: sample.duration });
+  CanvasSource: class {
+    async add(at: number, dur: number) {
+      rec.added.push({ at, dur });
     }
   },
   Output: class {
@@ -208,8 +195,6 @@ beforeEach(() => {
   rec.calls = [];
   rec.added = [];
   rec.closed = 0;
-  rec.samplesClosed = 0;
-  rec.snapshots = [];
   rec.containers = ['mp4'];
   rec.probed = [];
   rec.started = 0;
@@ -247,16 +232,13 @@ beforeEach(() => {
   );
   vi.stubGlobal(
     'createImageBitmap',
-    vi.fn(async (source: unknown) => {
-      rec.snapshots.push(source);
-      return {
-        width: 1280,
-        height: 720,
-        close: () => {
-          rec.closed += 1;
-        },
-      };
-    }),
+    vi.fn(async () => ({
+      width: 1280,
+      height: 720,
+      close: () => {
+        rec.closed += 1;
+      },
+    })),
   );
   vi.stubGlobal('document', {
     createElement: () => ({ width: 0, height: 0, getContext: () => fakeCtx() }),
@@ -359,19 +341,6 @@ describe('exportGuideAsVideo cover cards', () => {
     await exportGuideAsVideo(guide, steps, shotsFor(steps), opts({ cover: false }));
 
     expect(rec.added.filter((s) => s.dur === 3).length).toBe(0);
-  });
-
-  it('encodes a finished snapshot per frame instead of handing the live canvas over', async () => {
-    const steps = [makeStep(0), makeStep(1)];
-    await exportGuideAsVideo(guide, steps, shotsFor(steps), opts({ cover: true }));
-
-    // `CanvasSource` leaves the capture to race the drawing loop, and this loop never yields to the event loop,
-    // so an export came out with the first step's frame filling the cover slot and the last step's frame filling
-    // the end card — both branded cards missing. A frame now leaves as an immutable ImageBitmap, which cannot be
-    // read late, so every encoded frame costs exactly one snapshot of the canvas.
-    const frameSnapshots = rec.snapshots.filter((source) => !(source instanceof Blob));
-    expect(frameSnapshots).toHaveLength(rec.added.length);
-    expect(rec.samplesClosed).toBe(rec.added.length);
   });
 
   it('draws the brand logo on the card when one is set', async () => {

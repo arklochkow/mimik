@@ -129,7 +129,10 @@ async function validateCustomServer(
   model?: string,
 ): Promise<KeyValidation> {
   const headers = PROTOCOL_HEADERS[config.protocol](apiKey);
-  const base = normalizeBaseUrl(baseUrl);
+  // Through `resolveBaseUrl`, not `normalizeBaseUrl`: the probe has to land on the same
+  // path `createModel` would post to, `/v1` included, or a bare host validates a route
+  // that does not exist and reports a working server as rejected.
+  const base = resolveBaseUrl(config, baseUrl);
   const catalogUrl = `${base}/models`;
 
   const selectedModel = model?.trim();

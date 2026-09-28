@@ -48,8 +48,9 @@ Rules:
 - Never introduce a UI element, button, page, or value that is absent from the original.
 - Preserve specific names, labels, and quoted strings exactly as written.
 - Match the length the instruction implies; otherwise stay close to the original length.
+- When the instruction cannot be followed without inventing something that is absent, return the text unchanged.
 
-Return only the rewritten text. No preamble, no quotes, no explanation.`;
+Return only the rewritten text. No preamble, no quotes, no explanation, and no account of what you considered.`;
 
 export const REWRITE_PRESETS = {
   shorter: 'Make it shorter and tighter without losing any required detail.',

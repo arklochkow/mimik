@@ -98,7 +98,7 @@ export interface GenerateGuideDescriptionResponse {
   error?: GuideDescriptionError;
 }
 
-export type RewriteError = 'no-api-key' | 'generation-failed';
+export type RewriteError = 'no-api-key' | 'generation-failed' | 'answer-truncated';
 
 export interface RewriteSelectionData {
   text: string;

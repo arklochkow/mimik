@@ -137,6 +137,33 @@ describe('resolveAiCredential', () => {
     expect(resolveAiCredential({})).toEqual({ provider: 'openai', apiKey: '', enabled: true, customBaseUrl: false });
   });
 
+  it('sends the placeholder to a provider that ships its own local endpoint', () => {
+    expect(resolveAiCredential({ aiProvider: 'ollama' })).toEqual({
+      provider: 'ollama',
+      apiKey: LOCAL_SERVER_API_KEY,
+      enabled: true,
+      customBaseUrl: false,
+    });
+  });
+
+  it("reads a bare localhost as Ollama's own default, not as a custom server", () => {
+    expect(resolveAiCredential({ aiProvider: 'ollama', aiBaseUrl: 'http://localhost:11434' })).toEqual({
+      provider: 'ollama',
+      apiKey: LOCAL_SERVER_API_KEY,
+      enabled: true,
+      customBaseUrl: false,
+    });
+  });
+
+  it('prefers a real key over the placeholder when a local provider is given one', () => {
+    expect(resolveAiCredential({ aiProvider: 'ollama', aiApiKeys: { ollama: 'sk-own' } })).toEqual({
+      provider: 'ollama',
+      apiKey: 'sk-own',
+      enabled: true,
+      customBaseUrl: false,
+    });
+  });
+
   it('prefers the stored key over the placeholder when a custom server also has one', () => {
     const resolved = resolveAiCredential({
       aiApiKeys: { openai: 'sk-own' },

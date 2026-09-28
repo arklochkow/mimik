@@ -4,7 +4,7 @@ import type { DOMContext } from '../dom/context';
 import { serializeDOMContext } from '../dom/context';
 import { defaultAILanguage } from './language';
 import { getLanguageSuffix, STEP_DESCRIPTION_PROMPT } from './prompts';
-import { createModel } from './provider';
+import { createModel, localModelOptions } from './provider';
 
 export async function getAIDescription(
   domContext: DOMContext,
@@ -20,6 +20,7 @@ export async function getAIDescription(
     model: createModel(provider, model, apiKey, baseUrl),
     prompt: STEP_DESCRIPTION_PROMPT.replace('{{context}}', serializeDOMContext(domContext)) + getLanguageSuffix(locale),
     maxOutputTokens: 50,
+    ...localModelOptions(provider, baseUrl),
   });
   return text.trim().replace(/^"|"$/g, '') || null;
 }

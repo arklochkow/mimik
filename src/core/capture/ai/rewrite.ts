@@ -6,7 +6,7 @@ import { AI_CREDENTIAL_SETTINGS, resolveAiCredential } from './keys';
 import { defaultAILanguage } from './language';
 import { AI_PROVIDERS } from './models';
 import { getLanguageSuffix, REWRITE_PROMPT } from './prompts';
-import { createModel } from './provider';
+import { createModel, localModelOptions } from './provider';
 
 const WRAPPED_IN_QUOTES = /^["“'](.*)["”']$/s;
 
@@ -28,20 +28,26 @@ export async function rewriteSelection(text: string, instruction: string): Promi
   const { provider, apiKey } = resolveAiCredential(settings);
   if (!apiKey) return { error: 'no-api-key' };
 
+  const baseUrl = settings.aiBaseUrl as string | undefined;
   try {
-    const { text: raw } = await generateText({
+    const { text: raw, finishReason } = await generateText({
       model: createModel(
         provider,
         (settings.aiModel as string) || AI_PROVIDERS[provider].defaultModel,
         apiKey,
-        settings.aiBaseUrl as string | undefined,
+        baseUrl,
       ),
       prompt: buildRewritePrompt(text, instruction, (settings.aiLanguage as string) || defaultAILanguage()),
       maxOutputTokens: 400,
+      ...localModelOptions(provider, baseUrl),
     });
 
     const cleaned = cleanRewrite(raw);
-    if (!cleaned) return { error: 'generation-failed' };
+    if (!cleaned) {
+      // "Try again" is a lie for a truncated answer: the model never got to write one, and a
+      // retry with the same budget spends itself on `reasoning` again.
+      return { error: finishReason === 'length' ? 'answer-truncated' : 'generation-failed' };
+    }
     return { text: cleaned };
   } catch (err) {
     logger.error('Selection rewrite failed', err);
