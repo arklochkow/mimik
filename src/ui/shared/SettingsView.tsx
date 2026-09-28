@@ -20,6 +20,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { i18n } from '#imports';
 import { PRESET_LABELS, type PresetKey } from '@/core/blur/regexes';
 import { type AIApiKeys, keyFor, migrateApiKeys, withKeyFor } from '@/core/capture/ai/keys';
+import { defaultAILanguage } from '@/core/capture/ai/language';
 import {
   AI_PROVIDERS,
   type AIProviderKey,
@@ -90,7 +91,7 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
   const savedSnapshot = useRef<SettingsSnapshot | null>(null);
   const pending = useRef<SettingsSnapshot>({});
   const saveTimer = useRef<number | undefined>(undefined);
-  const [aiLanguage, setAiLanguage] = useState<AILanguageCode>('en');
+  const [aiLanguage, setAiLanguage] = useState<AILanguageCode>(defaultAILanguage);
   const [voiceProvider, setVoiceProvider] = useState<VoiceProvider>('openai');
   const [voiceApiKey, setVoiceApiKey] = useState('');
   const [voiceMicrophoneId, setVoiceMicrophoneId] = useState('');

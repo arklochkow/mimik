@@ -4,7 +4,7 @@
 
 # Mimik
 
-[English](./README.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · **简体中文**
+[English](./README.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · **简体中文** · [Русский](./README.ru.md)
 
 **自动捕获任何浏览器工作流，并生成分步指南。无需账号，没有云端，也不做追踪。**
 
@@ -71,7 +71,7 @@ Mimik 可以在几秒内把任何重复性的浏览器任务变成一份可分�
 | Firefox | [![Firefox Version][firefox-version-shield]][firefox-link] | [Firefox Add-ons][firefox-link]  |
 | Edge | [![Edge Version][edge-version-shield]][edge-link]          | [Microsoft Edge Add-ons][edge-link] |
 
-支持英语、西班牙语、巴西葡萄牙语、法语、德语和简体中文。AI 描述语言可以单独设置，所以你可以用英文界面运行 Mimik，同时生成中文指南，或使用任意组合。
+支持英语、西班牙语、巴西葡萄牙语、法语、德语、俄语和简体中文。AI 描述语言可以单独设置，所以你可以用英文界面运行 Mimik，同时生成中文指南，或使用任意组合。
 
 > \[!IMPORTANT]
 >
@@ -132,7 +132,7 @@ Mimik 可以在几秒内把任何重复性的浏览器任务变成一份可分�
 
 使用你自己的 API key（OpenAI 或 Anthropic），Mimik 可以生成更自然的步骤说明，例如 *“点击 **Submit** 按钮保存更改”*，而不是基于规则的 `Click Submit`。
 
-描述会根据轻量 DOM 上下文生成（约 50-100 tokens），不是根据截图生成。相比视觉模型大约便宜 15-30 倍。你可以选择描述语言（英语、西班牙语、葡萄牙语、法语、德语、中文）。
+描述会根据轻量 DOM 上下文生成（约 50-100 tokens），不是根据截图生成。相比视觉模型大约便宜 15-30 倍。你可以选择描述语言（英语、西班牙语、葡萄牙语、法语、德语、俄语、中文）。
 
 <img src="https://github.com/user-attachments/assets/3540cbd5-133f-46fd-a9b6-ffce9b4d422a" alt="AI 描述" width="800" />
 

@@ -39,7 +39,7 @@ export default defineConfig({
     return {
       name: "__MSG_app_store_title__",
       description: "__MSG_app_description__",
-      default_locale: "en",
+      default_locale: "ru",
       permissions: [
         "storage",
         "activeTab",

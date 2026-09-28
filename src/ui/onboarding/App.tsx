@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { browser, i18n } from '#imports';
 import { PRESET_LABELS, type PresetKey } from '@/core/blur/regexes';
 import { type AIApiKeys, keyFor, migrateApiKeys, withKeyFor } from '@/core/capture/ai/keys';
+import { defaultAILanguage } from '@/core/capture/ai/language';
 import {
   AI_PROVIDERS,
   type AIProviderKey,
@@ -130,7 +131,7 @@ function AISetupStep({ onNext, onSkip, onBack, index, total }: StepProps) {
   const [apiKey, setApiKey] = useState('');
   const [apiKeys, setApiKeys] = useState<AIApiKeys>({});
   const [baseUrl, setBaseUrl] = useState('');
-  const [aiLanguage, setAiLanguage] = useState<AILanguageCode>('en');
+  const [aiLanguage, setAiLanguage] = useState<AILanguageCode>(defaultAILanguage);
   const [ownServer, setOwnServer] = useState(false);
   const [customModel, setCustomModel] = useState(false);
   const aiKeyCheck = useKeyCheck();

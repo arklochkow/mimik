@@ -4,7 +4,7 @@
 
 # Mimik
 
-[English](./README.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · **Français** · [简体中文](./README.zh-CN.md)
+[English](./README.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · **Français** · [简体中文](./README.zh-CN.md) · [Русский](./README.ru.md)
 
 **Capture n'importe quel flux dans ton navigateur et transforme-le en guide étape par étape. Pas de compte, pas de cloud, pas de tracking.**
 
@@ -71,7 +71,7 @@ Besoin que l'enregistrement regarde ailleurs un instant ? **Pause** arrête la c
 | Firefox    | [![Firefox Version][firefox-version-shield]][firefox-link] | [Firefox Add-ons][firefox-link]  |
 | Edge       | [![Edge Version][edge-version-shield]][edge-link]          | [Microsoft Edge Add-ons][edge-link] |
 
-Disponible en anglais, espagnol, portugais brésilien, français, allemand et chinois simplifié. La langue des descriptions IA se règle séparément, donc tu peux lancer Mimik en anglais et générer les guides en français, ou n'importe quelle combinaison.
+Disponible en anglais, espagnol, portugais brésilien, français, allemand, russe et chinois simplifié. La langue des descriptions IA se règle séparément, donc tu peux lancer Mimik en anglais et générer les guides en français, ou n'importe quelle combinaison.
 
 > \[!IMPORTANT]
 >
@@ -132,7 +132,7 @@ Le floutage s'applique à partir du moment où tu entres dans le mode. Les captu
 
 Apporte ta propre clé API (OpenAI ou Anthropic) et Mimik génère des descriptions naturelles comme *« Clique sur le bouton **Envoyer** pour sauvegarder »* au lieu de `Click button "Submit"`.
 
-Les descriptions sont générées à partir d'un contexte léger du DOM (~50-100 tokens), pas des captures. Environ 15-30x moins cher que les modèles vision. Choisis la langue des descriptions (anglais, espagnol, portugais, français, allemand, chinois).
+Les descriptions sont générées à partir d'un contexte léger du DOM (~50-100 tokens), pas des captures. Environ 15-30x moins cher que les modèles vision. Choisis la langue des descriptions (anglais, espagnol, portugais, français, allemand, russe, chinois).
 
 <img src="https://github.com/user-attachments/assets/3540cbd5-133f-46fd-a9b6-ffce9b4d422a" alt="Descriptions par IA" width="800" />
 

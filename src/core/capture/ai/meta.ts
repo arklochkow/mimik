@@ -2,6 +2,7 @@ import { generateObject, generateText, jsonSchema } from 'ai';
 import { MAX_TITLE_LENGTH, sanitizeGuideTitle } from '@/core/guides/title';
 import { localStorage } from '@/lib/browser-api';
 import { logger } from '@/lib/logger';
+import { defaultAILanguage } from './language';
 import { GUIDE_META_JSON_SUFFIX, GUIDE_META_PROMPT, getLanguageSuffix } from './prompts';
 import { createModel } from './provider';
 
@@ -64,7 +65,7 @@ export async function generateGuideMeta(
 
   const formatted = steps.map((s, i) => `${i + 1}. [${s.url}] ${s.description}`).join('\n');
   const settings = await localStorage.get(['aiLanguage']);
-  const locale = (settings.aiLanguage as string) || 'en';
+  const locale = (settings.aiLanguage as string) || defaultAILanguage();
   const prompt = GUIDE_META_PROMPT.replace('{{steps}}', formatted) + getLanguageSuffix(locale);
   const aiModel = createModel(provider, model, apiKey, baseUrl);
 
