@@ -97,7 +97,7 @@ settings:
   modelCustom: Modèle personnalisé
   baseUrl: URL de base
   useOwnServer: Utiliser mon propre serveur
-  ownServerHintOpenai: "Fonctionne avec Ollama, LM Studio, vLLM ou tout serveur compatible OpenAI."
+  ownServerHintOpenai: "Fonctionne avec Ollama, LM Studio, vLLM ou tout serveur compatible OpenAI. Pour Ollama, l'URL de base est http://localhost:11434/v1."
   ownServerHintAnthropic: "Fonctionne avec un proxy LiteLLM ou tout serveur compatible Anthropic."
   apiKey: "Clé API"
   showKey: Afficher la clé
@@ -107,14 +107,31 @@ settings:
   voiceover: "Voix off de la vidéo"
   textToSpeech: "texte → voix"
   voiceoverHint: "Mimik lit le texte de chaque étape par-dessus la vidéo exportée."
+  voiceoverOffHint: "La voix off de la vidéo est désactivée : la vidéo sera exportée sans son."
   voiceoverUsingAiKey: "Aucune clé de voix off n'est définie, Mimik utilise donc la clé OpenAI des Descriptions IA."
   voiceoverNoKey: "Aucune clé API n'est définie, les vidéos ne peuvent donc pas être narrées."
   voice: "Voix"
   speechToText: "voix → texte"
-  voiceNarrationHint: "Explique le flux à voix haute et Mimik écrit chaque étape à partir de ce que tu as dit."
+  voiceNarrationHint: "Mimik écrit chaque étape à partir de ce qui est expliqué à voix haute."
+  voiceOffHint: "La narration vocale est désactivée : le micro du panneau d'enregistrement est indisponible. Pour dicter les étapes pendant l'enregistrement, activez-la."
   voiceNarration: "Narration vocale"
   voiceUsingAiKey: "Aucune clé vocale n'est définie : Mimik utilise la clé OpenAI des descriptions IA ci-dessus."
   aiNoKey: "Aucune clé API définie, les étapes utiliseront donc des descriptions simples basées sur des règles."
+  aiLocalNoKey: "La clé est facultative : les serveurs locaux comme Ollama n'en ont généralement pas besoin."
+  aiDisabled: "Les descriptions IA sont désactivées : les étapes utiliseront des descriptions simples basées sur des règles, et aucune requête ne sera envoyée au modèle."
+  testDescription: Tester la génération de description
+  testRunning: Génération…
+  testDescriptionHint: "Envoyez une courte requête au modèle sélectionné pour voir à quoi ressemblera la description d'une étape."
+  testOk: "Le modèle a répondu — voici à quoi ressemblera la description de l'étape :"
+  testNoModel: Choisissez d'abord un modèle.
+  testNoKey: "Ni clé ni serveur personnel : il n'y a rien pour appeler le modèle."
+  testUnauthorized: "Le serveur a refusé la clé (401 ou 403)."
+  testNotFound: "Le serveur a répondu 404 : soit l'adresse de l'API est incorrecte, soit il ne dispose pas de ce modèle. Pour Ollama, l'URL de base doit se terminer par /v1 — par exemple http://localhost:11434/v1."
+  testServer: "Le serveur a répondu avec l'erreur $1."
+  testNetwork: "Impossible de se connecter au serveur. Vérifiez l'adresse et que le serveur est bien démarré."
+  testEmpty: "Le modèle a renvoyé un texte vide."
+  testFailed: "La requête de test n'a pas pu aboutir."
+  testUrl: "Requête : $1"
   voiceNoKey: "Aucune clé API n'est définie, vos enregistrements ne seront donc pas narrés."
   microphone: Microphone
   microphoneDefault: "Micro par défaut du système"
@@ -151,15 +168,13 @@ settings:
   keyModelRequired: Choisissez un modèle avant de vérifier cette clé.
   keyModelInvalid: "Le modèle sélectionné n'est pas disponible chez ce fournisseur."
   checkKey: Vérifier la clé
+  checkConnection: Vérifier la connexion
   keyCannotSpend: "Cette clé n’a pas de crédits, seuls les modèles gratuits fonctionneront."
   keyUnreachable: Le fournisseur est injoignable. Vérifiez votre connexion et réessayez.
   modelsFound: "$1 modèles disponibles"
   smartBlur: Flou intelligent
   privacyNotice: "Vos clés et votre audio ne vont qu'au fournisseur que vous choisissez. Rien d'autre ne quitte votre navigateur."
   bugReport: "Un bug ? Signalez-le sur GitHub"
-  starCtaTitle: "Vous aimez Mimik ?"
-  starCtaMessage: "Une étoile sur GitHub nous aide beaucoup et permet à d'autres de découvrir Mimik !"
-  starOnGithub: "Donner une étoile sur GitHub"
 
 blurPresets:
   email: "E-mail"
@@ -495,10 +510,6 @@ onboarding:
   pinStep3Title: "Cliquez sur l'épingle"
   pinStep3Sub: "Mimik apparaîtra dans votre barre"
   pinScreenshotAlt: "Épingler Mimik"
-  starTitle: "Vous nous mettez une étoile ?"
-  starMessage: "Mimik est gratuit et open source. Une étoile est le moyen le plus simple de nous remercier, et elle aide d'autres personnes à le découvrir."
-  starAction: "Mettre une étoile sur GitHub"
-  starLater: Plus tard
   doneTitle: "Tout est prêt !"
   doneMessage: "Mimik est prêt à capturer. Cliquez sur « Lancer la capture » pour enregistrer votre premier guide."
   featureAutoCapture: Capture automatique

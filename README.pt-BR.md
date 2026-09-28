@@ -80,14 +80,6 @@ No Edge os passos são os mesmos, em `edge://extensions`. Fora das lojas, o Fire
 
 Disponível em inglês, espanhol, português brasileiro, francês, alemão, russo e chinês simplificado. O idioma das descrições de IA é configurado separadamente, então tu pode usar o Mimik em inglês e gerar os guias em português, ou qualquer combinação.
 
-> \[!IMPORTANT]
->
-> **⭐️ Dá uma estrela no repo** se o Mimik te economiza tempo. Ajuda outras pessoas a descobrirem ele.
-
-<a href="https://github.com/arklochkow/mimik">
-  <img width="100%" alt="Dê uma estrela ao Mimik no GitHub" src="https://github.com/user-attachments/assets/80d304da-a765-4bde-bf49-b1bdcb4fe804" />
-</a>
-
 <div align="right">
 
 [![Back to top][back-to-top]](#readme-top)

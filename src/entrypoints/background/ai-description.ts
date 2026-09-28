@@ -1,6 +1,6 @@
 import { getAIDescription } from '@/core/capture/ai/description';
 import { describeAiFailure } from '@/core/capture/ai/errors';
-import { resolveAiKey } from '@/core/capture/ai/keys';
+import { AI_CREDENTIAL_SETTINGS, resolveAiCredential } from '@/core/capture/ai/keys';
 import { AI_PROVIDERS } from '@/core/capture/ai/models';
 import type { DOMContext } from '@/core/capture/dom/context';
 import { localStorage } from '@/lib/browser-api';
@@ -8,8 +8,8 @@ import { logger } from '@/lib/logger';
 import { broadcastAiToPanel } from '@/lib/port';
 
 export async function generateAiDescription(domContext: DOMContext): Promise<string | undefined> {
-  const settings = await localStorage.get(['aiApiKeys', 'aiApiKey', 'aiProvider', 'aiModel', 'aiBaseUrl']);
-  const { provider, apiKey } = resolveAiKey(settings);
+  const settings = await localStorage.get([...AI_CREDENTIAL_SETTINGS, 'aiModel']);
+  const { provider, apiKey } = resolveAiCredential(settings);
   if (!apiKey) return undefined;
 
   const model = (settings.aiModel as string) || AI_PROVIDERS[provider].defaultModel;

@@ -80,14 +80,6 @@ Sur Edge, les étapes sont les mêmes dans `edge://extensions`. Hors boutique, F
 
 Disponible en anglais, espagnol, portugais brésilien, français, allemand, russe et chinois simplifié. La langue des descriptions IA se règle séparément, donc tu peux lancer Mimik en anglais et générer les guides en français, ou n'importe quelle combinaison.
 
-> \[!IMPORTANT]
->
-> **⭐️ Mets une étoile au repo** si Mimik te fait gagner du temps. Ça aide les autres à le découvrir.
-
-<a href="https://github.com/arklochkow/mimik">
-  <img width="100%" alt="Mets une étoile à Mimik sur GitHub" src="https://github.com/user-attachments/assets/80d304da-a765-4bde-bf49-b1bdcb4fe804" />
-</a>
-
 <div align="right">
 
 [![Back to top][back-to-top]](#readme-top)

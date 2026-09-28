@@ -107,7 +107,7 @@ settings:
   modelCustom: Eigenes Modell
   baseUrl: Basis-URL
   useOwnServer: Eigenen Server verwenden
-  ownServerHintOpenai: "Funktioniert mit Ollama, LM Studio, vLLM oder jedem OpenAI-kompatiblen Server."
+  ownServerHintOpenai: "Funktioniert mit Ollama, LM Studio, vLLM oder jedem OpenAI-kompatiblen Server. Bei Ollama lautet die Basis-URL http://localhost:11434/v1."
   ownServerHintAnthropic: "Funktioniert mit einem LiteLLM-Proxy oder jedem Anthropic-kompatiblen Server."
   provider: Anbieter
   model: Modell
@@ -119,14 +119,31 @@ settings:
   voiceover: "Video-Voiceover"
   textToSpeech: "Text → Sprache"
   voiceoverHint: "Mimik spricht den Text jedes Schritts über das exportierte Video."
+  voiceoverOffHint: "Video-Voiceover ist aus: Das Video wird ohne Ton exportiert."
   voiceoverUsingAiKey: "Kein Voiceover-Schlüssel gesetzt – Mimik nutzt den OpenAI-Schlüssel aus den KI-Beschreibungen."
   voiceoverNoKey: "Es ist kein API-Schlüssel gesetzt, daher können Videos nicht vertont werden."
   voice: "Stimme"
   speechToText: "Sprache → Text"
   voiceNarrationHint: "Erkläre den Ablauf laut, und Mimik schreibt jeden Schritt aus dem, was du gesagt hast."
+  voiceOffHint: "Sprachkommentar ist aus – das Mikrofon im Aufnahmebereich ist nicht verfügbar. Schalte ihn ein, wenn du Schritte während der Aufnahme erklären möchtest."
   voiceNarration: Sprachkommentar
   voiceUsingAiKey: "Es ist kein Sprach-Schlüssel gesetzt, daher nutzt Mimik den OpenAI-Schlüssel aus den KI-Beschreibungen oben."
   aiNoKey: "Kein API-Schlüssel gesetzt, daher verwenden Schritte einfache regelbasierte Beschreibungen."
+  aiLocalNoKey: "Der Schlüssel ist optional: lokale Server wie Ollama brauchen normalerweise keinen."
+  aiDisabled: "KI-Beschreibungen sind aus: Schritte erhalten einfache regelbasierte Beschreibungen, und es werden keine Anfragen an das Modell gesendet."
+  testDescription: Beschreibungsgenerierung testen
+  testRunning: Wird generiert…
+  testDescriptionHint: "Sendet eine kurze Anfrage an das ausgewählte Modell und zeigt, wie eine Schrittbeschreibung aussehen wird."
+  testOk: "Das Modell hat geantwortet – so wird die Schrittbeschreibung aussehen:"
+  testNoModel: Wähle zuerst ein Modell.
+  testNoKey: "Kein Schlüssel und kein eigener Server – es gibt nichts, womit das Modell aufgerufen werden könnte."
+  testUnauthorized: "Der Server hat den Schlüssel abgelehnt (401 oder 403)."
+  testNotFound: "Der Server hat mit 404 geantwortet: Entweder ist die API-Adresse falsch, oder er kennt dieses Modell nicht. Bei Ollama braucht die Basis-URL ein /v1 – zum Beispiel http://localhost:11434/v1."
+  testServer: "Der Server hat mit Fehler $1 geantwortet."
+  testNetwork: "Keine Verbindung zum Server. Prüfe die Adresse und ob der Server läuft."
+  testEmpty: "Das Modell hat leeren Text zurückgegeben."
+  testFailed: "Die Testanfrage konnte nicht ausgeführt werden."
+  testUrl: "Anfrage: $1"
   voiceNoKey: "Es ist kein API-Schlüssel gesetzt, daher werden deine Aufnahmen nicht vertont."
   microphone: Mikrofon
   microphoneDefault: Systemstandard
@@ -148,15 +165,13 @@ settings:
   smartBlur: Smart Blur
   privacyNotice: "Deine Schlüssel und Audiodaten gehen nur an den Anbieter, den du wählst. Sonst verlässt nichts deinen Browser."
   bugReport: "Fehler gefunden? Melde ihn auf GitHub"
-  starCtaTitle: "Gefällt dir, was du siehst?"
-  starCtaMessage: Ein Stern auf GitHub hilft anderen, Mimik zu finden, und hält uns motiviert!
-  starOnGithub: Auf GitHub favorisieren
   validatingKey: "Schlüssel wird geprüft…"
   keyValid: API-Schlüssel bestätigt.
   keyInvalid: Dieser API-Schlüssel wurde abgelehnt. Prüfe ihn und versuche es erneut.
   keyModelRequired: Wähle ein Modell, bevor du diesen Schlüssel prüfst.
   keyModelInvalid: Das ausgewählte Modell ist bei diesem Anbieter nicht verfügbar.
   checkKey: Schlüssel prüfen
+  checkConnection: Verbindung prüfen
   keyCannotSpend: "Dieser Schlüssel hat kein Guthaben, es funktionieren nur kostenlose Modelle."
   keyUnreachable: Der Anbieter war nicht erreichbar. Prüfe deine Verbindung und versuche es erneut.
   modelsFound: "$1 Modelle verfügbar"
@@ -426,10 +441,6 @@ onboarding:
   pinStep3Title: Klicke auf das Pin-Symbol
   pinStep3Sub: Mimik erscheint dann in deiner Symbolleiste
   pinScreenshotAlt: Mimik-Erweiterung anpinnen
-  starTitle: "Magst du uns einen Stern geben?"
-  starMessage: "Mimik ist kostenlos und quelloffen. Ein Stern ist der einfachste Weg, Danke zu sagen, und hilft anderen, Mimik zu finden."
-  starAction: Auf GitHub mit Stern markieren
-  starLater: "Vielleicht später"
   doneTitle: "Alles bereit!"
   doneMessage: "Mimik ist bereit, deine Workflows aufzunehmen. Klicke in der Erweiterung auf \"Aufnahme starten\", um deine erste Anleitung aufzunehmen."
   featureAutoCapture: Auto-Aufnahme

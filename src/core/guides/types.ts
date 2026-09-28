@@ -67,6 +67,7 @@ export interface Screenshot {
 }
 
 export interface Settings {
+  aiEnabled: boolean;
   aiApiKey: string;
   aiApiKeys: AIApiKeys;
   aiProvider: AIProviderKey;

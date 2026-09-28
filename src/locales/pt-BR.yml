@@ -97,7 +97,7 @@ settings:
   modelCustom: Modelo personalizado
   baseUrl: URL base
   useOwnServer: Usar meu próprio servidor
-  ownServerHintOpenai: "Funciona com Ollama, LM Studio, vLLM ou qualquer servidor compatível com OpenAI."
+  ownServerHintOpenai: "Funciona com Ollama, LM Studio, vLLM ou qualquer servidor compatível com OpenAI. Para o Ollama, a URL base é http://localhost:11434/v1."
   ownServerHintAnthropic: "Funciona com um proxy LiteLLM ou qualquer servidor compatível com Anthropic."
   apiKey: Chave da API
   showKey: Mostrar chave
@@ -107,14 +107,31 @@ settings:
   voiceover: "Narração do vídeo"
   textToSpeech: "texto → voz"
   voiceoverHint: "O Mimik lê o texto de cada passo sobre o vídeo exportado."
+  voiceoverOffHint: "A narração do vídeo está desativada: o vídeo será exportado sem som."
   voiceoverUsingAiKey: "Nenhuma chave de narração definida, então o Mimik usa a chave da OpenAI de Descrições com IA."
   voiceoverNoKey: "Nenhuma chave de API definida, então os vídeos não podem ser narrados."
   voice: "Voz"
   speechToText: "voz → texto"
   voiceNarrationHint: "Explique o fluxo em voz alta e o Mimik escreve cada passo com o que você disse."
+  voiceOffHint: "A narração por voz está desativada — o microfone do painel de gravação fica indisponível. Ative se quiser explicar os passos em voz alta durante a gravação."
   voiceNarration: "Narração por voz"
   voiceUsingAiKey: "Não tem chave de voz, então o Mimik usa a chave da OpenAI das Descrições com IA lá de cima."
   aiNoKey: "Nenhuma chave de API definida, então as etapas usarão descrições simples baseadas em regras."
+  aiLocalNoKey: "A chave é opcional: servidores locais como o Ollama normalmente não exigem uma."
+  aiDisabled: "As descrições com IA estão desativadas: os passos usarão descrições simples baseadas em regras e nenhuma solicitação será enviada ao modelo."
+  testDescription: Testar geração de descrição
+  testRunning: Gerando…
+  testDescriptionHint: "Envia uma solicitação curta ao modelo selecionado e mostra como ficará a descrição de um passo."
+  testOk: "O modelo respondeu — a descrição do passo vai ficar assim:"
+  testNoModel: Escolha um modelo primeiro.
+  testNoKey: "Não há chave nem servidor próprio, então não há como chamar o modelo."
+  testUnauthorized: "O servidor recusou a chave (401 ou 403)."
+  testNotFound: "O servidor respondeu 404: ou o endereço da API está errado, ou ele não tem esse modelo. Para o Ollama, a URL base precisa de /v1 — por exemplo, http://localhost:11434/v1."
+  testServer: "O servidor respondeu com o erro $1."
+  testNetwork: "Não foi possível conectar ao servidor. Verifique o endereço e se o servidor está rodando."
+  testEmpty: "O modelo respondeu com texto vazio."
+  testFailed: "Não foi possível concluir a solicitação de teste."
+  testUrl: "Solicitação: $1"
   voiceNoKey: "Nenhuma chave de API foi definida, então suas gravações não serão narradas."
   microphone: Microfone
   microphoneDefault: "Padrão do sistema"
@@ -151,15 +168,13 @@ settings:
   keyModelRequired: Escolha um modelo antes de verificar esta chave.
   keyModelInvalid: O modelo selecionado não está disponível neste provedor.
   checkKey: Verificar chave
+  checkConnection: Verificar conexão
   keyCannotSpend: "Esta chave não tem créditos, então só modelos gratuitos vão funcionar."
   keyUnreachable: Não deu pra falar com o provedor. Confere sua conexão e tenta de novo.
   modelsFound: "$1 modelos disponíveis"
   smartBlur: Desfoque inteligente
   privacyNotice: "Suas chaves e seu áudio vão só pro provedor que você escolher. Nada mais sai do seu navegador."
   bugReport: "Achou um bug? Reporta no GitHub"
-  starCtaTitle: "Curtiu o Mimik?"
-  starCtaMessage: Uma estrela no GitHub ajuda outras pessoas a descobrir o Mimik e nos dá aquela motivação!
-  starOnGithub: Dar estrela no GitHub
 
 blurPresets:
   email: E-mail
@@ -495,10 +510,6 @@ onboarding:
   pinStep3Title: Clica no pin
   pinStep3Sub: O Mimik vai aparecer na sua barra
   pinScreenshotAlt: Fixar extensão Mimik
-  starTitle: "Que tal deixar uma estrela?"
-  starMessage: "O Mimik é gratuito e de código aberto. Uma estrela é o jeito mais fácil de agradecer, e ajuda outras pessoas a encontrarem o projeto."
-  starAction: Deixar uma estrela no GitHub
-  starLater: Talvez depois
   doneTitle: "Tudo pronto!"
   doneMessage: "O Mimik tá pronto pra capturar. Clica em \"Começar a capturar\" na extensão pra gravar seu primeiro guia."
   featureAutoCapture: Captura automática

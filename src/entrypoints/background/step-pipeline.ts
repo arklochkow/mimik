@@ -1,4 +1,4 @@
-import { AI_KEY_SETTINGS, resolveAiKey } from '@/core/capture/ai/keys';
+import { AI_CREDENTIAL_SETTINGS, resolveAiCredential } from '@/core/capture/ai/keys';
 import type { DOMContext } from '@/core/capture/dom/context';
 import { CaptureState } from '@/core/capture/machine';
 import { buildFallbackDescription } from '@/core/capture/step-description';
@@ -66,7 +66,9 @@ function isRecordingOrPaused(): boolean {
 }
 
 async function tryAIDescription(stepId: string, domContext: DOMContext) {
-  if (!resolveAiKey(await localStorage.get([...AI_KEY_SETTINGS])).apiKey) return;
+  // Re-read the switch here: a user can turn AI off mid-recording, and the queued
+  // task must not spend a request after they did.
+  if (!resolveAiCredential(await localStorage.get([...AI_CREDENTIAL_SETTINGS])).apiKey) return;
   try {
     await clearStepAiPending(stepId, await generateAiDescription(domContext));
   } catch (err) {
@@ -88,7 +90,7 @@ export async function handleCaptureStep(data: CaptureStepData): Promise<CaptureS
   const screenshotId = await takeScreenshot(stepId, data.elementMeta);
 
   const narrationCapturing = getVoiceUpdate().phase === 'recording';
-  const hasAiKey = !!resolveAiKey(await localStorage.get([...AI_KEY_SETTINGS])).apiKey;
+  const hasAiKey = !!resolveAiCredential(await localStorage.get([...AI_CREDENTIAL_SETTINGS])).apiKey;
   const willUseAI = shouldQueueAiDescription({
     action: data.action,
     hasDomContext: !!data.domContext,

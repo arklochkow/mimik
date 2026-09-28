@@ -97,7 +97,7 @@ settings:
   modelCustom: 自定义模型
   baseUrl: 基础 URL
   useOwnServer: 使用自己的服务器
-  ownServerHintOpenai: "支持 Ollama、LM Studio、vLLM 或任何兼容 OpenAI 的服务器。"
+  ownServerHintOpenai: "支持 Ollama、LM Studio、vLLM 或任何兼容 OpenAI 的服务器。使用 Ollama 时，基础 URL 为 http://localhost:11434/v1。"
   ownServerHintAnthropic: "支持 LiteLLM 代理或任何兼容 Anthropic 的服务器。"
   apiKey: API 密钥
   showKey: 显示密钥
@@ -107,14 +107,31 @@ settings:
   voiceover: "视频配音"
   textToSpeech: "文字 → 语音"
   voiceoverHint: "Mimik 会在导出的视频中朗读每个步骤的文本。"
+  voiceoverOffHint: "视频配音已关闭：视频将不带声音导出。"
   voiceoverUsingAiKey: "未设置配音密钥，Mimik 将使用上方「AI 描述」中的 OpenAI 密钥。"
   voiceoverNoKey: "未设置 API 密钥，因此无法为视频配音。"
   voice: "语音"
   speechToText: "语音 → 文字"
   voiceNarrationHint: "边录边讲，Mimik 会根据你说的内容写出每个步骤。"
+  voiceOffHint: "语音讲解已关闭，录制面板中的麦克风不可用。如果想在录制时把步骤讲出来，请开启它。"
   voiceNarration: 语音讲解
   voiceUsingAiKey: "未设置语音密钥，因此 Mimik 会使用上方 AI 描述中的 OpenAI 密钥。"
   aiNoKey: "未设置 API 密钥，步骤将使用普通的规则描述。"
+  aiLocalNoKey: "密钥可以留空：像 Ollama 这样的本地服务器通常不需要密钥。"
+  aiDisabled: "AI 描述已关闭：步骤将使用普通的规则描述，也不会向模型发送请求。"
+  testDescription: 测试描述生成
+  testRunning: 正在生成...
+  testDescriptionHint: "向所选模型发送一个简短的请求，并展示步骤描述大致会是什么样。"
+  testOk: "模型已回复，步骤描述大致如下："
+  testNoModel: 请先选择模型。
+  testNoKey: "既没有密钥也没有自己的服务器，无法调用模型。"
+  testUnauthorized: "服务器拒绝了该密钥（401 或 403）。"
+  testNotFound: "服务器返回 404：可能是 API 地址不对，也可能是它没有这个模型。使用 Ollama 时，基础 URL 需要加上 /v1，例如 http://localhost:11434/v1。"
+  testServer: "服务器返回错误 $1。"
+  testNetwork: "无法连接到服务器。请检查地址，并确认服务器已启动。"
+  testEmpty: "模型返回了空文本。"
+  testFailed: "无法完成这次测试请求。"
+  testUrl: "请求：$1"
   voiceNoKey: "未设置 API 密钥，因此录制不会生成语音讲解。"
   microphone: 麦克风
   microphoneDefault: 系统默认
@@ -151,15 +168,13 @@ settings:
   keyModelInvalid: 所选模型在此提供商上不可用。请选择其他模型或输入自定义模型 ID。
   keyModelRequired: 需要选择模型。请从列表中选择或输入自定义模型 ID。
   checkKey: 检查密钥
+  checkConnection: 检查连接
   keyCannotSpend: "该密钥没有额度，只能使用免费模型。"
   keyUnreachable: 无法连接到提供商。请检查网络后重试。
   modelsFound: "找到 $1 个模型"
   smartBlur: 智能模糊
   privacyNotice: "你的密钥和音频只会发送给你选择的提供商。除此之外，没有任何内容会离开你的浏览器。"
   bugReport: "发现问题？在 GitHub 上报告"
-  starCtaTitle: "喜欢 Mimik 吗？"
-  starCtaMessage: 给 GitHub star 可以帮助更多人发现 Mimik，也会让我们更有动力！
-  starOnGithub: 在 GitHub 上加星
 
 blurPresets:
   email: 邮箱
@@ -495,10 +510,6 @@ onboarding:
   pinStep3Title: 点击固定图标
   pinStep3Sub: Mimik 会出现在工具栏中
   pinScreenshotAlt: 固定 Mimik 扩展
-  starTitle: 愿意给我们一个 star 吗？
-  starMessage: "Mimik 是免费开源的。star 是最简单的感谢方式，也能帮助更多人发现它。"
-  starAction: 在 GitHub 上加星
-  starLater: 稍后再说
   doneTitle: "全部设置完成！"
   doneMessage: "Mimik 已准备好捕获你的工作流。点击扩展中的“开始捕获”来录制第一份指南。"
   featureAutoCapture: 自动捕获

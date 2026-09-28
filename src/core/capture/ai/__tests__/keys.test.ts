@@ -1,5 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import { keyFor, migrateApiKeys, parseApiKeys, resolveAiKey, withKeyFor } from '../keys';
+import {
+  AI_CREDENTIAL_SETTINGS,
+  isAiEnabled,
+  keyFor,
+  LOCAL_SERVER_API_KEY,
+  migrateApiKeys,
+  parseApiKeys,
+  resolveAiCredential,
+  resolveAiKey,
+  withKeyFor,
+} from '../keys';
 
 describe('parseApiKeys', () => {
   it('keeps only keys for providers that exist', () => {
@@ -73,5 +83,100 @@ describe('resolveAiKey', () => {
       provider: 'openai',
       apiKey: 'sk-a',
     });
+  });
+
+  it('still reports a keyless custom server as having no key, so the form keeps asking', () => {
+    // resolveAiKey is the settings form's question ("is a key stored?"), and it
+    // deliberately ignores aiBaseUrl: the local-server placeholder belongs to
+    // resolveAiCredential, which the capture pipeline reads.
+    expect(resolveAiKey({ aiProvider: 'openai' })).toEqual({ provider: 'openai', apiKey: '' });
+  });
+});
+
+describe('resolveAiCredential', () => {
+  it('hands back the key belonging to the selected provider', () => {
+    expect(resolveAiCredential({ aiApiKeys: { openai: 'sk-openai' }, aiProvider: 'openai' })).toEqual({
+      provider: 'openai',
+      apiKey: 'sk-openai',
+      enabled: true,
+      customBaseUrl: false,
+    });
+  });
+
+  it('sends a placeholder to a custom server the user pointed us at without a key', () => {
+    expect(resolveAiCredential({ aiProvider: 'openai', aiBaseUrl: 'http://localhost:11434' })).toEqual({
+      provider: 'openai',
+      apiKey: LOCAL_SERVER_API_KEY,
+      enabled: true,
+      customBaseUrl: true,
+    });
+  });
+
+  it('normalises a trailing slash before comparing the base URL against the default', () => {
+    expect(resolveAiCredential({ aiProvider: 'openai', aiBaseUrl: 'https://api.openai.com/v1/' })).toEqual({
+      provider: 'openai',
+      apiKey: '',
+      enabled: true,
+      customBaseUrl: false,
+    });
+    expect(resolveAiCredential({ aiProvider: 'openai', aiBaseUrl: 'http://localhost:11434/' })).toEqual({
+      provider: 'openai',
+      apiKey: LOCAL_SERVER_API_KEY,
+      enabled: true,
+      customBaseUrl: true,
+    });
+  });
+
+  it('still reports no credential for a keyless provider at its own endpoint', () => {
+    expect(resolveAiCredential({ aiProvider: 'openai', aiBaseUrl: 'https://api.openai.com/v1' })).toEqual({
+      provider: 'openai',
+      apiKey: '',
+      enabled: true,
+      customBaseUrl: false,
+    });
+    expect(resolveAiCredential({})).toEqual({ provider: 'openai', apiKey: '', enabled: true, customBaseUrl: false });
+  });
+
+  it('prefers the stored key over the placeholder when a custom server also has one', () => {
+    const resolved = resolveAiCredential({
+      aiApiKeys: { openai: 'sk-own' },
+      aiProvider: 'openai',
+      aiBaseUrl: 'http://localhost:11434',
+    });
+    expect(resolved).toEqual({ provider: 'openai', apiKey: 'sk-own', enabled: true, customBaseUrl: true });
+  });
+
+  it('never lends one provider key to another, custom base URL or not', () => {
+    expect(
+      resolveAiCredential({
+        aiApiKeys: { openai: 'sk-own' },
+        aiProvider: 'anthropic',
+        aiBaseUrl: 'http://localhost:11434',
+      }),
+    ).toEqual({ provider: 'anthropic', apiKey: LOCAL_SERVER_API_KEY, enabled: true, customBaseUrl: true });
+    expect(resolveAiCredential({ aiApiKeys: { openai: 'sk-own' }, aiProvider: 'anthropic' }).apiKey).toBe('');
+  });
+
+  it('sends nothing at all when the master switch is off, key or no key', () => {
+    expect(
+      resolveAiCredential({
+        aiEnabled: false,
+        aiApiKeys: { openai: 'sk-own' },
+        aiProvider: 'openai',
+        aiBaseUrl: 'http://localhost:11434',
+      }),
+    ).toEqual({ provider: 'openai', apiKey: '', enabled: false, customBaseUrl: true });
+  });
+
+  it('reads an absent switch as on, so settings written before it existed keep working', () => {
+    expect(isAiEnabled({})).toBe(true);
+    expect(isAiEnabled({ aiEnabled: undefined })).toBe(true);
+    expect(isAiEnabled({ aiEnabled: true })).toBe(true);
+    expect(isAiEnabled({ aiEnabled: false })).toBe(false);
+    expect(resolveAiCredential({ aiApiKeys: { openai: 'sk-own' } }).enabled).toBe(true);
+  });
+
+  it('names every storage key the resolution reads', () => {
+    expect([...AI_CREDENTIAL_SETTINGS]).toEqual(['aiApiKeys', 'aiApiKey', 'aiProvider', 'aiBaseUrl', 'aiEnabled']);
   });
 });

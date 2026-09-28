@@ -4,14 +4,12 @@ import {
   Bug,
   Check,
   ChevronDown,
-  ChevronRight,
   EyeOff,
   Globe,
   ImageIcon,
   Mic,
   Shield,
   Sparkles,
-  Star,
   Target,
   Trash2,
   TriangleAlert,
@@ -31,9 +29,16 @@ import {
   providerOrDefault,
 } from '@/core/capture/ai/models';
 import { AI_LANGUAGES, type AILanguageCode } from '@/core/capture/ai/prompts';
+import type { AITestFailureReason } from '@/core/capture/ai/test-description';
 import { resolveVoiceApiKey } from '@/core/capture/voice/api-key';
 import type { VoiceProvider } from '@/core/capture/voice/transcribe';
 import { type BrandLogo, defaultFooterLine, makeBrandLogo } from '@/core/export/branding';
+import {
+  DEFAULT_EXPORT_OPTIONS,
+  type ExportOptions,
+  loadExportOptions,
+  saveExportOptions,
+} from '@/core/export/options';
 import {
   keyForVoiceoverProvider,
   parseVoiceoverKeys,
@@ -76,6 +81,60 @@ const FOOTER_PRESETS = () => [
   i18n.t('settings.footerPresetNoDistribute'),
 ];
 
+type AITestState =
+  | { status: 'idle' }
+  | { status: 'running' }
+  | { status: 'ok'; description: string }
+  | { status: 'error'; reason: AITestFailureReason; httpStatus?: number; url?: string; detail?: string };
+
+const TEST_FAILURE_I18N: Record<AITestFailureReason, string> = {
+  'no-model': 'settings.testNoModel',
+  'no-key': 'settings.testNoKey',
+  unauthorized: 'settings.testUnauthorized',
+  'not-found': 'settings.testNotFound',
+  server: 'settings.testServer',
+  network: 'settings.testNetwork',
+  empty: 'settings.testEmpty',
+  failed: 'settings.testFailed',
+};
+
+function aiTestMessage(state: Extract<AITestState, { status: 'error' }>): string {
+  if (state.reason === 'server') return i18n.t('settings.testServer', [String(state.httpStatus ?? 0)]);
+  return i18n.t(TEST_FAILURE_I18N[state.reason]);
+}
+
+function ToggleSwitch({
+  checked,
+  onChange,
+  label,
+  disabled = false,
+}: {
+  checked: boolean;
+  onChange: () => void;
+  label: string;
+  disabled?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      aria-label={label}
+      disabled={disabled}
+      onClick={onChange}
+      className={`w-9 h-5 rounded-full transition-colors relative shrink-0 ${checked ? 'bg-accent' : 'bg-border'} ${
+        disabled ? 'opacity-50 cursor-not-allowed' : ''
+      }`}
+    >
+      <span
+        className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${
+          checked ? 'translate-x-4' : 'translate-x-0'
+        }`}
+      />
+    </button>
+  );
+}
+
 export default function SettingsView({ onBack }: SettingsViewProps) {
   const [provider, setProvider] = useState<AIProviderKey>('openai');
   const [model, setModel] = useState(AI_PROVIDERS.openai.defaultModel);
@@ -87,6 +146,8 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
   const voiceKeyCheck = useKeyCheck();
   const [customModel, setCustomModel] = useState(false);
   const [ownServer, setOwnServer] = useState(false);
+  const [aiEnabled, setAiEnabled] = useState(true);
+  const [aiTest, setAiTest] = useState<AITestState>({ status: 'idle' });
   const [loaded, setLoaded] = useState(false);
   const savedSnapshot = useRef<SettingsSnapshot | null>(null);
   const pending = useRef<SettingsSnapshot>({});
@@ -95,11 +156,13 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
   const [voiceProvider, setVoiceProvider] = useState<VoiceProvider>('openai');
   const [voiceApiKey, setVoiceApiKey] = useState('');
   const [voiceMicrophoneId, setVoiceMicrophoneId] = useState('');
+  const [voiceEnabled, setVoiceEnabled] = useState(false);
   const [voiceoverProviderKey, setVoiceoverProviderKey] = useState<VoiceoverProviderKey>(DEFAULT_VOICEOVER_PROVIDER);
   const [voiceoverApiKey, setVoiceoverApiKey] = useState('');
   const [voiceoverApiKeys, setVoiceoverApiKeys] = useState<VoiceoverApiKeys>({});
   const [voiceoverVoiceId, setVoiceoverVoiceId] = useState(VOICEOVER_PROVIDERS.openai.defaultVoice);
   const [voiceoverModelId, setVoiceoverModelId] = useState(VOICEOVER_PROVIDERS.openai.defaultModel);
+  const [exportOptions, setExportOptions] = useState<ExportOptions>(DEFAULT_EXPORT_OPTIONS);
   const [voices, setVoices] = useState<VoiceoverVoice[]>(VOICEOVER_PROVIDERS.openai.voices);
   const voiceoverKeyCheck = useKeyCheck();
   const [targetColor, setTargetColor] = useState<string>(DEFAULT_TARGET_COLOR);
@@ -117,6 +180,9 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
   });
 
   useEffect(() => {
+    void loadExportOptions()
+      .then(setExportOptions)
+      .catch(() => undefined);
     localStorage
       .get([
         'aiApiKey',
@@ -125,10 +191,12 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
         'aiModel',
         'aiBaseUrl',
         'aiLanguage',
+        'aiEnabled',
         'blurPresets',
         'voiceProvider',
         'voiceApiKey',
         'voiceMicrophoneId',
+        'voiceEnabled',
         'voiceoverProvider',
         'voiceoverApiKeys',
         'voiceoverVoiceId',
@@ -150,10 +218,12 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
           setOwnServer(true);
         }
         if (result.aiLanguage) setAiLanguage(result.aiLanguage as AILanguageCode);
+        if (result.aiEnabled === false) setAiEnabled(false);
         if (result.blurPresets) setBlurPresets(result.blurPresets as Record<PresetKey, boolean>);
         setVoiceProvider((result.voiceProvider as VoiceProvider) || 'openai');
         if (result.voiceApiKey) setVoiceApiKey(result.voiceApiKey as string);
         if (result.voiceMicrophoneId) setVoiceMicrophoneId(result.voiceMicrophoneId as string);
+        if (result.voiceEnabled === true) setVoiceEnabled(true);
         const vo = resolveVoiceoverConfig(result);
         const voKeys = parseVoiceoverKeys(result.voiceoverApiKeys);
         setVoiceoverProviderKey(vo.provider);
@@ -177,10 +247,12 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
     aiModel: model,
     aiBaseUrl: baseUrl,
     aiLanguage,
+    aiEnabled,
     blurPresets,
     voiceProvider,
     voiceApiKey,
     voiceMicrophoneId,
+    voiceEnabled,
     voiceoverProvider: voiceoverProviderKey,
     voiceoverApiKeys: withVoiceoverKey(voiceoverApiKeys, voiceoverProviderKey, voiceoverApiKey),
     voiceoverVoiceId,
@@ -273,10 +345,51 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
     setBrandLogo(await makeBrandLogo(file));
   };
 
+  const resetAiChecks = () => {
+    aiKeyCheck.reset();
+    setAiTest({ status: 'idle' });
+  };
+
+  const runAiTest = async () => {
+    setAiTest({ status: 'running' });
+    const result = await sendMessage('testAiDescription', {
+      provider,
+      model,
+      apiKey,
+      baseUrl,
+      language: aiLanguage,
+    }).catch((err) => {
+      logger.error('AI description test failed', err);
+      return null;
+    });
+    if (!result) {
+      setAiTest({ status: 'error', reason: 'network' });
+      return;
+    }
+    if (result.ok) {
+      setAiTest({ status: 'ok', description: result.description });
+      return;
+    }
+    setAiTest({
+      status: 'error',
+      reason: result.reason,
+      httpStatus: result.status,
+      url: result.url,
+      detail: result.detail,
+    });
+  };
+
+  const toggleVoiceover = () => {
+    const next = { ...exportOptions, voiceover: !exportOptions.voiceover };
+    setExportOptions(next);
+    void saveExportOptions(next).catch((err) => logger.error('Failed to save export options', err));
+    setSaved(true);
+  };
+
   const handleProviderChange = (newProvider: AIProviderKey) => {
     setProvider(newProvider);
     setApiKey(keyFor(apiKeys, newProvider));
-    aiKeyCheck.reset();
+    resetAiChecks();
     setCustomModel(false);
     setModel(AI_PROVIDERS[newProvider].defaultModel);
     setOwnServer(false);
@@ -288,19 +401,19 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
       if (on) setBaseUrl('');
       return !on;
     });
-    aiKeyCheck.reset();
+    resetAiChecks();
   };
 
   const handleModelChange = (value: string) => {
     if (value === CUSTOM_MODEL_VALUE) {
       setCustomModel(true);
       setModel('');
-      aiKeyCheck.reset();
+      resetAiChecks();
       return;
     }
     setCustomModel(false);
     setModel(value);
-    aiKeyCheck.reset();
+    resetAiChecks();
   };
 
   const providerConfig = AI_PROVIDERS[provider] ?? AI_PROVIDERS[DEFAULT_AI_PROVIDER];
@@ -356,7 +469,18 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
               <Sparkles size={14} className="text-accent" />
             </div>
             <span className="text-xs font-bold text-foreground">{i18n.t('settings.aiDescriptions')}</span>
+            <span className="ml-auto">
+              <ToggleSwitch
+                checked={aiEnabled}
+                onChange={() => setAiEnabled((on) => !on)}
+                label={i18n.t('settings.aiDescriptions')}
+              />
+            </span>
           </div>
+
+          {!aiEnabled && (
+            <p className="text-[10px] text-muted-foreground leading-relaxed">{i18n.t('settings.aiDisabled')}</p>
+          )}
 
           <div>
             <label className="block text-[11px] font-semibold text-foreground mb-1">
@@ -395,7 +519,7 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
                 value={model}
                 onChange={(e) => {
                   setModel(e.target.value);
-                  aiKeyCheck.reset();
+                  resetAiChecks();
                 }}
                 placeholder={providerConfig.defaultModel}
                 aria-label={i18n.t('settings.modelCustom')}
@@ -412,7 +536,7 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
                 onChange={(next) => {
                   setApiKey(next);
                   setApiKeys((prev) => withKeyFor(prev, provider, next));
-                  aiKeyCheck.reset();
+                  resetAiChecks();
                 }}
                 placeholder="sk-..."
                 className="h-8 text-[13px] rounded-lg border-border"
@@ -420,22 +544,28 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
               <Button
                 variant="outline"
                 size="sm"
-                disabled={!apiKey || aiKeyCheck.status === 'checking'}
+                disabled={(!apiKey.trim() && !ownServer) || aiKeyCheck.status === 'checking'}
                 onClick={() => {
                   if (aiKeyCheck.status !== 'checking') void aiKeyCheck.check(provider, apiKey, baseUrl, model);
                 }}
                 className="h-8 shrink-0 rounded-lg bg-card text-[11px] font-semibold"
               >
-                {i18n.t('settings.checkKey')}
+                {i18n.t(ownServer ? 'settings.checkConnection' : 'settings.checkKey')}
               </Button>
             </div>
             <KeyStatusNote status={aiKeyCheck.status} />
             <KeyWarningNote warning={aiKeyCheck.warning} />
             {aiKeyCheck.models && <ModelList models={aiKeyCheck.models} />}
-            {!apiKey.trim() && (
+            {!apiKey.trim() && !ownServer && (
               <p className="mt-1.5 flex items-start gap-1.5 text-[10px] text-destructive leading-relaxed" role="alert">
                 <TriangleAlert size={11} className="shrink-0 mt-0.5" />
                 <span>{i18n.t('settings.aiNoKey')}</span>
+              </p>
+            )}
+            {!apiKey.trim() && ownServer && (
+              <p className="mt-1.5 flex items-start gap-1.5 text-[10px] text-muted-foreground leading-relaxed">
+                <Globe size={11} className="shrink-0 mt-0.5 text-accent" />
+                <span>{i18n.t('settings.aiLocalNoKey')}</span>
               </p>
             )}
           </div>
@@ -470,7 +600,7 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
                   value={baseUrl}
                   onChange={(e) => {
                     setBaseUrl(e.target.value);
-                    aiKeyCheck.reset();
+                    resetAiChecks();
                   }}
                   placeholder={providerConfig.defaultBaseUrl}
                   aria-label={i18n.t('settings.baseUrl')}
@@ -492,7 +622,13 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
               <Globe size={11} className="inline mr-1 -mt-px" />
               {i18n.t('settings.aiLanguage')}
             </label>
-            <Select value={aiLanguage} onValueChange={(v) => setAiLanguage(v as AILanguageCode)}>
+            <Select
+              value={aiLanguage}
+              onValueChange={(v) => {
+                setAiLanguage(v as AILanguageCode);
+                setAiTest({ status: 'idle' });
+              }}
+            >
               <SelectTrigger className="h-8">
                 <SelectValue />
               </SelectTrigger>
@@ -504,6 +640,43 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
                 ))}
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="pt-3 border-t border-secondary">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={aiTest.status === 'running' || !model.trim() || (!apiKey.trim() && !ownServer)}
+              onClick={() => void runAiTest()}
+              className="h-8 w-full rounded-lg bg-card text-[11px] font-semibold"
+            >
+              {i18n.t(aiTest.status === 'running' ? 'settings.testRunning' : 'settings.testDescription')}
+            </Button>
+            <p className="mt-1.5 text-[10px] text-muted-foreground leading-relaxed">
+              {i18n.t('settings.testDescriptionHint')}
+            </p>
+            {aiTest.status === 'ok' && (
+              <div className="mt-2 rounded-lg bg-secondary px-2.5 py-2">
+                <p className="text-[10px] font-semibold text-muted-foreground mb-1">{i18n.t('settings.testOk')}</p>
+                <p className="text-[11px] text-foreground leading-relaxed">{aiTest.description}</p>
+              </div>
+            )}
+            {aiTest.status === 'error' && (
+              <div className="mt-2 space-y-1">
+                <p className="flex items-start gap-1.5 text-[10px] text-destructive leading-relaxed" role="alert">
+                  <TriangleAlert size={11} className="shrink-0 mt-0.5" />
+                  <span>{aiTestMessage(aiTest)}</span>
+                </p>
+                {aiTest.url && (
+                  <p className="text-[10px] text-muted-foreground font-mono break-all">
+                    {i18n.t('settings.testUrl', [aiTest.url])}
+                  </p>
+                )}
+                {aiTest.detail && (
+                  <p className="text-[10px] text-muted-foreground font-mono break-all">{aiTest.detail}</p>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -637,9 +810,19 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
             <span className="ml-auto shrink-0 rounded-md bg-secondary px-1.5 py-0.5 text-[9px] font-semibold tracking-wide text-muted-foreground">
               {i18n.t('settings.speechToText')}
             </span>
+            <ToggleSwitch
+              checked={voiceEnabled}
+              onChange={() => setVoiceEnabled((on) => !on)}
+              label={i18n.t('settings.voiceNarration')}
+              disabled={!voiceEnabled && voiceKey.source === 'none'}
+            />
           </div>
 
           <p className="text-[10px] text-muted-foreground leading-relaxed">{i18n.t('settings.voiceNarrationHint')}</p>
+
+          {!voiceEnabled && (
+            <p className="text-[10px] text-muted-foreground leading-relaxed">{i18n.t('settings.voiceOffHint')}</p>
+          )}
 
           <div>
             <label className="block text-[11px] font-semibold text-foreground mb-1">
@@ -714,9 +897,19 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
             <span className="ml-auto shrink-0 rounded-md bg-secondary px-1.5 py-0.5 text-[9px] font-semibold tracking-wide text-muted-foreground">
               {i18n.t('settings.textToSpeech')}
             </span>
+            <ToggleSwitch
+              checked={exportOptions.voiceover}
+              onChange={toggleVoiceover}
+              label={i18n.t('settings.voiceover')}
+              disabled={!exportOptions.voiceover && voiceoverKey.source === 'none'}
+            />
           </div>
 
           <p className="text-[10px] text-muted-foreground leading-relaxed">{i18n.t('settings.voiceoverHint')}</p>
+
+          {!exportOptions.voiceover && (
+            <p className="text-[10px] text-muted-foreground leading-relaxed">{i18n.t('settings.voiceoverOffHint')}</p>
+          )}
 
           <div>
             <label className="block text-[11px] font-semibold text-foreground mb-1">
@@ -851,7 +1044,7 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
         </div>
 
         <a
-          href="https://github.com/westpoint-io/mimik/issues"
+          href="https://github.com/arklochkow/mimik/issues"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-border text-[11px] font-medium text-muted-foreground hover:text-foreground hover:border-accent transition-colors"
@@ -859,33 +1052,6 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
           <Bug size={13} className="shrink-0" />
           <span>{i18n.t('settings.bugReport')}</span>
         </a>
-
-        <div className="flex items-center gap-3.5 border border-border rounded-[10px] p-3.5">
-          <svg width="44" height="44" viewBox="20 55 160 108" className="shrink-0">
-            <rect x="30" y="95" width="140" height="68" rx="8" fill="#1E1B4B" />
-            <path d="M30 95 L30 80 Q30 58, 100 58 Q170 58, 170 80 L170 95 Z" fill="#3730A3" />
-            <rect x="30" y="93" width="140" height="3" fill="#C7D2FE" />
-            <path d="M68 122 Q76 112 84 122" stroke="#C7D2FE" strokeWidth="5" fill="none" strokeLinecap="round" />
-            <path d="M116 122 Q124 112 132 122" stroke="#C7D2FE" strokeWidth="5" fill="none" strokeLinecap="round" />
-            <path d="M84 138 Q100 148 116 138" stroke="#C7D2FE" strokeWidth="3.5" fill="none" strokeLinecap="round" />
-          </svg>
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-foreground mb-0.5">{i18n.t('settings.starCtaTitle')}</p>
-            <p className="text-[10px] text-muted-foreground leading-relaxed mb-2">
-              {i18n.t('settings.starCtaMessage')}
-            </p>
-            <a
-              href="https://github.com/westpoint-io/mimik"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-secondary text-[10px] font-semibold text-accent hover:bg-accent hover:text-white transition-colors"
-            >
-              <Star size={11} fill="#FBBF24" className="text-[#FBBF24]" />
-              {i18n.t('settings.starOnGithub')}
-              <ChevronRight size={11} />
-            </a>
-          </div>
-        </div>
       </div>
     </div>
   );

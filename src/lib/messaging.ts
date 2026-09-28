@@ -1,4 +1,5 @@
 import { defineExtensionMessaging } from '@webext-core/messaging';
+import type { AITestPayload, AITestResult } from '@/core/capture/ai/test-description';
 import type { DOMContext } from '@/core/capture/dom/context';
 import type { CaptureStateValue, PauseReason } from '@/core/capture/machine';
 import type { VoiceoverProviderKey } from '@/core/export/voiceover/providers';
@@ -132,6 +133,10 @@ export interface ListVoicesResponse {
   voices: { id: string; name: string }[];
 }
 
+export type TestAiDescriptionData = AITestPayload;
+
+export type TestAiDescriptionResponse = AITestResult;
+
 export interface EnterBlurModeResponse {
   entered: boolean;
 }
@@ -170,6 +175,7 @@ interface MimikProtocol {
   startNarration(): StartNarrationResponse;
   generateGuideDescription(data: GenerateGuideDescriptionData): GenerateGuideDescriptionResponse;
   validateApiKey(data: ValidateApiKeyData): ValidateApiKeyResponse;
+  testAiDescription(data: TestAiDescriptionData): TestAiDescriptionResponse;
   listVoices(data: ListVoicesData): ListVoicesResponse;
   rewriteSelection(data: RewriteSelectionData): RewriteSelectionResponse;
 }

@@ -11,3 +11,5 @@ mockups/
 .worktrees/
 public/transformers/
 .pnpm-store
+.tmp-ch1
+.tmp-*

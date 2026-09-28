@@ -80,14 +80,6 @@ Edge 的步骤相同，页面是 `edge://extensions`。在商店之外，Firefox
 
 支持英语、西班牙语、巴西葡萄牙语、法语、德语、俄语和简体中文。AI 描述语言可以单独设置，所以你可以用英文界面运行 Mimik，同时生成中文指南，或使用任意组合。
 
-> \[!IMPORTANT]
->
-> **⭐️ 如果 Mimik 帮你节省了时间，请给仓库点个 star。** 这能帮助更多人发现它！
-
-<a href="https://github.com/arklochkow/mimik">
-  <img width="100%" alt="在 GitHub 上给 Mimik 点 star" src="https://github.com/user-attachments/assets/80d304da-a765-4bde-bf49-b1bdcb4fe804" />
-</a>
-
 <div align="right">
 
 [![Back to top][back-to-top]](#readme-top)

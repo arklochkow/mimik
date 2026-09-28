@@ -16,10 +16,13 @@ export type KeyValidation =
 
 const REQUEST_TIMEOUT_MS = 10_000;
 
+// A blank key is legitimate for a local server (Ollama, LM Studio, vLLM), and an
+// empty `Authorization: Bearer ` header makes some of them answer 401 instead of
+// ignoring it. A blank key therefore sends no auth header at all.
 const PROTOCOL_HEADERS: Record<AIProtocol, (key: string) => Record<string, string>> = {
-  openai: (key) => ({ Authorization: `Bearer ${key}` }),
+  openai: (key): Record<string, string> => (key.trim() ? { Authorization: `Bearer ${key}` } : {}),
   anthropic: (key) => ({
-    'x-api-key': key,
+    ...(key.trim() ? { 'x-api-key': key } : {}),
     'anthropic-version': '2023-06-01',
     'anthropic-dangerous-direct-browser-access': 'true',
   }),

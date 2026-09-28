@@ -256,12 +256,14 @@ describe('readBundle', () => {
     expect((await caught(bundleFile({ 'readme.txt': strToU8('hi') }))).kind).toBe('not-a-bundle');
   });
 
+  // 210 MB is allocated and deflated below, which is seconds of work on a loaded
+  // machine: the default 5s budget made this the flakiest test in the suite.
   it('refuses a zip bomb before inflating it', async () => {
     const huge = new Uint8Array(210 * 1024 * 1024);
     const bomb = bundleFile({ [MANIFEST_PATH]: strToU8(JSON.stringify(manifest())), 'screenshots/big.webp': huge });
     expect(bomb.size).toBeLessThan(5 * 1024 * 1024);
     expect((await caught(bomb)).kind).toBe('unreadable');
-  });
+  }, 30_000);
 
   it('reports a manifest that is not valid JSON', async () => {
     expect((await caught(bundleFile({ [MANIFEST_PATH]: strToU8('{ nope') }))).kind).toBe('not-a-bundle');

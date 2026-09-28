@@ -1,5 +1,6 @@
 import { browser, defineBackground } from '#imports';
 import { rewriteSelection } from '@/core/capture/ai/rewrite';
+import { testAiDescription } from '@/core/capture/ai/test-description';
 import { validateApiKey } from '@/core/capture/ai/validate';
 import { stepRequiresManual } from '@/core/guideme/manual';
 import { advanceSession, cancelSession, completeSession, getSession, startSession } from '@/core/guideme/session';
@@ -206,6 +207,8 @@ export default defineBackground(() => {
   onMessage('generateGuideDescription', ({ data }) => generateDescriptionOnDemand(data.guideId));
 
   onMessage('validateApiKey', ({ data }) => validateApiKey(data.provider, data.apiKey, data.baseUrl, data.model));
+
+  onMessage('testAiDescription', ({ data }) => testAiDescription(data));
 
   onMessage('listVoices', async ({ data }) => {
     const { fetchVoices } = await import('@/core/export/voiceover/client');

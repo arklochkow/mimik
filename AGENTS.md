@@ -13,7 +13,9 @@ You click "Record," perform a workflow in your browser, and Mimik automatically 
 **Everything runs in the Chrome extension. No backend.**
 
 - Storage: IndexedDB via Dexie.js (browser-local)
-- AI descriptions: optional, user provides their own API key in settings
+- AI descriptions: optional, user provides their own API key in settings — or points Mimik at a
+  local OpenAI-compatible server, where a blank key is legitimate. A master switch (`aiEnabled`,
+  on by default) turns the whole feature off, including the guide title call
 - Export: generated client-side (no server rendering)
 - No auth, no database, no hosting, no Docker
 
@@ -335,7 +337,9 @@ log at `error` level rather than `warn` for the same reason: `logger.warn` is co
 extension, so a `warn`-only skip is invisible in the one build where a user could hit it. A user
 abort is the one thing `narrateOrSkip` rethrows — cancelling an export must still cancel it.
 
-Only the dashboard's export panel can turn narration on. `ExportMenu` in the side panel passes
+Only a surface that shows the state can turn narration on. Two of them do: the settings page has an
+"Озвучка видео" switch bound to the same stored `exportOptions.voiceover`, and the dashboard's export
+panel shows the control next to the length estimate. `ExportMenu` in the side panel still passes
 `voiceover: false` explicitly rather than inheriting the saved option, because that surface has no
 toggle and no indicator: a stored preference must not spend money somewhere the user cannot see or
 stop it. (That component is currently unmounted — nothing in `src/` imports it — so the guard is

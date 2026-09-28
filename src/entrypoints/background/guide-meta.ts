@@ -1,5 +1,5 @@
 import { i18n } from '#imports';
-import { AI_KEY_SETTINGS, resolveAiKey } from '@/core/capture/ai/keys';
+import { AI_CREDENTIAL_SETTINGS, resolveAiCredential } from '@/core/capture/ai/keys';
 import { generateGuideMeta } from '@/core/capture/ai/meta';
 import { AI_PROVIDERS } from '@/core/capture/ai/models';
 import { actionSteps } from '@/core/guides/blocks';
@@ -29,13 +29,13 @@ type GuideMetaInputs =
     }
   | { ok: false; reason: ResolveFailure };
 
-async function hasAiKey(): Promise<boolean> {
-  return Boolean(resolveAiKey(await localStorage.get([...AI_KEY_SETTINGS])).apiKey);
+async function hasAiCredentials(): Promise<boolean> {
+  return Boolean(resolveAiCredential(await localStorage.get([...AI_CREDENTIAL_SETTINGS])).apiKey);
 }
 
 async function resolveGuideMetaInputs(guideId: string): Promise<GuideMetaInputs> {
-  const settings = await localStorage.get(['aiApiKeys', 'aiApiKey', 'aiProvider', 'aiModel', 'aiBaseUrl']);
-  const { provider, apiKey } = resolveAiKey(settings);
+  const settings = await localStorage.get([...AI_CREDENTIAL_SETTINGS, 'aiModel']);
+  const { provider, apiKey } = resolveAiCredential(settings);
   if (!apiKey) return { ok: false, reason: 'no-api-key' };
 
   const steps = actionSteps(await getStepsForGuide(guideId));
@@ -74,7 +74,7 @@ async function applyFallbackTitleThenSettle(guideId: string) {
 }
 
 export async function generateGuideMetaOnStop(guideId: string) {
-  if (!(await hasAiKey().catch(() => false))) {
+  if (!(await hasAiCredentials().catch(() => false))) {
     await applyFallbackTitleThenSettle(guideId);
     return;
   }

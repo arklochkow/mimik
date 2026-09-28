@@ -97,7 +97,7 @@ settings:
   modelCustom: Modelo personalizado
   baseUrl: URL base
   useOwnServer: Usar mi propio servidor
-  ownServerHintOpenai: "Funciona con Ollama, LM Studio, vLLM o cualquier servidor compatible con OpenAI."
+  ownServerHintOpenai: "Funciona con Ollama, LM Studio, vLLM o cualquier servidor compatible con OpenAI. Para Ollama, la URL base es http://localhost:11434/v1."
   ownServerHintAnthropic: "Funciona con un proxy LiteLLM o cualquier servidor compatible con Anthropic."
   apiKey: Clave API
   showKey: Mostrar clave
@@ -107,14 +107,31 @@ settings:
   voiceover: "Voz en off del vídeo"
   textToSpeech: "texto → voz"
   voiceoverHint: "Mimik lee el texto de cada paso sobre el vídeo exportado."
+  voiceoverOffHint: "La voz en off del vídeo está desactivada: el vídeo se exportará sin sonido."
   voiceoverUsingAiKey: "No hay clave de voz en off, así que Mimik usa la clave de OpenAI de Descripciones con IA."
   voiceoverNoKey: "No hay ninguna clave de API configurada, así que los vídeos no se pueden narrar."
   voice: "Voz"
   speechToText: "voz → texto"
   voiceNarrationHint: "Explica el flujo en voz alta y Mimik escribe cada paso con lo que dijiste."
+  voiceOffHint: "La narración por voz está desactivada: el micrófono del panel de grabación no está disponible. Actívala si quieres explicar los pasos en voz alta mientras grabas."
   voiceNarration: "Narración por voz"
   voiceUsingAiKey: "No hay clave de voz, así que Mimik usa la clave de OpenAI de Descripciones con IA de arriba."
   aiNoKey: "No hay clave de API, así que los pasos usarán descripciones básicas por reglas."
+  aiLocalNoKey: "La clave es opcional: los servidores locales como Ollama normalmente no la necesitan."
+  aiDisabled: "Las descripciones con IA están desactivadas: los pasos usarán descripciones básicas por reglas y no se enviarán solicitudes al modelo."
+  testDescription: Probar generación de descripciones
+  testRunning: Generando…
+  testDescriptionHint: "Envía una solicitud breve al modelo seleccionado y muestra cómo quedará la descripción de un paso."
+  testOk: "El modelo respondió. Así quedará la descripción del paso:"
+  testNoModel: Elige un modelo primero.
+  testNoKey: "No hay clave ni servidor propio, así que no hay con qué llamar al modelo."
+  testUnauthorized: "El servidor rechazó la clave (401 o 403)."
+  testNotFound: "El servidor respondió 404: o la dirección de la API es incorrecta o no tiene ese modelo. Para Ollama, la URL base necesita /v1; por ejemplo, http://localhost:11434/v1."
+  testServer: "El servidor respondió con el error $1."
+  testNetwork: "No se pudo conectar con el servidor. Revisa la dirección y que el servidor esté en marcha."
+  testEmpty: "El modelo respondió con texto vacío."
+  testFailed: "No se pudo completar la solicitud de prueba."
+  testUrl: "Solicitud: $1"
   voiceNoKey: "No hay ninguna clave de API configurada, así que tus grabaciones no se narrarán."
   microphone: "Micrófono"
   microphoneDefault: Predeterminado del sistema
@@ -151,15 +168,13 @@ settings:
   keyModelRequired: Elige un modelo antes de comprobar esta clave.
   keyModelInvalid: El modelo seleccionado no está disponible en este proveedor.
   checkKey: Comprobar clave
+  checkConnection: Comprobar conexión
   keyCannotSpend: "Esta clave no tiene créditos, solo funcionarán los modelos gratuitos."
   keyUnreachable: No se pudo conectar con el proveedor. Revisa tu conexión e inténtalo de nuevo.
   modelsFound: "$1 modelos disponibles"
   smartBlur: Desenfoque inteligente
   privacyNotice: "Tus claves y tu audio solo van al proveedor que elijas. Nada más sale de tu navegador."
   bugReport: "¿Encontraste un bug? Repórtalo en GitHub"
-  starCtaTitle: "¿Te gusta Mimik?"
-  starCtaMessage: "Una estrella en GitHub nos ayuda un montón y hace que más gente descubra Mimik."
-  starOnGithub: Dar estrella en GitHub
 
 blurPresets:
   email: Correo electrónico
@@ -495,10 +510,6 @@ onboarding:
   pinStep3Title: Haz clic en el pin
   pinStep3Sub: Mimik aparecerá en tu barra
   pinScreenshotAlt: Fijar extensión Mimik
-  starTitle: "¿Nos das una estrella?"
-  starMessage: "Mimik es gratuito y de código abierto. Una estrella es la forma más fácil de dar las gracias, y ayuda a que otras personas lo encuentren."
-  starAction: Dar una estrella en GitHub
-  starLater: "Quizá más tarde"
   doneTitle: "¡Ya estás listo!"
   doneMessage: "Mimik está listo para capturar. Dale clic a \"Empezar a capturar\" en la extensión para grabar tu primera guía."
   featureAutoCapture: Captura automática

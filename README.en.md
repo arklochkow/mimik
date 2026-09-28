@@ -45,7 +45,6 @@ Click record, do the thing, get a polished guide with annotated screenshots. Nar
   - [📦 Share a guide](#-share-a-guide)
 - [🔐 Privacy & storage](#-privacy--storage)
 - [🤝 Contributing](#-contributing)
-- [⭐ Star History](#-star-history)
 - [📜 License](#-license)
 
 <br/>
@@ -81,14 +80,6 @@ Mimik RU ships as files, outside the stores:
 Edge takes the same steps on `edge://extensions`. Outside the stores, Firefox only runs temporarily through `about:debugging` (until the browser restarts) or in Developer Edition / ESR with signature checks disabled.
 
 Available in English, Spanish, Brazilian Portuguese, French, German, Russian, and Simplified Chinese. The AI description language is set separately, so you can run Mimik in English and generate guides in Spanish, or any combination.
-
-> \[!IMPORTANT]
->
-> **⭐️ Star the repo** if Mimik saves you time. It helps other people discover it!
-
-<a href="https://github.com/arklochkow/mimik">
-  <img width="100%" alt="Star Mimik on GitHub" src="https://github.com/user-attachments/assets/80d304da-a765-4bde-bf49-b1bdcb4fe804" />
-</a>
 
 <div align="right">
 
@@ -285,16 +276,6 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for development setup, project layout, 
 [![Back to top][back-to-top]](#readme-top)
 
 </div>
-
-## ⭐ Star History
-
-<a href="https://www.star-history.com/#arklochkow/mimik&Timeline">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=arklochkow/mimik&type=Timeline&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=arklochkow/mimik&type=Timeline" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=arklochkow/mimik&type=Timeline" width="800" />
-  </picture>
-</a>
 
 <div align="right">
 

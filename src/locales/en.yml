@@ -97,7 +97,7 @@ settings:
   modelCustom: Custom model
   baseUrl: Base URL
   useOwnServer: Use my own server
-  ownServerHintOpenai: "Works with Ollama, LM Studio, vLLM, or any OpenAI-compatible server."
+  ownServerHintOpenai: "Works with Ollama, LM Studio, vLLM, or any OpenAI-compatible server. For Ollama, the base URL is http://localhost:11434/v1."
   ownServerHintAnthropic: "Works with a LiteLLM proxy or any Anthropic-compatible server."
   apiKey: API Key
   showKey: Show key
@@ -107,14 +107,31 @@ settings:
   voiceover: "Video Voice-over"
   textToSpeech: "text → speech"
   voiceoverHint: "Mimik speaks each step's text over the exported video."
+  voiceoverOffHint: "Video voice-over is off: the video will export without sound."
   voiceoverUsingAiKey: "No voice-over key is set, so Mimik uses the OpenAI key from AI Descriptions above."
   voiceoverNoKey: "No API key is set, so videos cannot be narrated."
   voice: "Voice"
   speechToText: "speech → text"
   voiceNarrationHint: "Talk through the workflow and Mimik writes each step from what you said."
+  voiceOffHint: "Narration is off — the microphone in the recording panel is unavailable. Turn it on if you want to talk through steps while recording."
   voiceNarration: Voice Narration
   voiceUsingAiKey: "No voice key is set, so Mimik uses the OpenAI key from AI Descriptions above."
   aiNoKey: "No API key is set, so steps will use plain rule-based descriptions."
+  aiLocalNoKey: "The key is optional: local servers like Ollama usually don't need one."
+  aiDisabled: "AI descriptions are off: steps will use plain rule-based descriptions and no requests will be sent to the model."
+  testDescription: Test description generation
+  testRunning: Generating…
+  testDescriptionHint: "Sends one short request to the selected model and shows what a step description will look like."
+  testOk: "The model responded — this is what a step description will look like:"
+  testNoModel: Choose a model first.
+  testNoKey: "There is no key and no own server, so there is nothing to call the model with."
+  testUnauthorized: "The server rejected the key (401 or 403)."
+  testNotFound: "The server returned 404: either the API address is wrong or it doesn't have that model. For Ollama the base URL needs /v1 — for example, http://localhost:11434/v1."
+  testServer: "The server returned error $1."
+  testNetwork: "Could not connect to the server. Check the address and that the server is running."
+  testEmpty: "The model returned empty text."
+  testFailed: "The test request could not be completed."
+  testUrl: "Request: $1"
   voiceNoKey: "No API key is set, so your recordings will not be narrated."
   microphone: Microphone
   microphoneDefault: System default
@@ -151,15 +168,13 @@ settings:
   keyModelRequired: Choose a model before checking this key.
   keyModelInvalid: The selected model is not available from this provider.
   checkKey: Check key
+  checkConnection: Check connection
   keyCannotSpend: "This key has no credits, so only free models will work."
   keyUnreachable: Could not reach the provider. Check your connection and try again.
   modelsFound: "$1 models available"
   smartBlur: Smart Blur
   privacyNotice: "Your keys and audio go only to the provider you pick. Nothing else leaves your browser."
   bugReport: "Found a bug? Report it on GitHub"
-  starCtaTitle: "Like what you see?"
-  starCtaMessage: A GitHub star helps others find Mimik and keeps us motivated!
-  starOnGithub: Star on GitHub
 
 blurPresets:
   email: Email
@@ -495,10 +510,6 @@ onboarding:
   pinStep3Title: Click the pin icon
   pinStep3Sub: Mimik will appear in your toolbar
   pinScreenshotAlt: Pin Mimik extension
-  starTitle: Mind giving us a star?
-  starMessage: "Mimik is free and open source. A star is the easiest way to say thanks, and it helps other people find it."
-  starAction: Star on GitHub
-  starLater: Maybe later
   doneTitle: "You're all set!"
   doneMessage: "Mimik is ready to capture your workflows. Click \"Start Capture\" in the extension to record your first guide."
   featureAutoCapture: Auto-capture

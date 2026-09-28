@@ -38,7 +38,10 @@ vi.mock('../voice', () => ({ getVoiceUpdate: () => ({ phase: 'idle' }), flushNar
 vi.mock('../ai-description', () => ({ generateAiDescription: vi.fn() }));
 vi.mock('../description-queue', () => ({ queueDescription: vi.fn() }));
 vi.mock('../deferred-descriptions', () => ({ deferDescription: vi.fn(), shouldQueueAiDescription: () => false }));
-vi.mock('@/core/capture/ai/keys', () => ({ AI_KEY_SETTINGS: [], resolveAiKey: () => ({ apiKey: undefined }) }));
+vi.mock('@/core/capture/ai/keys', () => ({
+  AI_CREDENTIAL_SETTINGS: [],
+  resolveAiCredential: () => ({ apiKey: undefined }),
+}));
 
 const meta = { rect: { x: 0, y: 0, width: 10, height: 10 }, devicePixelRatio: 1 } as ElementMeta;
 

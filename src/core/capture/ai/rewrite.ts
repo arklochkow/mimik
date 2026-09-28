@@ -2,7 +2,7 @@ import { generateText } from 'ai';
 import { localStorage } from '@/lib/browser-api';
 import { logger } from '@/lib/logger';
 import type { RewriteSelectionResponse } from '@/lib/messaging';
-import { resolveAiKey } from './keys';
+import { AI_CREDENTIAL_SETTINGS, resolveAiCredential } from './keys';
 import { defaultAILanguage } from './language';
 import { AI_PROVIDERS } from './models';
 import { getLanguageSuffix, REWRITE_PROMPT } from './prompts';
@@ -24,15 +24,8 @@ export function buildRewritePrompt(text: string, instruction: string, locale: st
 }
 
 export async function rewriteSelection(text: string, instruction: string): Promise<RewriteSelectionResponse> {
-  const settings = await localStorage.get([
-    'aiApiKeys',
-    'aiApiKey',
-    'aiProvider',
-    'aiModel',
-    'aiBaseUrl',
-    'aiLanguage',
-  ]);
-  const { provider, apiKey } = resolveAiKey(settings);
+  const settings = await localStorage.get([...AI_CREDENTIAL_SETTINGS, 'aiLanguage', 'aiModel']);
+  const { provider, apiKey } = resolveAiCredential(settings);
   if (!apiKey) return { error: 'no-api-key' };
 
   try {
