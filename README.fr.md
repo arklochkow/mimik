@@ -2,17 +2,20 @@
 
 <img src="public/mascot.svg" width="140" height="140" alt="Mascotte de Mimik" />
 
-# Mimik
+# Mimik RU
 
-[English](./README.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · **Français** · [简体中文](./README.zh-CN.md) · [Русский](./README.ru.md)
+[English](./README.en.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · **Français** · [简体中文](./README.zh-CN.md) · [Русский](./README.md)
 
 **Capture n'importe quel flux dans ton navigateur et transforme-le en guide étape par étape. Pas de compte, pas de cloud, pas de tracking.**
+
+> **C'est un fork.** Mimik RU est un fork indépendant de [Mimik][upstream-link] par Westpoint (licence MIT). L'original est distribué dans les boutiques Chrome, Firefox et Edge ; cette compilation est distribuée sous forme de fichiers depuis [Releases][releases-link].
 
 Clique sur enregistrer, fais ce que tu as à faire, et récupère un guide soigné avec des captures annotées. Modifie, rejoue ou exporte.
 
 <!-- SHIELD GROUP -->
 
 [![License][license-shield]][license-link]
+[![Release][releases-shield]][releases-link]
 [![Manifest V3][mv3-shield]][mv3-link]
 [![100% Local][local-shield]][local-link]
 [![No Account][no-account-shield]][no-account-link]
@@ -65,11 +68,15 @@ Chaque étape reçoit une capture avec l'élément cliqué mis en évidence et z
 
 Besoin que l'enregistrement regarde ailleurs un instant ? **Pause** arrête la capture sans terminer l'enregistrement, et **Reprendre** repart où tu en étais. Entrer dans Smart Blur la met en pause de la même façon.
 
-| Navigateur | Version | Installation |
-| ---------- | ------- | ------------ |
-| Chrome     | [![Chrome Version][chrome-version-shield]][chrome-link]   | [Chrome Web Store][chrome-link] |
-| Firefox    | [![Firefox Version][firefox-version-shield]][firefox-link] | [Firefox Add-ons][firefox-link]  |
-| Edge       | [![Edge Version][edge-version-shield]][edge-link]          | [Microsoft Edge Add-ons][edge-link] |
+### Installation
+
+Mimik RU se distribue sous forme de fichiers, hors des boutiques :
+
+1. Ouvre [Releases][releases-link] et télécharge `mimik-ru-<version>-chrome.zip`.
+2. Décompresse l'archive dans un dossier que tu ne supprimeras ni ne déplaceras : Chrome lie l'extension à ce chemin, et la déplacer vide la bibliothèque de guides.
+3. Ouvre `chrome://extensions`, active le **Mode développeur** et clique sur **Charger l'extension non empaquetée** en choisissant le dossier qui contient `manifest.json`.
+
+Sur Edge, les étapes sont les mêmes dans `edge://extensions`. Hors boutique, Firefox ne fonctionne que temporairement via `about:debugging` (jusqu'au redémarrage du navigateur) ou dans Developer Edition / ESR avec la vérification des signatures désactivée.
 
 Disponible en anglais, espagnol, portugais brésilien, français, allemand, russe et chinois simplifié. La langue des descriptions IA se règle séparément, donc tu peux lancer Mimik en anglais et générer les guides en français, ou n'importe quelle combinaison.
 
@@ -77,7 +84,7 @@ Disponible en anglais, espagnol, portugais brésilien, français, allemand, russ
 >
 > **⭐️ Mets une étoile au repo** si Mimik te fait gagner du temps. Ça aide les autres à le découvrir.
 
-<a href="https://github.com/westpoint-io/mimik">
+<a href="https://github.com/arklochkow/mimik">
   <img width="100%" alt="Mets une étoile à Mimik sur GitHub" src="https://github.com/user-attachments/assets/80d304da-a765-4bde-bf49-b1bdcb4fe804" />
 </a>
 
@@ -225,7 +232,7 @@ Tes guides, étapes et captures restent sur ton appareil. Pas de backend, pas de
 
 Si tu masques des données personnelles avant de partager un guide, lis d'abord [ce que Smart Blur ne couvre pas](#-smart-blur) : il n'atteint ni les iframes, ni le shadow DOM, ni le texte dessiné dans une image.
 
-Deux choses sortent bien du navigateur, toutes deux documentées dans la [politique de confidentialité](https://mimik.westpoint.io/privacy/) : les icônes de sites sont récupérées via le service de favicons de Google, ce qui envoie le domaine du site, et les fonctions optionnelles d'IA, de narration vocale et de voix off envoient du texte ou de l'audio au fournisseur que tu as configuré — la voix off envoie le texte de chaque étape au moment de l'export, et seulement si tu l'actives.
+Deux choses sortent bien du navigateur, toutes deux documentées dans la [politique de confidentialité](./PRIVACY.md) : les icônes de sites sont récupérées via le service de favicons de Google, ce qui envoie le domaine du site, et les fonctions optionnelles d'IA, de narration vocale et de voix off envoient du texte ou de l'audio au fournisseur que tu as configuré — la voix off envoie le texte de chaque étape au moment de l'export, et seulement si tu l'actives.
 
 <div align="right">
 
@@ -271,20 +278,18 @@ MIT © [Westpoint](https://github.com/westpoint-io). Voir [LICENSE](./LICENSE) p
 [no-account-shield]: https://img.shields.io/badge/account-not%20required-4F46E5?style=flat-square&labelColor=1E1B4B
 [no-account-link]: #-stockage-100-local
 
-[star-shield]: https://img.shields.io/github/stars/westpoint-io/mimik?style=flat-square&label=stars&color=4F46E5&labelColor=1E1B4B
-[star-link]: https://github.com/westpoint-io/mimik/stargazers
+[star-shield]: https://img.shields.io/github/stars/arklochkow/mimik?style=flat-square&label=stars&color=4F46E5&labelColor=1E1B4B
+[star-link]: https://github.com/arklochkow/mimik/stargazers
 
-[contributors-shield]: https://img.shields.io/github/contributors/westpoint-io/mimik?style=flat-square&labelColor=1E1B4B
-[contributors-link]: https://github.com/westpoint-io/mimik/graphs/contributors
+[contributors-shield]: https://img.shields.io/github/contributors/arklochkow/mimik?style=flat-square&labelColor=1E1B4B
+[contributors-link]: https://github.com/arklochkow/mimik/graphs/contributors
 
-[last-commit-shield]: https://img.shields.io/github/last-commit/westpoint-io/mimik?style=flat-square&label=commit&labelColor=1E1B4B
+[last-commit-shield]: https://img.shields.io/github/last-commit/arklochkow/mimik?style=flat-square&label=commit&labelColor=1E1B4B
 
-[issues-shield]: https://img.shields.io/github/issues/westpoint-io/mimik?style=flat-square&labelColor=1E1B4B
-[issues-link]: https://github.com/westpoint-io/mimik/issues
+[issues-shield]: https://img.shields.io/github/issues/arklochkow/mimik?style=flat-square&labelColor=1E1B4B
+[issues-link]: https://github.com/arklochkow/mimik/issues
 
-[chrome-version-shield]: https://img.shields.io/chrome-web-store/v/jmfohdaflahliammccpiadmkcibohgha?label=Chrome%20Version&style=flat-square&logo=googlechrome&logoColor=C7D2FE&color=4F46E5&labelColor=1E1B4B
-[chrome-link]: https://chromewebstore.google.com/detail/mimik/jmfohdaflahliammccpiadmkcibohgha
-[firefox-version-shield]: https://img.shields.io/amo/v/mimik?label=Firefox%20Version&style=flat-square&logo=firefoxbrowser&logoColor=C7D2FE&color=4F46E5&labelColor=1E1B4B
-[firefox-link]: https://addons.mozilla.org/en-US/firefox/addon/mimik/
-[edge-version-shield]: https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fhgjemhfoffebbollleajkpefblppleai&query=%24.version&label=Edge%20Version&style=flat-square&logo=microsoftedge&logoColor=C7D2FE&color=4F46E5&labelColor=1E1B4B
-[edge-link]: https://microsoftedge.microsoft.com/addons/detail/hgjemhfoffebbollleajkpefblppleai
+[releases-shield]: https://img.shields.io/github/v/release/arklochkow/mimik?style=flat-square&label=release&color=4F46E5&labelColor=1E1B4B
+[releases-link]: https://github.com/arklochkow/mimik/releases
+
+[upstream-link]: https://github.com/westpoint-io/mimik

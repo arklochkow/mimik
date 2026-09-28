@@ -2,8 +2,8 @@ meta:
   locale: zh-CN
 
 app:
-  name: Mimik
-  store_title: "Mimik：分步指南与教程"
+  name: Mimik RU
+  store_title: "Mimik RU：分步指南与教程"
   description: "将任何浏览器工作流录制成分步指南。可编辑、添加语音讲解，并导出为视频、PDF 或 DOCX。本地优先，开源透明。"
 
 common:
