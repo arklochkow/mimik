@@ -2,17 +2,20 @@
 
 <img src="public/mascot.svg" width="140" height="140" alt="Mimik 吉祥物" />
 
-# Mimik
+# Mimik RU
 
-[English](./README.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · **简体中文** · [Русский](./README.ru.md)
+[English](./README.en.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · **简体中文** · [Русский](./README.md)
 
 **自动捕获任何浏览器工作流，并生成分步指南。无需账号，没有云端，也不做追踪。**
+
+> **这是分支版本。** Mimik RU 是 Westpoint 的 [Mimik][upstream-link] 的独立分支（MIT 许可）。原版通过 Chrome、Firefox 和 Edge 商店分发；本构建通过 [Releases][releases-link] 以文件形式分发。
 
 点击录制，完成你的操作，Mimik 会生成一份带标注截图的精美指南。你可以边录边讲解，录完后编辑，然后 replay 或导出。
 
 <!-- SHIELD GROUP -->
 
 [![License][license-shield]][license-link]
+[![Release][releases-shield]][releases-link]
 [![Manifest V3][mv3-shield]][mv3-link]
 [![100% Local][local-shield]][local-link]
 [![No Account][no-account-shield]][no-account-link]
@@ -65,11 +68,15 @@ Mimik 可以在几秒内把任何重复性的浏览器任务变成一份可分�
 
 需要让录制暂时避开一下？**暂停**会停下捕获但不结束录制，**继续**则从你离开的地方接着来。进入智能模糊也会以同样的方式暂停它。
 
-| 浏览器 | 版本 | 安装 |
-| ------ | ---- | ---- |
-| Chrome | [![Chrome Version][chrome-version-shield]][chrome-link]   | [Chrome Web Store][chrome-link] |
-| Firefox | [![Firefox Version][firefox-version-shield]][firefox-link] | [Firefox Add-ons][firefox-link]  |
-| Edge | [![Edge Version][edge-version-shield]][edge-link]          | [Microsoft Edge Add-ons][edge-link] |
+### 安装
+
+Mimik RU 以文件形式分发，不通过商店：
+
+1. 打开 [Releases][releases-link]，下载 `mimik-ru-<版本>-chrome.zip`。
+2. 解压到一个不会删除或移动的文件夹：Chrome 会把扩展绑定到该路径，移动后指南库会变成空的。
+3. 打开 `chrome://extensions`，开启**开发者模式**，点击**加载已解压的扩展程序**，选择包含 `manifest.json` 的文件夹。
+
+Edge 的步骤相同，页面是 `edge://extensions`。在商店之外，Firefox 只能通过 `about:debugging` 临时运行（重启浏览器后失效），或在关闭签名校验的 Developer Edition / ESR 中使用。
 
 支持英语、西班牙语、巴西葡萄牙语、法语、德语、俄语和简体中文。AI 描述语言可以单独设置，所以你可以用英文界面运行 Mimik，同时生成中文指南，或使用任意组合。
 
@@ -77,7 +84,7 @@ Mimik 可以在几秒内把任何重复性的浏览器任务变成一份可分�
 >
 > **⭐️ 如果 Mimik 帮你节省了时间，请给仓库点个 star。** 这能帮助更多人发现它！
 
-<a href="https://github.com/westpoint-io/mimik">
+<a href="https://github.com/arklochkow/mimik">
   <img width="100%" alt="在 GitHub 上给 Mimik 点 star" src="https://github.com/user-attachments/assets/80d304da-a765-4bde-bf49-b1bdcb4fe804" />
 </a>
 
@@ -215,7 +222,7 @@ Mimik 可以在几秒内把任何重复性的浏览器任务变成一份可分�
 
 如果你在分享指南前需要遮盖个人数据，请先读一下[智能模糊覆盖不到的内容](#-智能模糊)：它无法触及 iframe、shadow DOM，也无法触及画在图片里的文字。
 
-有两类内容会离开浏览器，并且都已在[隐私政策](https://mimik.westpoint.io/privacy/)中说明：网站图标会从 Google favicon 服务获取，这会发送对应网站的域名；可选的 AI、语音讲解和视频配音功能会把文本或音频发送给你配置的服务商 —— 视频配音会在导出时发送每个步骤的文本，且仅在你开启后才会发送。
+有两类内容会离开浏览器，并且都已在[隐私政策](./PRIVACY.md)中说明：网站图标会从 Google favicon 服务获取，这会发送对应网站的域名；可选的 AI、语音讲解和视频配音功能会把文本或音频发送给你配置的服务商 —— 视频配音会在导出时发送每个步骤的文本，且仅在你开启后才会发送。
 
 <div align="right">
 
@@ -261,20 +268,18 @@ MIT © [Westpoint](https://github.com/westpoint-io)。详情见 [LICENSE](./LICE
 [no-account-shield]: https://img.shields.io/badge/account-not%20required-4F46E5?style=flat-square&labelColor=1E1B4B
 [no-account-link]: #-隐私与存储
 
-[star-shield]: https://img.shields.io/github/stars/westpoint-io/mimik?style=flat-square&label=stars&color=4F46E5&labelColor=1E1B4B
-[star-link]: https://github.com/westpoint-io/mimik/stargazers
+[star-shield]: https://img.shields.io/github/stars/arklochkow/mimik?style=flat-square&label=stars&color=4F46E5&labelColor=1E1B4B
+[star-link]: https://github.com/arklochkow/mimik/stargazers
 
-[contributors-shield]: https://img.shields.io/github/contributors/westpoint-io/mimik?style=flat-square&labelColor=1E1B4B
-[contributors-link]: https://github.com/westpoint-io/mimik/graphs/contributors
+[contributors-shield]: https://img.shields.io/github/contributors/arklochkow/mimik?style=flat-square&labelColor=1E1B4B
+[contributors-link]: https://github.com/arklochkow/mimik/graphs/contributors
 
-[last-commit-shield]: https://img.shields.io/github/last-commit/westpoint-io/mimik?style=flat-square&label=commit&labelColor=1E1B4B
+[last-commit-shield]: https://img.shields.io/github/last-commit/arklochkow/mimik?style=flat-square&label=commit&labelColor=1E1B4B
 
-[issues-shield]: https://img.shields.io/github/issues/westpoint-io/mimik?style=flat-square&labelColor=1E1B4B
-[issues-link]: https://github.com/westpoint-io/mimik/issues
+[issues-shield]: https://img.shields.io/github/issues/arklochkow/mimik?style=flat-square&labelColor=1E1B4B
+[issues-link]: https://github.com/arklochkow/mimik/issues
 
-[chrome-version-shield]: https://img.shields.io/chrome-web-store/v/jmfohdaflahliammccpiadmkcibohgha?label=Chrome%20Version&style=flat-square&logo=googlechrome&logoColor=C7D2FE&color=4F46E5&labelColor=1E1B4B
-[chrome-link]: https://chromewebstore.google.com/detail/mimik/jmfohdaflahliammccpiadmkcibohgha
-[firefox-version-shield]: https://img.shields.io/amo/v/mimik?label=Firefox%20Version&style=flat-square&logo=firefoxbrowser&logoColor=C7D2FE&color=4F46E5&labelColor=1E1B4B
-[firefox-link]: https://addons.mozilla.org/en-US/firefox/addon/mimik/
-[edge-version-shield]: https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fhgjemhfoffebbollleajkpefblppleai&query=%24.version&label=Edge%20Version&style=flat-square&logo=microsoftedge&logoColor=C7D2FE&color=4F46E5&labelColor=1E1B4B
-[edge-link]: https://microsoftedge.microsoft.com/addons/detail/hgjemhfoffebbollleajkpefblppleai
+[releases-shield]: https://img.shields.io/github/v/release/arklochkow/mimik?style=flat-square&label=release&color=4F46E5&labelColor=1E1B4B
+[releases-link]: https://github.com/arklochkow/mimik/releases
+
+[upstream-link]: https://github.com/westpoint-io/mimik

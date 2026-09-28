@@ -64,12 +64,12 @@ export default defineConfig({
             sidebar_action: {
               default_panel: "sidepanel.html",
               default_icon: "icon32.png",
-              default_title: "Mimik",
+              default_title: "Mimik RU",
               open_at_install: false,
             },
             browser_specific_settings: {
               gecko: {
-                id: "mimik@westpoint.io",
+                id: "mimik-ru@arklochkow",
                 strict_min_version: "128.0",
                 data_collection_permissions: {
                   required: ["websiteActivity"],

@@ -2,8 +2,8 @@ meta:
   locale: pt-BR
 
 app:
-  name: Mimik
-  store_title: "Mimik: guias passo a passo e tutoriais"
+  name: Mimik RU
+  store_title: "Mimik RU: guias passo a passo e tutoriais"
   description: "Grave qualquer tarefa do navegador como um guia passo a passo. Edite, narre com voz e exporte em vídeo, PDF ou DOCX. Código aberto."
 
 common:

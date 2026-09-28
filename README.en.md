@@ -1,0 +1,347 @@
+<div align="center"><a name="readme-top"></a>
+
+<img src="public/mascot.svg" width="140" height="140" alt="Mimik mascot" />
+
+# Mimik RU
+
+**English** · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [简体中文](./README.zh-CN.md) · [Русский](./README.md)
+
+**Auto-capture any browser workflow into a step-by-step guide. No account, no cloud, no tracking.**
+
+> **This is a fork.** Mimik RU is an independent fork of [Mimik][upstream-link] by Westpoint (MIT licensed). The original ships through the Chrome, Firefox and Edge stores; this build ships as files from [Releases][releases-link].
+
+Click record, do the thing, get a polished guide with annotated screenshots. Narrate it as you go, edit it after, then replay or export.
+
+<!-- SHIELD GROUP -->
+
+[![License][license-shield]][license-link]
+[![Release][releases-shield]][releases-link]
+[![Manifest V3][mv3-shield]][mv3-link]
+[![100% Local][local-shield]][local-link]
+[![No Account][no-account-shield]][no-account-link]
+<br/>
+[![Stars][star-shield]][star-link]
+[![Contributors][contributors-shield]][contributors-link]
+![Last Commit][last-commit-shield]
+[![Issues][issues-shield]][issues-link]
+
+</div>
+
+<details>
+<summary><kbd>Table of contents</kbd></summary>
+
+#### TOC
+
+- [📺 Demo](#-demo)
+- [👋 Getting Started](#-getting-started)
+- [✨ Features](#-features)
+  - [🔒 Smart Blur](#-smart-blur)
+  - [🧠 AI descriptions (optional)](#-ai-descriptions-optional)
+  - [▶️ Guide Me replay](#️-guide-me-replay)
+  - [🎙️ Voice narration (optional)](#️-voice-narration-optional)
+  - [✏️ Guide editor](#️-guide-editor)
+  - [🔊 Video voice-over (optional)](#-video-voice-over-optional)
+  - [📤 Multi-format export](#-multi-format-export)
+  - [📦 Share a guide](#-share-a-guide)
+- [🔐 Privacy & storage](#-privacy--storage)
+- [🤝 Contributing](#-contributing)
+- [⭐ Star History](#-star-history)
+- [📜 License](#-license)
+
+<br/>
+
+</details>
+
+## 📺 Demo
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/9de20b45-2256-4127-8242-141cf1802f39" alt="Mimik demo" width="800" />
+</div>
+
+## 👋 Getting Started
+
+Mimik turns any repetitive browser task into a documented, shareable guide in seconds. It runs entirely in your browser. No backend, no account, no telemetry, and nothing ever leaves your device.
+
+Whether you're documenting internal tools, writing product tutorials, or onboarding a teammate, Mimik captures every click, keystroke, and navigation automatically so you can focus on the work.
+
+Every meaningful action becomes a step: clicks on buttons and links, form inputs, keyboard shortcuts, clipboard actions, drag events, and page navigations. Rapid clicks on nearby elements are merged so guides stay clean, and clicks are intercepted before the page navigates away, so nothing is lost on SPAs or full page loads.
+
+Each step gets a screenshot with the clicked element highlighted and zoomed in. No manual cropping, no annotation tools to learn.
+
+Need the recording to look away for a moment? **Pause** stops capture without ending the recording, and **Resume** picks up where you left off. Entering Smart Blur pauses it the same way.
+
+### Install
+
+Mimik RU ships as files, outside the stores:
+
+1. Open [Releases][releases-link] and download `mimik-ru-<version>-chrome.zip`.
+2. Unzip it into a folder you will not delete or move: Chrome ties the extension to that path, and moving it leaves the guide library empty.
+3. Open `chrome://extensions`, turn on **Developer mode**, and click **Load unpacked**, picking the folder that holds `manifest.json`.
+
+Edge takes the same steps on `edge://extensions`. Outside the stores, Firefox only runs temporarily through `about:debugging` (until the browser restarts) or in Developer Edition / ESR with signature checks disabled.
+
+Available in English, Spanish, Brazilian Portuguese, French, German, Russian, and Simplified Chinese. The AI description language is set separately, so you can run Mimik in English and generate guides in Spanish, or any combination.
+
+> \[!IMPORTANT]
+>
+> **⭐️ Star the repo** if Mimik saves you time. It helps other people discover it!
+
+<a href="https://github.com/arklochkow/mimik">
+  <img width="100%" alt="Star Mimik on GitHub" src="https://github.com/user-attachments/assets/80d304da-a765-4bde-bf49-b1bdcb4fe804" />
+</a>
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+## ✨ Features
+
+### 🔒 Smart Blur
+
+Smart Blur is a mode you enter while recording, not an always-on filter. Click **Blur** and capture pauses, Mimik detects and masks sensitive data on the page — emails, phone numbers, SSNs, credit cards, IP addresses, MAC addresses — and screenshots of that page keep it hidden once you click **Done**. Toggle each category independently.
+
+Need to blur something custom? The manual blur picker lets you select any DOM element and mask it across every screenshot where it appears.
+
+<details>
+<summary><strong>What Smart Blur does not cover</strong></summary>
+
+<br/>
+
+Smart Blur works by scanning text nodes and input values in the page's top frame. That leaves real gaps, all structural. If you rely on this for GDPR or similar, check your screenshots rather than assuming a clean one is a safe one:
+
+| Not covered | Why |
+|-------------|-----|
+| Content inside iframes | Skipped entirely; cross-origin frames are unreachable from the page |
+| Shadow DOM | The scan walks the document and does not descend into shadow roots |
+| Text painted on a `<canvas>`, and text inside images | Pixels, not text |
+| CSS `::before` / `::after` content | Not a text node |
+| `<select>` and `<option>` text | Excluded from the scan |
+| Values held only in attributes, such as `title` or `alt` | Only text nodes and input values are scanned |
+| Frames other than the top one | The overlay and the scan run in the top frame only |
+| Any tab but the one you entered the mode on | Only that tab is scanned; a second tab on the same app is not |
+| Text that appears after you click **Done** | The scan stops with the overlay, so an SPA re-render, the next page of a list, or a navigation is unmasked — re-enter Blur there |
+
+Two things worth knowing about what *is* handled: a match inside SVG `<text>` is removed from the render rather than blurred, because the mask is an HTML element that SVG will not draw — the data does not leak, but it disappears instead of blurring. And a matching `<input>` or `<textarea>` is blurred **as a whole field**, not just the matched substring.
+
+Blur applies from the moment you enter the mode onward. Screenshots already captured before that are not masked retroactively — delete those steps in the editor instead.
+
+</details>
+
+<img src="https://github.com/user-attachments/assets/968d2518-c561-4d68-92a6-3d5f569fe38a" alt="Smart Blur" width="800" />
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+### 🧠 AI descriptions (optional)
+
+Bring your own API key (OpenAI or Anthropic) and Mimik generates human-readable step descriptions like *"Click the **Submit** button to save changes"* instead of the rule-based `Click Submit`.
+
+Descriptions are generated from a lightweight DOM context (~50-100 tokens), not screenshots. Roughly 15-30x cheaper than vision models. Choose the language you want descriptions in (English, Spanish, Portuguese, French, German, Russian, Chinese).
+
+<img src="https://github.com/user-attachments/assets/3540cbd5-133f-46fd-a9b6-ffce9b4d422a" alt="AI descriptions" width="800" />
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+### ▶️ Guide Me replay
+
+Replay any guide live on a real page. Mimik highlights the next element to click, tracks your progress step by step, and advances automatically as you interact. Perfect for onboarding teammates or walking through a process yourself.
+
+<img src="https://github.com/user-attachments/assets/56ffca1d-5074-491f-8571-dd70782d4b05" alt="Guide Me replay" width="800" />
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+### 🎙️ Voice narration (optional)
+
+Talk through the workflow out loud while you record and Mimik turns what you said into the step
+descriptions. Audio is transcribed with your own key (OpenAI or Groq) and matched to the steps it
+belongs to, so you narrate once instead of writing every step by hand.
+
+The full transcript is kept, not just the parts that made it into a step. Open **Transcript** on a
+guide to see everything you said, including the lines nothing was matched to, and add any of them to
+a step. Editing a step never destroys the spoken original either — the step editor can always put
+back what you actually said. The transcript stays on your device, is never part of an exported guide, and is
+deleted with the guide.
+
+<img src="https://github.com/user-attachments/assets/061fddc7-da65-4641-8b39-d30b80c36531" alt="Voice narration" width="800" />
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+### ✏️ Guide editor
+
+Fix a guide after the fact without re-recording. Crop, annotate and redact any screenshot, rewrite a
+step with AI inline, drop headings and notes between steps, reorder or bulk-delete, and roll back
+through version history.
+
+<img src="https://github.com/user-attachments/assets/62d3a01e-b129-44c8-8ba3-e9b97ff08d7e" alt="Guide editor" width="800" />
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+### 🔊 Video voice-over (optional)
+
+Turn it on in the export panel and every step of a video export is read aloud, using your own OpenAI
+or ElevenLabs key. If you already set an OpenAI key for AI descriptions, Mimik reuses it — there is
+nothing else to sign up for. Narrated steps hold on screen until the voice finishes, so nothing gets
+cut off, and clips are cached locally so re-exporting the same guide costs nothing.
+
+Off by default: holding a key never turns narration on, you do.
+
+### 📤 Multi-format export
+
+Share guides in whatever format fits your workflow:
+
+- **Video**: narrated walkthrough, mp4/H.264, with the cursor moving to each target — optionally with an
+  OpenAI or ElevenLabs voice-over reading every step aloud, which also makes the export usable under Section 508
+- **GIF**: short looping clip for a chat thread or an issue comment
+- **PDF**: print-ready, A4 portrait with auto page breaks
+- **DOCX**: open and keep editing in Word
+- **HTML**: self-contained, share anywhere, base64-embedded images
+- **Markdown**: paste into Notion, GitHub, internal docs, wikis
+- **Mimik file**: the only format that imports back — see [Share a guide](#-share-a-guide) below
+
+All exports are generated client-side. Nothing touches a server.
+
+<img src="https://github.com/user-attachments/assets/e7584527-7d68-4f3f-9261-8380ee08dfb4" alt="Multi-format export" width="800" />
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+### 📦 Share a guide
+
+Export a guide as a **`.mimik` file** and someone else can import it into their own
+Mimik — same steps, same screenshots, still editable, and still replayable with Guide
+Me. It's a plain zip: a manifest, the screenshots, and a `README.md` so the file still
+reads as a document to anyone without the extension.
+
+It travels as a file, so sharing works the same way anything else does — email it, drop
+it in Slack, commit it to a repo. There's no account and no server involved.
+
+Because a guide can hold more than you meant to send, an export decides what leaves:
+
+- **Blurred areas are burnt into the pixels** before the file is written, so the
+  recipient has nothing to un-blur.
+- **Text you typed into fields is removed** from the step text, title and links, not
+  just from the stored value.
+- **Links are trimmed to the page address** by default, dropping the query strings that
+  carry session tokens.
+
+Screenshots still show whatever was on screen when they were taken — use the blur tool
+for anything sensitive that the camera caught.
+
+To import, open the dashboard and click **Import**, or drop a `.mimik` file onto your
+library. You'll see what the sender removed before anything is added.
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+## 🔐 Privacy & storage
+
+Guides, steps, and screenshots live on your device. There's no backend, no account, no telemetry. Your API keys (if you bring one) never leave your browser — they're stored locally and used to call the provider you chose directly.
+
+If you are masking personal data before sharing a guide, read [what Smart Blur does not cover](#-smart-blur) first — it cannot reach iframes, shadow DOM, or text drawn into images.
+
+Two things do leave the browser, both documented in the [privacy policy](./PRIVACY.md): site icons are fetched from Google's favicon service, which sends that site's domain, and the optional AI, voice narration and video voice-over features send text or audio to the provider you configured — voice-over sends each step's text at export time, and only when you turn it on.
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+## 🤝 Contributing
+
+Contributions of all kinds are welcome: bug reports, feature requests, PRs, and translations.
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for development setup, project layout, and contributor guidelines.
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+## ⭐ Star History
+
+<a href="https://www.star-history.com/#arklochkow/mimik&Timeline">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=arklochkow/mimik&type=Timeline&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=arklochkow/mimik&type=Timeline" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=arklochkow/mimik&type=Timeline" width="800" />
+  </picture>
+</a>
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+## 📜 License
+
+MIT © [Westpoint](https://github.com/westpoint-io). See [LICENSE](./LICENSE) for details.
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+<!-- LINK GROUP -->
+
+[back-to-top]: https://img.shields.io/badge/-BACK_TO_TOP-1E1B4B?style=flat-square
+
+[license-shield]: https://img.shields.io/badge/license-MIT-4F46E5?style=flat-square&labelColor=1E1B4B
+[license-link]: ./LICENSE
+
+[mv3-shield]: https://img.shields.io/badge/manifest-v3-3730A3?style=flat-square&labelColor=1E1B4B
+[mv3-link]: https://developer.chrome.com/docs/extensions/mv3/intro/
+
+[local-shield]: https://img.shields.io/badge/storage-100%25%20local-4F46E5?style=flat-square&labelColor=1E1B4B
+[local-link]: #-100-local-storage
+
+[no-account-shield]: https://img.shields.io/badge/account-not%20required-4F46E5?style=flat-square&labelColor=1E1B4B
+[no-account-link]: #-100-local-storage
+
+[star-shield]: https://img.shields.io/github/stars/arklochkow/mimik?style=flat-square&label=stars&color=4F46E5&labelColor=1E1B4B
+[star-link]: https://github.com/arklochkow/mimik/stargazers
+
+[contributors-shield]: https://img.shields.io/github/contributors/arklochkow/mimik?style=flat-square&labelColor=1E1B4B
+[contributors-link]: https://github.com/arklochkow/mimik/graphs/contributors
+
+[last-commit-shield]: https://img.shields.io/github/last-commit/arklochkow/mimik?style=flat-square&label=commit&labelColor=1E1B4B
+
+[issues-shield]: https://img.shields.io/github/issues/arklochkow/mimik?style=flat-square&labelColor=1E1B4B
+[issues-link]: https://github.com/arklochkow/mimik/issues
+
+[releases-shield]: https://img.shields.io/github/v/release/arklochkow/mimik?style=flat-square&label=release&color=4F46E5&labelColor=1E1B4B
+[releases-link]: https://github.com/arklochkow/mimik/releases
+
+[upstream-link]: https://github.com/westpoint-io/mimik
+</content>
+</invoke>

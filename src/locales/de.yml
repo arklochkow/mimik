@@ -2,8 +2,8 @@ meta:
   locale: de
 
 app:
-  name: Mimik
-  store_title: "Mimik: Schritt-für-Schritt-Anleitungen"
+  name: Mimik RU
+  store_title: "Mimik RU: Schritt-für-Schritt-Anleitungen"
   description: "Nimm jeden Browser-Workflow als Schritt-für-Schritt-Anleitung auf. Bearbeiten, vertonen, als Video, PDF oder DOCX exportieren."
 
 common:
