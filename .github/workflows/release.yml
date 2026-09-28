@@ -1,19 +1,40 @@
 name: Release
 
-# Push a tag that matches package.json (v1.2.0 for version 1.2.0) and this builds
-# every zip, checks it against the tag, and publishes them as release assets -
-# the download links the READMEs point at.
+# Three ways in, one outcome: the built zips are attached to the release for the tag, which is
+# what the READMEs tell users to download.
 #
-# The store submission stays separate and manual: run "Submit to Stores" with the
-# same tag once the release looks right.
+#   * publishing a release by hand - the usual way here. It used to attach nothing: the only path
+#     was `gh release create`, which runs for a pushed tag, and no tag push ever happened, so the
+#     release page kept GitHub's generated source archives and nothing else.
+#   * pushing a tag - `v1.2.0` or `1.2.0`; this fork has used both, so both are accepted.
+#   * Actions -> Release -> Run workflow - name the tag to fill a release that already exists,
+#     which is how the empty 1.1.0 gets its files.
+#
+# GitHub attaches "Source code (zip)" and "Source code (tar.gz)" to every release itself and they
+# cannot be removed. The assets listed underneath them are this workflow's, and those are the
+# compiled extension.
+#
+# The store submission stays separate and manual: run "Submit to Stores" with the same tag once
+# the release looks right.
 
 on:
   push:
     tags:
       - "v*"
+      - "[0-9]*"
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to build and attach, named as it exists (1.2.0 or v1.2.0)"
+        required: true
+        type: string
 
 concurrency:
-  group: release-${{ github.ref }}
+  # The tag alone, so a tag push and the release it creates share one queue instead of racing to
+  # write the same assets.
+  group: release-${{ github.event.inputs.tag || github.ref_name }}
   cancel-in-progress: false
 
 permissions:
@@ -23,9 +44,13 @@ jobs:
   release:
     name: Build and publish
     runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.inputs.tag || github.ref_name }}
     steps:
-      - name: Checkout tag
+      - name: Checkout the tag
         uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
 
       - uses: pnpm/action-setup@v5
 
@@ -36,22 +61,22 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # A tag that disagrees with the manifest would ship a build whose version
-      # is not the one users clicked on.
+      # A tag that disagrees with the manifest would ship a build whose version is not the one
+      # users clicked on. Either tag style is allowed; the version is what has to match.
       - name: Check the tag against package.json
         run: |
           set -euo pipefail
           version="$(node -p "require('./package.json').version")"
           name="$(node -p "require('./package.json').name")"
-          if [ "$GITHUB_REF_NAME" != "v$version" ]; then
-            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version $version"
+          if [ "${TAG#v}" != "$version" ]; then
+            echo "::error::Tag $TAG does not match package.json version $version"
             exit 1
           fi
           {
             echo "PKG_NAME=$name"
             echo "PKG_VERSION=$version"
           } >> "$GITHUB_ENV"
-          echo "Releasing $name $version from $GITHUB_REF_NAME"
+          echo "Releasing $name $version for tag $TAG"
 
       - name: Lint
         run: pnpm lint
@@ -84,15 +109,18 @@ jobs:
         run: |
           set -euo pipefail
           flags=()
-          case "$GITHUB_REF_NAME" in
+          case "$TAG" in
             *-*) flags+=(--prerelease) ;;
           esac
-          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
-            gh release upload "$GITHUB_REF_NAME" .output/*.zip SHA256SUMS.txt --clobber
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" .output/*.zip SHA256SUMS.txt --clobber
           else
-            gh release create "$GITHUB_REF_NAME" .output/*.zip SHA256SUMS.txt \
+            # Only a pushed tag reaches this branch. Creating the release publishes it, which
+            # fires this workflow once more; that run takes the branch above and rewrites the
+            # same assets with --clobber. A wasted run, not a duplicate asset.
+            gh release create "$TAG" .output/*.zip SHA256SUMS.txt \
               --verify-tag \
-              --title "Mimik RU $GITHUB_REF_NAME" \
+              --title "Mimik RU $TAG" \
               --generate-notes \
               ${flags[@]+"${flags[@]}"}
           fi
@@ -100,7 +128,7 @@ jobs:
       - name: Summary
         run: |
           {
-            echo "## Mimik RU $GITHUB_REF_NAME"
+            echo "## Mimik RU $TAG"
             echo
             echo "| asset | size | sha256 |"
             echo "| --- | --- | --- |"
