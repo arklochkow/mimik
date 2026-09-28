@@ -3,6 +3,7 @@ import { localStorage } from '@/lib/browser-api';
 import { logger } from '@/lib/logger';
 import type { RewriteSelectionResponse } from '@/lib/messaging';
 import { resolveAiKey } from './keys';
+import { defaultAILanguage } from './language';
 import { AI_PROVIDERS } from './models';
 import { getLanguageSuffix, REWRITE_PROMPT } from './prompts';
 import { createModel } from './provider';
@@ -42,7 +43,7 @@ export async function rewriteSelection(text: string, instruction: string): Promi
         apiKey,
         settings.aiBaseUrl as string | undefined,
       ),
-      prompt: buildRewritePrompt(text, instruction, (settings.aiLanguage as string) || 'en'),
+      prompt: buildRewritePrompt(text, instruction, (settings.aiLanguage as string) || defaultAILanguage()),
       maxOutputTokens: 400,
     });
 
