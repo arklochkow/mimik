@@ -1,0 +1,113 @@
+name: Release
+
+# Push a tag that matches package.json (v1.2.0 for version 1.2.0) and this builds
+# every zip, checks it against the tag, and publishes them as release assets -
+# the download links the READMEs point at.
+#
+# The store submission stays separate and manual: run "Submit to Stores" with the
+# same tag once the release looks right.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tag
+        uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v5
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # A tag that disagrees with the manifest would ship a build whose version
+      # is not the one users clicked on.
+      - name: Check the tag against package.json
+        run: |
+          set -euo pipefail
+          version="$(node -p "require('./package.json').version")"
+          name="$(node -p "require('./package.json').name")"
+          if [ "$GITHUB_REF_NAME" != "v$version" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version $version"
+            exit 1
+          fi
+          {
+            echo "PKG_NAME=$name"
+            echo "PKG_VERSION=$version"
+          } >> "$GITHUB_ENV"
+          echo "Releasing $name $version from $GITHUB_REF_NAME"
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build and zip
+        run: pnpm zip:all
+
+      - name: Verify the zips and checksum them
+        run: |
+          set -euo pipefail
+          for target in chrome firefox sources; do
+            zip=".output/$PKG_NAME-$PKG_VERSION-$target.zip"
+            if [ ! -f "$zip" ]; then
+              echo "::error::$zip is missing - the READMEs tell users to download exactly this name"
+              exit 1
+            fi
+            printf '%s  %s\n' "$(sha256sum "$zip" | cut -d' ' -f1)" "$(basename "$zip")" >> SHA256SUMS.txt
+          done
+          cat SHA256SUMS.txt
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          flags=()
+          case "$GITHUB_REF_NAME" in
+            *-*) flags+=(--prerelease) ;;
+          esac
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" .output/*.zip SHA256SUMS.txt --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" .output/*.zip SHA256SUMS.txt \
+              --verify-tag \
+              --title "Mimik RU $GITHUB_REF_NAME" \
+              --generate-notes \
+              ${flags[@]+"${flags[@]}"}
+          fi
+
+      - name: Summary
+        run: |
+          {
+            echo "## Mimik RU $GITHUB_REF_NAME"
+            echo
+            echo "| asset | size | sha256 |"
+            echo "| --- | --- | --- |"
+            for zip in .output/*.zip; do
+              printf '| %s | %s | `%s` |\n' \
+                "$(basename "$zip")" \
+                "$(du -h "$zip" | cut -f1)" \
+                "$(sha256sum "$zip" | cut -d' ' -f1)"
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
