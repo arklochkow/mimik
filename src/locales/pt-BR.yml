@@ -4,7 +4,7 @@ meta:
 app:
   name: Mimik RU
   store_title: "Mimik RU: guias passo a passo e tutoriais"
-  description: "Grave qualquer tarefa do navegador como um guia passo a passo. Edite, narre com voz e exporte em vídeo, PDF ou DOCX. Código aberto."
+  description: "Grave qualquer tarefa do navegador como um guia passo a passo. Edite e compartilhe como arquivo. Código aberto."
 
 common:
   loading: Carregando...

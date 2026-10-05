@@ -4,7 +4,7 @@ meta:
 app:
   name: Mimik RU
   store_title: "Mimik RU: Step-by-Step Guides & Tutorials"
-  description: "Record any browser workflow as a step-by-step guide. Edit, voice-narrate, export to video, PDF or DOCX. Local-first, open source."
+  description: "Record any browser workflow as a step-by-step guide. Edit it and share it as a ready file. Local-first, open source."
 
 common:
   loading: Loading...

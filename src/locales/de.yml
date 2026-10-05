@@ -4,7 +4,7 @@ meta:
 app:
   name: Mimik RU
   store_title: "Mimik RU: Schritt-für-Schritt-Anleitungen"
-  description: "Nimm jeden Browser-Workflow als Schritt-für-Schritt-Anleitung auf. Bearbeiten, vertonen, als Video, PDF oder DOCX exportieren."
+  description: "Nimm jeden Browser-Workflow als Schritt-für-Schritt-Anleitung auf. Bearbeite sie und teile sie als fertige Datei."
 
 common:
   loading: Wird geladen...
