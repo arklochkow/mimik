@@ -1,4 +1,4 @@
-import { resolveAiKey } from '@/core/capture/ai/keys';
+import { resolveBorrowableOpenAIKey } from '@/core/capture/ai/keys';
 import {
   isVoiceoverProvider,
   modelForProvider,
@@ -18,6 +18,7 @@ export const VOICEOVER_SETTINGS = [
   'aiApiKeys',
   'aiApiKey',
   'aiProvider',
+  'aiBaseUrl',
 ] as const;
 
 export interface VoiceoverSettings {
@@ -28,6 +29,7 @@ export interface VoiceoverSettings {
   aiApiKeys?: unknown;
   aiApiKey?: unknown;
   aiProvider?: unknown;
+  aiBaseUrl?: unknown;
 }
 
 export type VoiceoverKeySource = 'voiceover' | 'ai' | 'none';
@@ -78,9 +80,9 @@ export function resolveVoiceoverConfig(stored: VoiceoverSettings): VoiceoverConf
   const own = keyForVoiceoverProvider(parseVoiceoverKeys(stored.voiceoverApiKeys), provider);
   if (own) return { provider, apiKey: own, voiceId, modelId, source: 'voiceover' };
 
-  const ai = resolveAiKey(stored);
-  if (provider === 'openai' && ai.provider === 'openai' && ai.apiKey) {
-    return { provider, apiKey: ai.apiKey, voiceId, modelId, source: 'ai' };
+  const shared = resolveBorrowableOpenAIKey(stored);
+  if (provider === 'openai' && shared) {
+    return { provider, apiKey: shared, voiceId, modelId, source: 'ai' };
   }
 
   return { provider, apiKey: '', voiceId, modelId, source: 'none' };

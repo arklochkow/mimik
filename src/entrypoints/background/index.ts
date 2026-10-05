@@ -29,7 +29,7 @@ import { recordUpdate } from '@/lib/update-notice';
 import { getActor, getStateUpdate, initActor, initActorFallback, waitUntilReady } from './actor';
 import { generateDescriptionOnDemand, generateGuideMetaOnStop, settlePendingDescriptions } from './guide-meta';
 import { registerNavigationListeners } from './navigation';
-import { pauseCapture, resumeFromPause } from './pause';
+import { pauseCapture, resumeFromPause, whenPauseSettled } from './pause';
 import { handleCaptureStep, handleFinalizeInputStep, handleUpdateInputStep } from './step-pipeline';
 import {
   broadcastClearBlur,
@@ -151,6 +151,7 @@ export default defineBackground(() => {
 
   onMessage('stopRecording', async () => {
     await waitUntilReady();
+    await whenPauseSettled();
     const actor = getActor();
     const { currentGuideId: guideId, insertTargetGuideId, insertAtIndex } = actor.getSnapshot().context;
     await broadcastStopCapture();

@@ -20,7 +20,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Suggesting something new instead? Use the [feature request form](https://github.com/westpoint-io/mimik/issues/new?template=feature_request.yml).
+        Suggesting something new instead? Use the [feature request form](https://github.com/arklochkow/mimik/issues/new?template=feature_request.yml).
 
   - type: textarea
     id: behaviour

@@ -421,7 +421,13 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
   // so a provider that omits one has no such property on its own inferred type.
   const providerConfig: AIProviderConfig = AI_PROVIDERS[provider] ?? AI_PROVIDERS[DEFAULT_AI_PROVIDER];
   const usingCustomModel = customModel || isCustomModel(model, providerConfig);
-  const voiceKey = resolveVoiceApiKey({ voiceProvider, voiceApiKey, aiProvider: provider, aiApiKey: apiKey });
+  const voiceKey = resolveVoiceApiKey({
+    voiceProvider,
+    voiceApiKey,
+    aiProvider: provider,
+    aiApiKey: apiKey,
+    aiBaseUrl: baseUrl,
+  });
   const voiceoverKey = resolveVoiceoverConfig({
     voiceoverProvider: voiceoverProviderKey,
     voiceoverApiKeys: withVoiceoverKey(voiceoverApiKeys, voiceoverProviderKey, voiceoverApiKey),
@@ -430,6 +436,7 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
     aiProvider: provider,
     aiApiKey: apiKey,
     aiApiKeys: apiKeys,
+    aiBaseUrl: baseUrl,
   });
 
   const BLUR_PRESET_I18N: Record<PresetKey, string> = {
@@ -974,8 +981,8 @@ export default function SettingsView({ onBack }: SettingsViewProps) {
               </p>
             )}
             {voiceoverKey.source === 'none' && (
-              <p className="mt-1.5 flex items-start gap-1.5 text-[10px] text-muted-foreground leading-relaxed">
-                <TriangleAlert size={11} className="shrink-0 mt-0.5 text-destructive" />
+              <p className="mt-1.5 flex items-start gap-1.5 text-[10px] text-destructive leading-relaxed" role="alert">
+                <TriangleAlert size={11} className="shrink-0 mt-0.5" />
                 <span>{i18n.t('settings.voiceoverNoKey')}</span>
               </p>
             )}

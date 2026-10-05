@@ -177,6 +177,9 @@ settings:
   privacyNotice: "你的密钥和音频只会发送给你选择的提供商。除此之外，没有任何内容会离开你的浏览器。"
   bugReport: "发现问题？在 GitHub 上报告"
 
+  starCtaTitle: "喜欢 Mimik 吗？"
+  starCtaMessage: "在 GitHub 上加星能帮助更多人发现 Mimik。"
+  starOnGithub: 在 GitHub 上加星
 blurPresets:
   email: 邮箱
   phoneNumbers: 电话号码
@@ -468,6 +471,10 @@ videoPlayer:
   unmute: "取消静音"
   spoken: "已配音的步骤"
 
+  play: "播放"
+  pause: "暂停"
+  fullscreen: "全屏"
+  exitFullscreen: "退出全屏"
 exportMenu:
   docx: DOCX
   html: HTML
@@ -522,6 +529,10 @@ onboarding:
   featureSmartBlur: 智能模糊
   openMimik: 打开 Mimik
 
+  starTitle: "愿意给我们加个星吗？"
+  starMessage: "Mimik 免费开源。加星能帮助更多人发现它。"
+  starAction: 在 GitHub 上加星
+  starLater: 稍后再说
 steps:
   pressKey: "在 $2 上按 $1"
   toggleCheckbox: "切换 $1"
@@ -539,6 +550,9 @@ steps:
   navigate: 导航到页面
   defaultAction: "$1 $2"
 
+  typeValueInto: '在 $2 中输入 "$1"'
+  clearField: "清空 $1"
+  textField: "文本框"
 export:
   guideLabel: "指南"
   endLabel: "指南完成"

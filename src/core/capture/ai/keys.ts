@@ -1,4 +1,11 @@
-import { type AIProviderKey, findProvider, isCustomBaseUrl, isProviderKey, providerOrDefault } from './models';
+import {
+  AI_PROVIDERS,
+  type AIProviderKey,
+  findProvider,
+  isCustomBaseUrl,
+  isProviderKey,
+  providerOrDefault,
+} from './models';
 
 export type AIApiKeys = Partial<Record<AIProviderKey, string>>;
 
@@ -106,4 +113,24 @@ export function resolveAiCredential(stored: StoredAiCredentialSettings): AiCrede
     return { provider, apiKey: LOCAL_SERVER_API_KEY, enabled, customBaseUrl };
   }
   return { provider, apiKey: '', enabled, customBaseUrl };
+}
+
+/**
+ * The key a neighbouring feature may borrow for OpenAI, or an empty string.
+ *
+ * Voice-over borrows the AI key on the same terms `resolveVoiceApiKey` sets: both
+ * sides OpenAI, or nothing. A key saved against a custom `aiBaseUrl` belongs to the
+ * user's own server, and sending it to `api.openai.com` would leak it.
+ */
+export function resolveBorrowableOpenAIKey(stored: {
+  aiApiKeys?: unknown;
+  aiApiKey?: unknown;
+  aiProvider?: unknown;
+  aiBaseUrl?: unknown;
+}): string {
+  const { provider, apiKey } = resolveAiKey(stored);
+  if (provider !== 'openai') return '';
+  const baseUrl = typeof stored.aiBaseUrl === 'string' ? stored.aiBaseUrl : undefined;
+  if (isCustomBaseUrl(AI_PROVIDERS.openai, baseUrl)) return '';
+  return apiKey;
 }

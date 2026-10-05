@@ -1,7 +1,14 @@
-import { resolveAiKey } from '@/core/capture/ai/keys';
+import { resolveBorrowableOpenAIKey } from '@/core/capture/ai/keys';
 import type { VoiceProvider } from './transcribe';
 
-export const VOICE_KEY_SETTINGS = ['voiceProvider', 'voiceApiKey', 'aiProvider', 'aiApiKey', 'aiApiKeys'] as const;
+export const VOICE_KEY_SETTINGS = [
+  'voiceProvider',
+  'voiceApiKey',
+  'aiProvider',
+  'aiApiKey',
+  'aiApiKeys',
+  'aiBaseUrl',
+] as const;
 
 export interface VoiceKeySettings {
   voiceProvider?: unknown;
@@ -9,6 +16,7 @@ export interface VoiceKeySettings {
   aiProvider?: unknown;
   aiApiKey?: unknown;
   aiApiKeys?: unknown;
+  aiBaseUrl?: unknown;
 }
 
 export type VoiceApiKeySource = 'voice' | 'ai' | 'none';
@@ -32,10 +40,8 @@ export function resolveVoiceApiKey(settings: VoiceKeySettings): ResolvedVoiceApi
   const own = trimmed(settings.voiceApiKey);
   if (own) return { provider, apiKey: own, source: 'voice' };
 
-  const resolved = resolveAiKey(settings);
-  const shared = resolved.apiKey;
-  const aiProvider = resolved.provider;
-  if (provider !== 'openai' || aiProvider !== 'openai' || !shared) {
+  const shared = resolveBorrowableOpenAIKey(settings);
+  if (provider !== 'openai' || !shared) {
     return { provider, apiKey: '', source: 'none' };
   }
 

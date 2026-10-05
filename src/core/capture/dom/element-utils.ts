@@ -1,5 +1,5 @@
 export const FOCUSABLE_SELECTOR =
-  'a[href], button, input, select, textarea, [role="button"], [role="link"], [role="tab"], [role="menuitem"], [role="checkbox"], [role="radio"], [role="option"], [tabindex], [contenteditable="true"]';
+  'a[href], button, input, select, textarea, [role="button"], [role="link"], [role="tab"], [role="menuitem"], [role="checkbox"], [role="radio"], [role="switch"], [role="option"], [tabindex], [contenteditable="true"]';
 
 const MAX_ELEMENT_RATIO = 0.8;
 
@@ -45,6 +45,13 @@ export function isTextField(el: Element): boolean {
   return el instanceof HTMLTextAreaElement || (el instanceof HTMLElement && el.isContentEditable);
 }
 
+const TOGGLE_ROLES = new Set(['checkbox', 'radio', 'switch']);
+
+export function isToggle(el: Element): boolean {
+  if (el instanceof HTMLInputElement && (el.type === 'checkbox' || el.type === 'radio')) return true;
+  return TOGGLE_ROLES.has(el.getAttribute('role') ?? '');
+}
+
 export function isNavigatingClick(el: HTMLElement): boolean {
   const anchor = el.closest('a[href]');
   if (!anchor) return false;
@@ -82,14 +89,16 @@ export function getFieldValue(el: HTMLElement): string {
   return '';
 }
 
+const READABLE = /[\p{L}\p{N}]/u;
+
 function meaningfulLabel(text: string | null | undefined): string | null {
   const trimmed = text?.trim();
-  if (!trimmed || !/[a-z0-9]/i.test(trimmed)) return null;
+  if (!trimmed || !READABLE.test(trimmed)) return null;
   return (
     trimmed
       .split('\n')
       .map((line) => line.trim())
-      .find((line) => /[a-z0-9]/i.test(line)) ?? null
+      .find((line) => READABLE.test(line)) ?? null
   );
 }
 
@@ -103,7 +112,7 @@ function slottedLabel(el: Element): string | null {
   );
 }
 
-export function getFieldLabel(el: HTMLElement): string {
+export function getFieldLabel(el: HTMLElement): string | null {
   const ariaLabel = el.getAttribute('aria-label');
   if (ariaLabel) return ariaLabel;
 
@@ -139,5 +148,5 @@ export function getFieldLabel(el: HTMLElement): string {
   const name = el.getAttribute('name');
   if (name && !/[-_]test|[-_]id|[-_]key/i.test(name)) return name;
 
-  return 'text field';
+  return null;
 }

@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react';
 import { i18n } from '#imports';
 import { dismissUpdateNotice, readUpdateNotice } from '@/lib/update-notice';
 
-const RELEASES_URL = 'https://github.com/westpoint-io/mimik/releases';
+// The fork ships its own builds, so "what's new" has to open the fork's releases:
+// upstream's page offers a Mimik package to someone running Mimik RU.
+const RELEASES_URL = 'https://github.com/arklochkow/mimik/releases';
 
 export default function UpdateNotice({ className = '' }: { className?: string }) {
   const [version, setVersion] = useState<string>();

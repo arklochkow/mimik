@@ -177,6 +177,9 @@ settings:
   privacyNotice: "Your keys and audio go only to the provider you pick. Nothing else leaves your browser."
   bugReport: "Found a bug? Report it on GitHub"
 
+  starCtaTitle: "Like what you see?"
+  starCtaMessage: "A GitHub star helps other people find Mimik."
+  starOnGithub: Star on GitHub
 blurPresets:
   email: Email
   phoneNumbers: Phone Numbers
@@ -468,6 +471,10 @@ videoPlayer:
   unmute: "Unmute"
   spoken: "Narrated step"
 
+  play: "Play"
+  pause: "Pause"
+  fullscreen: "Fullscreen"
+  exitFullscreen: "Exit fullscreen"
 exportMenu:
   docx: DOCX
   html: HTML
@@ -522,6 +529,10 @@ onboarding:
   featureSmartBlur: Smart blur
   openMimik: Open Mimik
 
+  starTitle: Mind giving us a star?
+  starMessage: "Mimik is free and open source. A star helps other people find it."
+  starAction: Star on GitHub
+  starLater: Maybe later
 steps:
   pressKey: "Press $1 on $2"
   toggleCheckbox: "Toggle $1"
@@ -539,6 +550,9 @@ steps:
   navigate: Navigate to page
   defaultAction: "$1 $2"
 
+  typeValueInto: 'Type "$1" in $2'
+  clearField: "Clear $1"
+  textField: "text field"
 export:
   guideLabel: "GUIDE"
   endLabel: "GUIDE COMPLETE"

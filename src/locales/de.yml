@@ -177,6 +177,9 @@ settings:
   keyUnreachable: Der Anbieter war nicht erreichbar. Prüfe deine Verbindung und versuche es erneut.
   modelsFound: "$1 Modelle verfügbar"
 
+  starCtaTitle: "Gefällt dir, was du siehst?"
+  starCtaMessage: "Ein Stern auf GitHub hilft anderen, Mimik zu finden."
+  starOnGithub: "Auf GitHub mit Stern markieren"
 blurPresets:
   email: E-Mail
   phoneNumbers: Telefonnummern
@@ -399,6 +402,10 @@ videoPlayer:
   unmute: "Ton einschalten"
   spoken: "Vertonter Schritt"
 
+  play: "Abspielen"
+  pause: "Pause"
+  fullscreen: "Vollbild"
+  exitFullscreen: "Vollbild beenden"
 exportMenu:
   docx: "DOCX"
   html: HTML
@@ -453,6 +460,10 @@ onboarding:
   featureSmartBlur: Smart Blur
   openMimik: Mimik öffnen
 
+  starTitle: "Magst du uns einen Stern geben?"
+  starMessage: "Mimik ist kostenlos und quelloffen. Ein Stern hilft anderen, es zu finden."
+  starAction: Auf GitHub mit Stern markieren
+  starLater: "Vielleicht später"
 steps:
   pressKey: "$1 auf $2 drücken"
   toggleCheckbox: "$1 umschalten"
@@ -470,6 +481,9 @@ steps:
   navigate: Zur Seite navigieren
   defaultAction: "$1 $2"
 
+  typeValueInto: '"$1" in $2 eingeben'
+  clearField: "$1 leeren"
+  textField: "Textfeld"
 export:
   guideLabel: "ANLEITUNG"
   endLabel: "ANLEITUNG ABGESCHLOSSEN"

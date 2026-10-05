@@ -22,6 +22,9 @@ export default defineConfig({
   },
   alias: {
     '@': 'src',
+    canvg: 'src/core/export/empty.ts',
+    html2canvas: 'src/core/export/empty.ts',
+    dompurify: 'src/core/export/empty.ts',
   },
   vite: () => ({
     plugins: [tailwindcss()],

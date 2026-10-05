@@ -74,6 +74,8 @@ export default function ExportPreviewModal({ open, onOpenChange, guide, steps, s
   const [voiceProgress, setVoiceProgress] = useState<{ done: number; total: number } | null>(null);
   const [, setNarratedSeconds] = useState<number | null>(null);
   const [voiceoverError, setVoiceoverError] = useState<VoiceoverSkip | null>(null);
+  const [downloadVoiceoverError, setDownloadVoiceoverError] = useState<VoiceoverSkip | null>(null);
+  const shownVoiceoverError = downloadVoiceoverError ?? voiceoverError;
 
   useEffect(() => {
     if (open) loadExportOptions().then(setOptions);
@@ -113,7 +115,9 @@ export default function ExportPreviewModal({ open, onOpenChange, guide, steps, s
   );
 
   useEffect(() => {
-    if (!open) setVideoRequested(false);
+    if (open) return;
+    setVideoRequested(false);
+    setOptions((current) => (current.voiceover ? { ...current, voiceover: false } : current));
   }, [open]);
 
   useEffect(() => {
@@ -141,6 +145,7 @@ export default function ExportPreviewModal({ open, onOpenChange, guide, steps, s
     setVoiceProgress(null);
     setNarratedSeconds(null);
     setVoiceoverError(null);
+    setDownloadVoiceoverError(null);
     const timer = setTimeout(async () => {
       let allClipsLanded = false;
       try {
@@ -239,11 +244,13 @@ export default function ExportPreviewModal({ open, onOpenChange, guide, steps, s
           signal: controller.signal,
           onProgress: (encoded, frames) => setDownloadProgress(frames > 0 ? encoded / frames : 0),
         });
+        if (controller.signal.aborted) return;
         downloadBlob(blob, safeFilename(guide.title, extension));
       } else if (format === 'video') {
         const controller = new AbortController();
         downloadAbort.current = controller;
         setDownloadProgress(0);
+        setDownloadVoiceoverError(null);
         const { exportGuideAsVideo } = await import('@/core/export/video-export');
         let allClipsLanded = false;
         const {
@@ -268,7 +275,8 @@ export default function ExportPreviewModal({ open, onOpenChange, guide, steps, s
             onMuxProgress: (done, total) => setDownloadProgress(muxProgress(done, total, muxShare)),
           },
         );
-        setVoiceoverError(failed ?? null);
+        if (controller.signal.aborted) return;
+        setDownloadVoiceoverError(failed ?? null);
         downloadBlob(blob, safeFilename(guide.title, extension));
       } else if (format === 'bundle') {
         const { exportGuideAsBundle } = await import('@/core/transfer/bundle');
@@ -434,12 +442,12 @@ export default function ExportPreviewModal({ open, onOpenChange, guide, steps, s
                   </div>
                 )}
 
-                {voiceover && voiceoverError && (
+                {voiceover && shownVoiceoverError && (
                   <div
                     className="mt-1.5 rounded-lg px-2.5 py-2 text-[10px] leading-snug text-destructive bg-destructive/10"
                     role="alert"
                   >
-                    {i18n.t(VOICEOVER_SKIP_MESSAGES[voiceoverError.reason])}
+                    {i18n.t(VOICEOVER_SKIP_MESSAGES[shownVoiceoverError.reason])}
                   </div>
                 )}
               </div>

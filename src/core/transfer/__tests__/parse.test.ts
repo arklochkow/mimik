@@ -218,6 +218,11 @@ describe('parseManifest', () => {
     expect(withAnnotations([{ id: 'odd', type: 'freehand', points: [1, 2, 3], color: '#000' }])).toBeUndefined();
   });
 
+  it('titles a bundle with no title the way a new guide is titled', () => {
+    const parsed = parseManifest(manifest({ guide: { title: '   ', createdAt: 1_700_000_000_000 } }));
+    expect(parsed.guide.title).toBe('fullview.untitledGuide');
+  });
+
   it('orders steps by their recorded index', () => {
     const parsed = parseManifest(
       manifest({
@@ -267,5 +272,14 @@ describe('readBundle', () => {
 
   it('reports a manifest that is not valid JSON', async () => {
     expect((await caught(bundleFile({ [MANIFEST_PATH]: strToU8('{ nope') }))).kind).toBe('not-a-bundle');
+  });
+});
+
+describe('readBundle against a crafted archive', () => {
+  it('refuses an archive with implausibly many entries', async () => {
+    const files: Record<string, Uint8Array> = { [MANIFEST_PATH]: strToU8(JSON.stringify(manifest())) };
+    for (let i = 0; i < 5_001; i++) files[`screenshots/${i}.webp`] = new Uint8Array(1);
+
+    expect((await caught(bundleFile(files))).kind).toBe('unreadable');
   });
 });

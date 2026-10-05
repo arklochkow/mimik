@@ -19,7 +19,7 @@ You represent that you have the right to submit the contribution and that it doe
 ### Install
 
 ```bash
-git clone https://github.com/westpoint-io/mimik.git
+git clone https://github.com/arklochkow/mimik.git
 cd mimik
 pnpm install
 ```

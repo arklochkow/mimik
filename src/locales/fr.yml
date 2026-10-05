@@ -177,6 +177,9 @@ settings:
   privacyNotice: "Vos clés et votre audio ne vont qu'au fournisseur que vous choisissez. Rien d'autre ne quitte votre navigateur."
   bugReport: "Un bug ? Signalez-le sur GitHub"
 
+  starCtaTitle: "Vous aimez Mimik ?"
+  starCtaMessage: "Une étoile sur GitHub aide d'autres personnes à découvrir Mimik."
+  starOnGithub: "Mettre une étoile sur GitHub"
 blurPresets:
   email: "E-mail"
   phoneNumbers: "Téléphones"
@@ -468,6 +471,10 @@ videoPlayer:
   unmute: "Activer le son"
   spoken: "Étape narrée"
 
+  play: "Lecture"
+  pause: "Pause"
+  fullscreen: "Plein écran"
+  exitFullscreen: "Quitter le plein écran"
 exportMenu:
   docx: DOCX
   html: HTML
@@ -522,6 +529,10 @@ onboarding:
   featureSmartBlur: Flou intelligent
   openMimik: Ouvrir Mimik
 
+  starTitle: "Vous nous mettez une étoile ?"
+  starMessage: "Mimik est gratuit et open source. Une étoile aide d'autres personnes à le découvrir."
+  starAction: "Mettre une étoile sur GitHub"
+  starLater: Plus tard
 steps:
   pressKey: "Appuyer sur $1 dans $2"
   toggleCheckbox: "Cocher $1"
@@ -539,6 +550,9 @@ steps:
   navigate: "Aller à la page"
   defaultAction: "$1 $2"
 
+  typeValueInto: 'Saisir "$1" dans $2'
+  clearField: "Effacer $1"
+  textField: "champ de texte"
 export:
   guideLabel: "GUIDE"
   endLabel: "GUIDE TERMINÉ"

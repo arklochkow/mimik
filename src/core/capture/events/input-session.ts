@@ -4,6 +4,7 @@ import { sendMessage } from '@/lib/messaging';
 import { extractDOMContext } from '../dom/context';
 import { extractElementMeta, type FrozenRect, freezeRect } from '../dom/element-meta';
 import { getFieldLabel, getFieldValue, isRedactedField, isSensitiveField } from '../dom/element-utils';
+import { locateFrame, placeInTab } from '../dom/frame-placement';
 
 export class InputSession {
   stepId: string | null = null;
@@ -22,10 +23,12 @@ export class InputSession {
 
   async start(target: HTMLElement, atEvent?: FrozenRect) {
     this.atEvent = atEvent;
+    const placement = locateFrame();
+    const elementMeta = extractElementMeta(target, atEvent);
     const res = await sendMessage('captureStep', {
       guideId: this.guideId,
       action: 'input',
-      elementMeta: extractElementMeta(target, atEvent),
+      elementMeta: placeInTab(elementMeta, await placement),
       domContext: extractDOMContext(target, 'input'),
     });
     if ('stepId' in res) {
@@ -37,7 +40,7 @@ export class InputSession {
   update(target: HTMLElement) {
     if (!this.stepId) return;
     this.atEvent = freezeRect(target);
-    const label = getFieldLabel(target);
+    const label = getFieldLabel(target) ?? i18n.t('steps.textField');
     if (isSensitiveField(target) || isRedactedField(target)) {
       const description = isSensitiveField(target) ? i18n.t('steps.typeSecret') : i18n.t('steps.typeInto', [label]);
       sendMessage('updateInputStep', { stepId: this.stepId, description }).catch((err) =>
@@ -46,7 +49,7 @@ export class InputSession {
       return;
     }
     const val = getFieldValue(target);
-    const desc = val ? `Type "${val}" in ${label}` : `Clear ${label}`;
+    const desc = val ? i18n.t('steps.typeValueInto', [val, label]) : i18n.t('steps.clearField', [label]);
     sendMessage('updateInputStep', { stepId: this.stepId, description: desc, inputValue: val || undefined }).catch(
       (err) => logger.warn('Failed to update input step', err),
     );
@@ -60,9 +63,11 @@ export class InputSession {
     this.stepId = null;
     this.target = null;
     this.atEvent = undefined;
+    const placement = locateFrame();
+    const elementMeta = extractElementMeta(target, atEvent);
     await sendMessage('finalizeInputStep', {
       stepId,
-      elementMeta: extractElementMeta(target, atEvent),
+      elementMeta: placeInTab(elementMeta, await placement),
       domContext: extractDOMContext(target, 'input'),
     });
   }

@@ -130,7 +130,7 @@ describe('testAiDescription', () => {
 
     await testAiDescription({ ...payload, language: 'fr' });
 
-    expect(JSON.stringify(requestBody())).toContain('French');
+    expect(JSON.stringify(requestBody())).toContain('en français');
   });
 
   it('keeps the stored language when the form has not picked one', async () => {
@@ -138,7 +138,7 @@ describe('testAiDescription', () => {
 
     await testAiDescription({ ...payload, language: '  ' });
 
-    expect(JSON.stringify(requestBody())).not.toContain('French');
+    expect(JSON.stringify(requestBody())).not.toContain('en français');
   });
 
   it('reads a 401 as unauthorized', async () => {

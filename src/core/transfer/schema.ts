@@ -1,3 +1,4 @@
+import { i18n } from '#imports';
 import type {
   BlockType,
   CalloutVariant,
@@ -16,7 +17,7 @@ export const MANIFEST_PATH = 'manifest.json';
 export const SCREENSHOT_DIR = 'screenshots';
 export const README_PATH = 'README.md';
 
-export type BundleStep = Omit<Step, 'guideId' | 'aiPending' | 'screenshotId'>;
+export type BundleStep = Omit<Step, 'guideId' | 'aiPending' | 'screenshotId' | 'narratedDescription'>;
 
 export interface BundleScreenshot {
   id: string;
@@ -301,7 +302,7 @@ export function parseManifest(raw: unknown): BundleManifest {
     version,
     exportedAt: num(raw.exportedAt) ?? Date.now(),
     guide: {
-      title: str(guide.title)?.trim() || 'Untitled Guide',
+      title: str(guide.title)?.trim() || i18n.t('fullview.untitledGuide'),
       ...(str(guide.description) ? { description: str(guide.description) } : {}),
       createdAt: num(guide.createdAt) ?? Date.now(),
     },

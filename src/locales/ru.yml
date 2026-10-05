@@ -177,6 +177,9 @@ settings:
   privacyNotice: "Ваши ключи и аудио отправляются только выбранному вами провайдеру. Больше ничего не покидает ваш браузер."
   bugReport: "Нашли баг? Сообщите на GitHub"
 
+  starCtaTitle: "Нравится Mimik RU?"
+  starCtaMessage: "Звезда на GitHub помогает другим людям найти Mimik RU."
+  starOnGithub: Поставить звезду на GitHub
 blurPresets:
   email: Электронная почта
   phoneNumbers: Телефонные номера
@@ -469,6 +472,10 @@ videoPlayer:
   unmute: "Включить звук"
   spoken: "Озвученный шаг"
 
+  play: "Воспроизвести"
+  pause: "Пауза"
+  fullscreen: "На весь экран"
+  exitFullscreen: "Выйти из полноэкранного режима"
 exportMenu:
   docx: DOCX
   html: HTML
@@ -523,6 +530,10 @@ onboarding:
   featureSmartBlur: Smart Blur
   openMimik: Открыть Mimik
 
+  starTitle: Поставите нам звезду?
+  starMessage: "Mimik RU бесплатный и с открытым кодом. Звезда помогает другим его найти."
+  starAction: Поставить звезду на GitHub
+  starLater: Может, позже
 steps:
   pressKey: "Нажмите $1 на $2"
   toggleCheckbox: "Переключите $1"
@@ -540,6 +551,9 @@ steps:
   navigate: Перейти на страницу
   defaultAction: "$1: $2"
 
+  typeValueInto: 'Ввести "$1" в $2'
+  clearField: "Очистить $1"
+  textField: "текстовое поле"
 export:
   guideLabel: "ГАЙД"
   endLabel: "ГАЙД ЗАВЕРШЁН"

@@ -177,6 +177,9 @@ settings:
   privacyNotice: "Tus claves y tu audio solo van al proveedor que elijas. Nada más sale de tu navegador."
   bugReport: "¿Encontraste un bug? Repórtalo en GitHub"
 
+  starCtaTitle: "¿Te gusta Mimik?"
+  starCtaMessage: "Una estrella en GitHub ayuda a que más gente encuentre Mimik."
+  starOnGithub: "Dar una estrella en GitHub"
 blurPresets:
   email: Correo electrónico
   phoneNumbers: "Números de teléfono"
@@ -468,6 +471,10 @@ videoPlayer:
   unmute: "Activar sonido"
   spoken: "Paso narrado"
 
+  play: "Reproducir"
+  pause: "Pausar"
+  fullscreen: "Pantalla completa"
+  exitFullscreen: "Salir de pantalla completa"
 exportMenu:
   docx: DOCX
   html: HTML
@@ -522,6 +529,10 @@ onboarding:
   featureSmartBlur: Desenfoque inteligente
   openMimik: Abrir Mimik
 
+  starTitle: "¿Nos das una estrella?"
+  starMessage: "Mimik es gratuito y de código abierto. Una estrella ayuda a que otras personas lo encuentren."
+  starAction: Dar una estrella en GitHub
+  starLater: "Quizá más tarde"
 steps:
   pressKey: "Presionar $1 en $2"
   toggleCheckbox: "Marcar $1"
@@ -539,6 +550,9 @@ steps:
   navigate: Ir a la página
   defaultAction: "$1 $2"
 
+  typeValueInto: 'Escribir "$1" en $2'
+  clearField: "Borrar $1"
+  textField: "campo de texto"
 export:
   guideLabel: "GUÍA"
   endLabel: "GUÍA COMPLETADA"
