@@ -2,9 +2,9 @@ meta:
   locale: zh-TW
 
 app:
-  name: Mimik
-  store_title: "Mimik：逐步操作指南與教學"
-  description: "將任何瀏覽器工作流程錄製成逐步指南。可編輯、加上語音旁白，匯出為影片、PDF 或 DOCX。本機優先、開放原始碼。"
+  name: Mimik RU
+  store_title: "Mimik RU：逐步操作指南與教學"
+  description: "將任何瀏覽器工作流程錄製成逐步指南。編輯後即可作為檔案分享。本機優先、開放原始碼。"
 
 common:
   loading: "載入中…"

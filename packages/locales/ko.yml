@@ -2,9 +2,9 @@ meta:
   locale: ko
 
 app:
-  name: Mimik
-  store_title: "Mimik: 단계별 가이드 및 튜토리얼"
-  description: "브라우저 작업을 녹화해 단계별 가이드로 만들어요. 편집, 음성 설명, 동영상·PDF·DOCX 내보내기까지. 로컬 우선, 오픈 소스."
+  name: Mimik RU
+  store_title: "Mimik RU: 단계별 가이드 및 튜토리얼"
+  description: "브라우저 작업을 단계별 가이드로 기록하세요. 편집해 바로 공유할 수 있는 파일로 만들어요. 로컬 우선, 오픈 소스."
 
 common:
   loading: "불러오는 중…"

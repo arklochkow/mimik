@@ -51,7 +51,7 @@ export default defineConfig({
     return {
       name: "__MSG_app_store_title__",
       description: "__MSG_app_description__",
-      default_locale: "en",
+      default_locale: "ru",
       permissions: [
         "storage",
         "activeTab",
@@ -97,12 +97,12 @@ export default defineConfig({
             sidebar_action: {
               default_panel: "sidepanel.html",
               default_icon: "icon32.png",
-              default_title: "Mimik",
+              default_title: "Mimik RU",
               open_at_install: false,
             },
             browser_specific_settings: {
               gecko: {
-                id: "mimik@westpoint.io",
+                id: "mimik-ru@arklochkow",
                 strict_min_version: "128.0",
                 data_collection_permissions: {
                   required: ["websiteActivity"],

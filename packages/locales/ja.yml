@@ -2,9 +2,9 @@ meta:
   locale: ja
 
 app:
-  name: Mimik
-  store_title: "Mimik：ステップバイステップの操作ガイドとチュートリアル"
-  description: "ブラウザーでの操作をステップごとのガイドとして記録。編集、音声ナレーション、動画・PDF・DOCXへのエクスポートに対応。ローカルファーストのオープンソース。"
+  name: Mimik RU
+  store_title: "Mimik RU：ステップバイステップの操作ガイドとチュートリアル"
+  description: "ブラウザーでの操作をステップごとのガイドとして記録。編集して、そのまま共有できるファイルに。ローカルファーストのオープンソース。"
 
 common:
   loading: "読み込み中…"
