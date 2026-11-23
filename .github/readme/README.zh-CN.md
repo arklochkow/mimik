@@ -4,7 +4,7 @@
 
 # Mimik
 
-[English](../../README.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · **简体中文** · [Русский](./README.ru.md)
+[Русский](../../README.md) · [English](./README.en.md) · [Español](./README.es.md) · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · **简体中文**
 
 **自动捕获任何浏览器工作流，并生成分步指南。无需账号，没有云端，也不做追踪。**
 

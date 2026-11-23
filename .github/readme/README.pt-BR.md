@@ -4,7 +4,7 @@
 
 # Mimik
 
-[English](../../README.md) · [Español](./README.es.md) · **Português (BR)** · [Français](./README.fr.md) · [简体中文](./README.zh-CN.md) · [Русский](./README.ru.md)
+[Русский](../../README.md) · [English](./README.en.md) · [Español](./README.es.md) · **Português (BR)** · [Français](./README.fr.md) · [简体中文](./README.zh-CN.md)
 
 **Captura qualquer fluxo no navegador e transforma num guia passo a passo. Sem conta, sem nuvem, sem rastreio.**
 
