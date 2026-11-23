@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: Security vulnerability
-    url: https://github.com/westpoint-io/mimik/security/advisories/new
+    url: https://github.com/arklochkow/mimik/security/advisories/new
     about: Report privately. Do not open a public issue.
   - name: Question or idea to talk through
-    url: https://github.com/westpoint-io/mimik/blob/main/CONTRIBUTING.md
+    url: https://github.com/arklochkow/mimik/blob/dev/CONTRIBUTING.md
     about: Read the contributing guide first.

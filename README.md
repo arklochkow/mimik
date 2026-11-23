@@ -4,7 +4,9 @@
 
 # Mimik
 
-**English** · [Español](.github/readme/README.es.md) · [Português (BR)](.github/readme/README.pt-BR.md) · [Français](.github/readme/README.fr.md) · [简体中文](.github/readme/README.zh-CN.md)
+**English** · [Español](.github/readme/README.es.md) · [Português (BR)](.github/readme/README.pt-BR.md) · [Français](.github/readme/README.fr.md) · [简体中文](.github/readme/README.zh-CN.md) · [Русский](.github/readme/README.ru.md)
+
+> **This repository is Mimik RU**, a Russian fork of [westpoint-io/mimik](https://github.com/westpoint-io/mimik): the interface defaults to Russian and ready builds are attached to [Releases](https://github.com/arklochkow/mimik/releases). Upstream changes are merged into `dev` regularly; the Russian README is [here](.github/readme/README.ru.md).
 
 **Auto-capture any browser workflow into a step-by-step guide. No account, no cloud, no tracking.**
 
