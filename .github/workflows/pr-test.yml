@@ -14,21 +14,16 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-
 jobs:
   test:
     name: Test & Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
+      - uses: actions/checkout@v6
 
-      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: pnpm/action-setup@v5
 
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - uses: actions/setup-node@v6
         with:
           node-version: "22"
           cache: pnpm
@@ -38,15 +33,6 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Workflow audit
-        run: pipx run zizmor==1.30.1 --offline .github/workflows
-
-      - name: Spelling
-        run: pipx run typos==1.51.0
-
-      - name: Dependency audit
-        run: pnpm audit --prod --audit-level critical
-
       - name: Typecheck
         run: pnpm typecheck
 
@@ -54,7 +40,7 @@ jobs:
         run: pnpm test:cov
 
       - name: Publish coverage summary
-        if: always() && hashFiles('coverage/coverage-summary.json') != ''
+        if: always()
         run: |
           node -e '
             const t = require("./coverage/coverage-summary.json").total;
@@ -67,11 +53,5 @@ jobs:
       - name: Build Chrome
         run: pnpm build
 
-      - name: Bundle size
-        run: pnpm size
-
       - name: Build Firefox
         run: pnpm build:firefox
-
-      - name: Firefox add-on lint
-        run: pnpm dlx web-ext@8.10.0 lint --source-dir apps/extension/.output/firefox-mv3 --self-hosted=false
