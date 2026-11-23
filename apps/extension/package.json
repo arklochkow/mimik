@@ -36,6 +36,7 @@
     "@wxt-dev/i18n": "^0.2.8",
     "@wxt-dev/module-react": "^1.2.2",
     "size-limit": "^14.3.0",
+    "tailwindcss": "^4.3.4",
     "typescript": "^5.9.3",
     "vite": "^8.3.5",
     "web-ext": "^10.8.0",

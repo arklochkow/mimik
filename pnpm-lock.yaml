@@ -193,6 +193,9 @@ importers:
       size-limit:
         specifier: ^14.3.0
         version: 14.3.0
+      tailwindcss:
+        specifier: ^4.3.4
+        version: 4.3.4
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
