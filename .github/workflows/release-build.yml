@@ -44,6 +44,9 @@ jobs:
   release:
     name: Build and publish
     runs-on: ubuntu-latest
+    # The desktop app has its own releases and its own tag (`desktop-*`); this workflow fills the
+    # extension release only, so a desktop release must not fail here on the tag check.
+    if: github.event_name != 'release' || !startsWith(github.event.release.tag_name, 'desktop')
     env:
       TAG: ${{ github.event.inputs.tag || github.ref_name }}
     steps:
