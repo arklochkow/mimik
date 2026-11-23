@@ -1,0 +1,884 @@
+meta:
+  locale: en
+
+app:
+  name: Mimik
+  store_title: "Mimik: Step-by-Step Guides & Tutorials"
+  description: "Record any browser workflow as a step-by-step guide. Edit, voice-narrate, export to video, PDF or DOCX. Local-first, open source."
+
+common:
+  loading: Loading…
+  cancel: Cancel
+  save: Save
+  delete: Delete
+  back: Back
+  continue: Continue
+  skip: Skip
+  export: Export
+  close: Close
+  undo: Undo
+  star: Star
+  unstar: Unstar
+  restore: Restore
+  updated: "Updated to v$1"
+  whatsNew: See what's new
+
+sidepanel:
+  connected: Connected
+  connecting: Connecting…
+  heroTitle: What would you like to capture?
+  heroSubtitle: Record any workflow automatically
+  searchPlaceholder: Search guides…
+  recentLabel: Recent
+  notRecordable: Open a website to start capturing
+
+library:
+  noGuidesTitle: No guides yet
+  noGuidesSub: Start a capture to create your first guide
+  noStarredTitle: No starred guides
+  noStarredSub: Star a guide to find it quickly
+  trashEmptyTitle: Trash is empty
+  trashEmptySub: Squeaky clean!
+  noMatchingGuides: No matching guides
+  moveToTrash: Move to trash
+  deletePermanently: Delete permanently
+  openInFullView: Open in full view
+  openDashboard: "Open dashboard"
+  openDashboardHint: "Browse, import and export guides there"
+  duplicate: Duplicate
+  copyOfTitle: "Copy of $1"
+  duplicateFailed: Couldn't duplicate this guide
+  collapseSidebar: Collapse sidebar
+  expandSidebar: Expand sidebar
+  allGuides: "All guides"
+  starred: Starred
+  trash: Trash
+  searchPlaceholder: Search guides…
+
+guideme:
+  live: Live
+  roadblock: "Can't find this step on the page. Do it yourself to continue."
+  manualStep: "Edited steps can't be detected. Click Next when you've done it."
+  stepOf: "Step $1 of $2"
+  noDescription: No description
+  prev: Prev
+  next: Next
+  finish: "Finish"
+  exitTitle: Heading out?
+  exitMessage: "The walkthrough and its page overlay will close."
+  stay: Stay
+  exit: Exit
+  guideNotFound: Guide not found
+
+guidemeCompletion:
+  title: "All done, champ!"
+  stepsCompleted: "$1 step completed."
+  stepsCompletedPlural: "All $1 steps completed."
+  allDone: "All done"
+  runAgain: "Run again"
+
+recording:
+  capturePaused: Capture paused
+  capturePausedBlur: Blur mode · capture paused
+  pauseCapture: Pause capture
+  resumeCapture: Resume capture
+  recording: "Recording \xB7 $1 step"
+  recordingPlural: "Recording \xB7 $1 steps"
+  readyTitle: "Ready to capture"
+  readySub: Click on the page to start
+  finishRecording: "Finish recording"
+  finish: Finish
+  smartBlur: "Smart blur"
+  discard: Discard
+  deleteStep: Delete step
+  justNow: Just now
+  secondsAgo: "$1s ago"
+  minutesAgo: "$1m ago"
+
+settings:
+  cardKeyboard: "Typing and keys"
+  cardKeyboardHint: "What your keyboard adds to a guide."
+  shortcutsHint: "Work on any page you browse."
+  shortcutsChange: "Change in browser"
+  shortcutRecordHint: "Starts on the tab you are looking at."
+  shortcutPauseHint: "While recording."
+  shortcutCaptureHint: "Saves the screen as a step without clicking, for open menus."
+  shortcutNotSet: "Not set"
+  shortcutsChangeNote: "Your browser keeps shortcuts on its own page."
+  recordKeys: "Record shortcuts and named keys"
+  recordKeysHint: "Ctrl+S, Enter and the like become steps."
+  recordTyping: "Record what you type"
+  recordTypingHint: "Everything you type into one field becomes one step."
+  microphoneAccess: "Microphone access"
+  microphoneAccessAsk: "Your browser asks once before Mimik can hear you."
+  microphoneAccessAllow: "Allow"
+  title: Settings
+  aiDescriptions: "Step descriptions"
+  aiDescriptionsHint: "Mimik writes each step's text and names your guide with your AI provider."
+  aiUseFor: "Use AI for"
+  aiForSteps: "Step descriptions"
+  aiForStepsHint: "The text under each screenshot."
+  aiForGuide: "Guide title and summary"
+  aiForGuideHint: "Written when you finish recording."
+  aiUnusedNote: "Steps keep their basic titles and the guide is named after the site or app. Narration and voice-over still use your key."
+  provider: Provider
+  model: Model
+  modelCustom: Custom model
+  baseUrl: Base URL
+  ownServerHintOpenai: "Works with Ollama, LM Studio, vLLM or any OpenAI-compatible server."
+  ownServerHintAnthropic: "Works with a LiteLLM proxy or any Anthropic-compatible server."
+  apiKey: "API key"
+  showKey: Show key
+  hideKey: Hide key
+  clearKey: Clear key
+  aiLanguage: "Description language"
+  aiAdvanced: "Advanced"
+  aiAdvancedHint: "See and change the prompts Mimik sends."
+  aiPromptsTitle: "AI prompts"
+  aiPromptsHint: "Change what Mimik asks your AI provider to do, or add your own rules underneath."
+  aiPromptLabel: "Mimik's prompt"
+  aiPromptDefault: "Default"
+  aiPromptEdited: "Edited"
+  aiPromptReset: "Reset prompt"
+  aiInstructionsLabel: "Your instructions"
+  aiInstructionsPlaceholder: "e.g. Write in second person. Call the product \"Acme\"."
+  aiCustomised: "Customized"
+  aiReset: "Reset"
+  aiResetConfirmTitle: "Reset \"$1\"?"
+  aiResetConfirmMessage: "Your edited prompt and instructions for this section will be removed. This can't be undone."
+  aiExamplesSwitched: "Examples switched to $1"
+  apiKeys: "API keys"
+  aiSection: "AI"
+  ownServer: "Your own server"
+  optional: "Optional"
+  serverSpeaks: "Compatible with"
+  serverHeaders: "Headers"
+  headerName: "Header name"
+  headerValue: "Value"
+  addHeader: "Add header"
+  removeHeader: "Remove header"
+  protocolOpenai: "OpenAI"
+  protocolAnthropic: "Anthropic"
+  noServer: "No server address yet."
+  noKeyFor: "No $1 key yet."
+  addOneInKeys: "Add one in API keys."
+  addKey: "Add key"
+  noKey: "No key"
+  voiceover: "Video voice-over"
+  voiceoverHint: "Mimik speaks each step's text over the exported video."
+  voice: "Voice"
+  voiceNarrationHint: "Talk through the workflow and Mimik writes each step from what you said."
+  voiceNarration: "Voice narration"
+  aiNoKey: "Without an API key, steps get basic rule-based descriptions."
+  microphone: Microphone
+  microphoneDefault: System default
+  microphoneNeedsAccess: Allow microphone access to see your device names.
+  microphoneGrantAccess: Allow microphone access
+  microphoneNone: "No microphone found. Plug one in to see it here."
+  microphoneUnavailable: Unavailable microphone
+  microphoneMissing: "Your chosen microphone isn't connected. Using the system default."
+  microphoneTest: Test microphone
+  microphoneStatusAllowed: Allowed
+  microphoneStatusBlocked: Blocked
+  microphoneStatusPending: Not allowed yet
+  microphoneBlocked: "Microphone blocked. Click the icon left of the address bar and set Microphone to Allow."
+  microphoneUnblockHow: How do I unblock it?
+  microphoneTestStop: Stop test
+  microphoneTestFailed: "Couldn't open that microphone. Try another one."
+  targetColor: "Click highlight"
+  brandColor: "Brand color"
+  targetColorHint: "The outline drawn around what you clicked."
+  brandColorHint: "Accents in exported guides."
+  branding: "Export branding"
+  logoAndFooter: "Logo and footer"
+  logoAndFooterHint: "Shown on every guide you export."
+  brandLogo: "Logo"
+  uploadLogo: "Upload logo"
+  replaceLogo: "Replace"
+  removeLogo: "Remove logo"
+  footerLine: "Footer line"
+  footerLinePlaceholder: "e.g. Confidential · Internal use only"
+  footerPresetConfidential: "Confidential · Internal use only"
+  footerPresetNoDistribute: "Do not distribute"
+  attribution: 'Show "Made with Mimik"'
+  saveSettings: "Save settings"
+  saved: Saved
+  validatingKey: "Checking key\u2026"
+  keyValid: API key verified.
+  keyChecking: "Checking…"
+  keyVerified: "Verified"
+  keyRejected: "Rejected"
+  keyOffline: "Unreachable"
+  keyCheckModel: "Check model"
+  keyInvalid: "The provider rejected this key. Check it and try again."
+  keyModelRequired: Choose a model before checking this key.
+  keyModelInvalid: The selected model isn't available from this provider.
+  checkKey: Check key
+  keyCannotSpend: "This key has no credits. Only free models will work."
+  keyUnreachable: "Couldn't reach the provider. Check your connection."
+  modelsFound: "$1 models available"
+  smartBlur: "Smart blur"
+  version: "Version $1"
+  reportBug: "Report a bug"
+  machineTranslated: "This language was translated with AI, so some wording may be off. Spotted a mistake? Open a pull request on GitHub."
+  fixTranslation: "Fix a translation"
+  aboutSection: "About"
+  appearance: "Appearance"
+  appearanceHint: "Light, dark, or the same as your system."
+  recordingControls: "Recording controls"
+  recordingControlsHint: "Where Finish, Pause and your latest step show while you record. The card keeps the page at full width."
+  recordingInPanel: "Side panel"
+  recordingInCard: "Card on the page"
+  themeSystem: "System"
+  themeLight: "Light"
+  themeDark: "Dark"
+  starCtaTitle: "Like what you see?"
+  starCtaMessage: "A GitHub star helps other people find Mimik."
+  starOnGithub: Star on GitHub
+
+blurPresets:
+  email: Email
+  phoneNumbers: "Phone numbers"
+  ssn: SSN
+  creditCard: "Credit card"
+  ipAddress: "IP address"
+  macAddress: "MAC address"
+
+desktop:
+  collapse: "Collapse"
+  expand: "Expand"
+  starting: "Starting…"
+  capturingStep: "Capturing step $1"
+  tipArmed: "Each click is saved as a step."
+  tipPaused: "Nothing is recorded while paused."
+  tipWaiting: "Your first click will show up here."
+  tipLabel: "Tip:"
+  hintStartStop: "you can press $1 to start and stop."
+  hintCapture: "you can press $1 to capture without clicking."
+  micAccessAsk: "macOS asks once before Mimik can hear you."
+  micAccessRefused: "Refused. Turn on Mimik in Privacy & Security."
+  armed: Ready
+  screenshotDelay: Screenshot delay
+  keepClicksBeyondArea: Capture clicks outside the area
+  keepClicksBeyondAreaHint: "In Area mode, clicks outside the area still become steps, framed by the area."
+  guideInApp: "Guide in $1"
+  capturingSection: Capturing
+  milliseconds: ms
+  captureMode: What to capture
+  modeWindow: Window
+  modeScreen: Screen
+  modeArea: Area
+  drawArea: "Drag to draw the capture area"
+  startSheetTitle: Start a capture
+  permissionsTitle: "Allow Mimik to record"
+  permissionsIntro: "Mimik needs two permissions before it can record."
+  permissionAccessibility: "Accessibility"
+  permissionAccessibilityHint: "Lets Mimik see what you click and type."
+  permissionScreen: "Screen Recording"
+  permissionScreenHint: "Lets Mimik take the screenshot for each step."
+  permissionScreenRestart: "Restart Mimik to finish turning this on."
+  permissionRestart: "Restart Mimik"
+  moreStepsAfter: "New steps are inserted after step $1."
+  moreStepsFirst: "New steps are inserted before step 1."
+  startButton: Start
+  shortcutsSection: "Shortcuts"
+  generalSection: "General"
+  appLanguage: "App language"
+  appLanguageHint: "The language of Mimik's own screens. Step descriptions have their own language setting."
+  languageSystem: "Same as the system"
+  cardLanguage: "Language"
+  cardStartup: "Startup"
+  cardUpdates: "Updates"
+  startAtLogin: "Start at login"
+  startAtLoginHint: "Mimik opens in the tray, without a window."
+  startAtLoginHintMac: "Mimik opens when you log in."
+  version: "Version $1"
+  versionHint: "Mimik checks for updates while it runs."
+  checkUpdates: "Check for updates"
+  lastChecked: "Last checked $1"
+  checking: "Checking…"
+  downloading: "Downloading $1%"
+  restartToUpdate: "Restart to update"
+  versionAvailable: "Version $1 available"
+  versionDownloaded: "Version $1 downloaded"
+  tryAgain: "Try again"
+  updatesUnavailable: "Updates aren't available for this version yet"
+  restart: "Restart"
+  trayChecking: "Checking for updates…"
+  trayDownloading: "Downloading update $1%"
+  trayQuit: "Quit Mimik"
+  trayRecording: "Mimik is recording. Click to finish."
+  cannotRecord: "Mimik cannot record"
+  needsX11: "Recording other apps needs an X11 session. Log out, pick a session on Xorg or X11 at the login screen, and start Mimik again. To record in the browser, use the Mimik extension."
+  getExtension: "Get the extension"
+  updateReady: "Update ready"
+  updateReadyMessage: "Restart Mimik to install version $1."
+  later: "Later"
+  updateFailed: "Can't reach the update server"
+  upToDate: "You're up to date"
+  cardScreenshots: "Screenshots"
+  cardGlobalKeys: "Global keys"
+  cardGlobalKeysHint: "Taken from every application while Mimik is running."
+  zoomLevel: "Zoom toward the click"
+  zoomLevelHint: "New recordings start here. Automatic keeps every step the same size."
+  zoomAuto: "Automatic"
+  zoomGuide: "Zoom"
+  typingDebounce: "Close a typing step after"
+  typingDebounceHint: "A pause this long ends the typing step."
+  cardScreenshotsHint: "What each step's screenshot shows."
+  captureModeHint: "Window follows the app you click."
+  screenshotDelayHint: "Wait before taking the screenshot, for menus that animate."
+  seconds: "s"
+  shortcutRecord: "Start or finish a recording"
+  shortcutPause: "Pause or resume"
+  shortcutCapture: "Capture a step now"
+  shortcutPress: "Press keys…"
+  shortcutClear: "Clear"
+
+guide:
+  guideMe: "Guide Me"
+  untitled: "Untitled guide"
+  writingTitle: Writing a title from your captured steps...
+  writingDescription: "Writing a description\u2026"
+  notFound: "Guide not found"
+  stepCount: "$1 step"
+  stepCountPlural: "$1 steps"
+  pageOf: "$1 / $2"
+  onDomain: "Guide on $1"
+  newGuide: "New guide"
+
+sort:
+  recentFirst: Recent first
+  oldestFirst: Oldest first
+  alphaAZ: "A–Z"
+  mostSteps: Most steps
+  gridView: Grid view
+  listView: List view
+
+search:
+  recent: "Recent"
+  results: "$1 guides"
+  resultsOne: "1 guide"
+  noMatch: "No guides match “$1”"
+  noMatchHint: "Try a word from the guide's title."
+  noGuidesYet: No guides yet
+
+confirmDelete:
+  title: "Delete guide?"
+  message: This will permanently delete this guide. This cannot be undone.
+  confirm: Delete permanently
+
+editor:
+  backToLibrary: Back to library
+  openInDashboard: Open
+  openInDashboardHint: Open in the dashboard to edit or export
+  guideMe: "Guide Me"
+  guideMeUnavailable: No replayable steps in this guide
+  deleteThisStep: "Delete this step?"
+  selectStep: Select step
+  selectedCount: "$1 selected"
+  deleteSelectedStep: "Delete $1 selected step?"
+  deleteSelectedSteps: "Delete $1 selected steps?"
+  copyTo: Copy to
+  deselect: Deselect
+  copyStepTo: "Copy 1 step to…"
+  copyStepsTo: "Copy $1 steps to…"
+  copyStepsHint: "Screenshots, blur and edits come along. This guide stays as it is."
+  searchGuidesToCopyTo: Search guides by title
+  allGuides: All guides
+  sameSite: Same site
+  sameApp: Same app
+  newGuide: New guide
+  noGuidesToCopyTo: No guides match
+  copyStep: Copy 1 step
+  copySteps: "Copy $1 steps"
+  copyStepsFailed: Couldn't copy these steps. Try again.
+  stepCopied: "1 step copied from “$2”"
+  stepsCopied: "$1 steps copied from “$2”"
+  newStep: New
+  copyScreenshot: Copy screenshot
+  noScreenshot: No screenshot
+  edit: Edit
+  done: Done
+  versionHistory: Version history
+  moreActions: More actions
+  generateDescription: Generate description
+  regenerateDescription: Regenerate description
+  generatingDescription: "Generating\u2026"
+  descriptionPlaceholder: Add a description
+  descriptionErrorNoApiKey: "Add an AI API key in Settings to generate descriptions."
+  descriptionErrorNoSteps: "This guide has no described steps to summarize."
+  descriptionErrorFailed: Couldn't generate a description. Try again.
+  descriptionErrorSaveFailed: "Couldn't save the new description. Try again."
+  writingStepDescription: "Writing description\u2026"
+  transcribingStepDescription: "Transcribing what you said…"
+  rewriteAskAi: Ask AI
+  rewritePlaceholder: "Tell AI how to edit this text\u2026"
+  rewriteEnter: Enter
+  rewriteShorter: Shorter
+  rewriteDetail: More detail
+  rewriteGrammar: Fix grammar
+  rewriteFormal: More formal
+  rewriteCasual: More casual
+  rewriteReplace: Replace
+  rewriteDiscard: Discard
+  rewriteErrorNoApiKey: "Add an AI API key in Settings to rewrite text."
+  rewriteErrorFailed: Couldn't rewrite the selection. Try again.
+  rewriteErrorStale: The text changed. Select it again.
+  restoreSpoken: Restore what you said
+
+capture:
+  recordSteps: Record steps
+  moreStepsTitle: Capture more steps
+  moreStepsBody: New steps are inserted here. Choose the tab to record in.
+  newCaptureBody: Choose the tab to record in.
+  startCapture: Start capture
+  noRecordableTabs: No recordable tabs are open in this window.
+
+blocks:
+  add: Add block
+  heading: Heading
+  callout: Note
+  headingPlaceholder: Section title
+  calloutPlaceholder: Write a note
+  deleteHeading: "Delete this heading?"
+  deleteCallout: "Delete this note?"
+  variantInfo: Info
+  variantWarning: Warning
+  variantError: Error
+  variantSuccess: Success
+  variantCustom: Custom
+
+history:
+  title: "Version history"
+  current: Current
+  restore: Restore
+  unchangedVersions: "Unchanged versions ($1)"
+  readOnlyBanner: "You're viewing an earlier version. Close version history to go back."
+  loadError: Couldn't load version history. Try again.
+  restoreError: Couldn't restore. Try again in a moment.
+  storageFull: Not enough storage to save an undo point. Delete a guide and try again.
+  empty: "No earlier versions yet. Edit the guide to create one."
+  nameVersion: Name this version
+  namePlaceholder: Version name
+  allVersions: All versions
+  namedOnly: Named versions only
+  emptyNamed: "No named versions yet."
+  renameError: Couldn't save that name. Try again.
+  changeTitle: Title changed
+  changeStepAdded: "$1 step added"
+  changeStepsAdded: "$1 steps added"
+  changeStepRemoved: "$1 step deleted"
+  changeStepsRemoved: "$1 steps deleted"
+  changeStepEdited: "$1 step edited"
+  changeStepsEdited: "$1 steps edited"
+  changeStepReordered: Steps reordered
+  changeLink: "$1 link changed"
+  changeLinks: "$1 links changed"
+  changeImageReplaced: "$1 image replaced"
+  changeImagesReplaced: "$1 images replaced"
+  changeImageCropped: "$1 image cropped"
+  changeImagesCropped: "$1 images cropped"
+  changeImageAnnotated: "$1 image annotated"
+  changeImagesAnnotated: "$1 images annotated"
+  changeImageBlurred: "$1 image blurred"
+  changeImagesBlurred: "$1 images blurred"
+  changeAltText: Alt text edited
+
+emptyGuide:
+  title: This guide is empty
+  subtitle: "Record steps to fill it"
+
+blurPanel:
+  title: "Smart blur"
+  manualMode: "Manual mode"
+  selectElements: Select elements to blur
+  clickToBlur: "Click to blur"
+  done: Done
+  doneResume: "Done · Resume recording"
+  resetAll: "Reset all"
+
+screenshotView:
+  zoomIn: Zoom in
+  zoomOut: Zoom out
+  saved: Saved
+  editMenu: Edit screenshot
+  downloadEdited: "Edited image"
+  downloadOriginal: "Original image"
+  edit: "Edit"
+  addImage: Add image
+  replaceImage: Replace image
+  replaceHint: "Choose a new image for this step"
+  replaceDrop: "Click to browse or drop an image here"
+  replaceFormats: "PNG, JPG or WebP"
+  download: Download
+  deleteImage: Delete image
+  deleteConfirm: "Delete this screenshot? This can't be undone."
+  imageDeleted: Image deleted
+  altButton: ALT
+  altLabel: Alt text
+  altPlaceholder: Describe this image for screen readers
+
+annotationEditor:
+  title: Edit screenshot
+  toolBox: Box
+  toolArrow: Arrow
+  toolText: Text
+  toolSelect: "Select"
+  addTarget: "Add click target"
+  toolRedact: Redact
+  toolCrop: Crop
+  colorLabel: "Color"
+  textPlaceholder: Type something…
+  targetBorder: Border style
+  modeAnnotate: "Annotate"
+  toolLine: "Line"
+  duplicate: "Duplicate"
+  toolEllipse: "Ellipse"
+  lineColor: "Line color"
+  fillColor: "Fill color"
+  lineWidth: "Line width"
+  cornerRadius: "Corner radius"
+  font: "Font"
+  bold: "Bold"
+  italic: "Italic"
+  lineHeight: "Line height"
+  width_none: "No outline"
+  width_xs: "Extra small"
+  width_sm: "Small"
+  width_ms: "Medium small"
+  width_md: "Medium"
+  width_ml: "Medium large"
+  width_lg: "Large"
+  width_xl: "Extra large"
+  zoom: "Zoom"
+  cropHint: "Drag to crop, or drag a corner to resize"
+  resetCrop: "Reset crop"
+  arrowEnd: "Arrow end"
+  fontSize: "Font size"
+  undo: "Undo"
+  redo: "Redo"
+  end_none: "None"
+  end_bar: "Bar"
+  end_arrow: "Arrow"
+  end_arrow_solid: "Arrow solid"
+  end_circle: "Circle"
+  end_circle_solid: "Circle solid"
+  end_square: "Square"
+  end_square_solid: "Square solid"
+  done: Done
+
+exportPreview:
+  voiceover: "Voice-over"
+  voiceoverHint: "Read each step aloud. Steps are held until the voice finishes."
+  audio: "Audio"
+  audioSilent: "Silent"
+  audioNarrated: "Narrated"
+  voiceoverNoKey: "Add an OpenAI or ElevenLabs key in Settings to narrate videos."
+  videoLength: "Video length $1"
+  videoLengthVoice: "Video length $1 → $2 with voice-over"
+  voiceoverCost: "$1 clips · about $2 characters to synthesize"
+  voiceoverFailed: "Voice-over failed. Check the API key in Settings."
+  voiceoverNoAudioCodec: "The video is silent. This browser can't add audio to videos."
+  voiceoverNoKeySkip: "The video is silent. Add a voice-over API key in Settings."
+  voiceoverNothingToSay: "The video is silent. This guide has no text to read aloud."
+  narrating: "Narrating step $1 of $2"
+  preparingVoiceover: "Preparing the voice-over"
+  stepDescriptions: "Step captions"
+  stepDescriptionsHint: "Draw the step text onto each video frame"
+  stepNumbers: "Step numbers"
+  stepNumbersHint: "Start each step caption in the video and GIF with its number"
+  resolution: "Video quality"
+  gifQuality: "GIF quality"
+  gif_low: "Low"
+  gif_medium: "Medium"
+  gif_high: "High"
+  res_720p: "720p"
+  res_1080p: "1080p"
+  title: "Export preview"
+  cover: "Cover page"
+  coverHint: "A separate first sheet with the title and details"
+  screenshots: "Screenshots"
+  screenshotsHint: "Turn off for a compact text-only document"
+  stepUrls: "Step links"
+  stepUrlsHint: "Show the page address each step happened on"
+  imageScale: "Screenshot size"
+  scale_small: "Small"
+  scale_medium: "Medium"
+  scale_large: "Large"
+  download: "Export $1"
+  rendering: "Updating preview"
+  videoReady: "$1 steps · about $2 min of video"
+  videoReadyHint: "Long guides aren't encoded automatically. The preview covers every step."
+  videoGenerate: "Generate preview"
+  modeDocument: "Document"
+  modeVideo: "Video"
+  encodingVideo: "Encoding video preview"
+  videoFailed: "The video preview couldn't be created"
+  bundle: "Mimik file"
+  bundleHint: "A .mimik file someone else can import and edit"
+  bundleStripInputs: "Remove typed text"
+  bundleStripInputsHint: "Removes it from step text and links. Screenshots still show what was on screen."
+  bundleUrls: "Link detail"
+  url_origin: "Site"
+  url_path: "Page"
+  url_full: "Full"
+  bundleRedactionNote: "Blurred areas are erased from the exported images."
+  bundleTypedWarning: "$1 screenshot shows text you typed. Blur it before sharing."
+  bundleTypedWarningPlural: "$1 screenshots show text you typed. Blur them before sharing."
+videoPlayer:
+  stepCount: "$1 steps"
+  previousStep: "Previous step"
+  nextStep: "Next step"
+  speed: "Playback speed"
+  mute: "Mute"
+  unmute: "Unmute"
+  spoken: "Narrated step"
+  play: "Play"
+  pause: "Pause"
+  fullscreen: "Fullscreen"
+  exitFullscreen: "Exit fullscreen"
+
+exportMenu:
+  docx: DOCX
+  html: HTML
+  markdown: Markdown
+  pdf: PDF
+  gif: GIF
+  video: Video
+  cancelProgress: "Cancel · $1%"
+  bundle: "Mimik file"
+
+onboarding:
+  getStarted: Get started
+  blurTitle: "Smart blur"
+  openMimik: Open Mimik
+  letterHello: "One more thing 👋"
+  letterNote: "A note from the team 👋"
+  letterThanks: "We have to say it: $1 Over the last couple of weeks, Mimik's GitHub stars have exploded, and that's all because of you. You've been sharing it with friends, teammates and communities, and we're blown away."
+  letterThankYou: "thank you."
+  letterWorld: "The best part of building Mimik has been seeing how people all over the world use it. We hope it keeps saving you time and money and keeps your data where it belongs: with you. Got an idea, a feature request or feedback? $1. We read every single one."
+  letterSayHi: "Come say hi on GitHub"
+  letterNewsTitle: "🚀 Big news: Mimik Desktop is here!"
+  letterNewsBody: "Everything you love about the Mimik extension, now right on your desktop. Available now for Windows, with Mac coming soon."
+  letterNewsAction: "Download Mimik Desktop"
+  letterPromiseTitle: "First, a promise"
+  letterPromise: "Mimik will always be free and MIT licensed. No catches or paywalls down the road. That's our promise to you and to the amazing community growing around it."
+  letterAskTitle: "And a small ask 🙏"
+  letterAskIntro: "You're the reason Mimik is growing, so please keep it going:"
+  letterAskWrite: "Write about it on your blog, newsletter or socials (Reddit especially, we love Reddit!)"
+  letterAskVideo: "Make a tutorial or walkthrough on YouTube"
+  letterAskFriend: "Tell a friend or teammate who'd love it"
+  letterSponsor: "Every article, video and shout-out helps more people find Mimik, and we notice and love every one. Want to go even further? You can $1. Every bit of support, big or small, helps keep the project thriving."
+  letterSponsorLink: "sponsor Mimik on GitHub"
+  letterSignoff: "With lots of love,"
+  letterTeam: "The Westpoint team ❤️"
+  helloTitle: "Thanks for installing Mimik!"
+  helloMessage: "Do a task once, the way you usually would, and Mimik turns every click into a step with a screenshot. Let's set it up, it takes a minute."
+  chipDevice: "Runs on your device"
+  chipAccount: "No account"
+  chipFree: "Free & MIT"
+  loginWelcome: "Welcome back"
+  loginReady: "Mimik is ready"
+  writeTitle: "How should Mimik write your steps?"
+  writeMessage: "Every click becomes a step with a screenshot. Pick how its text is written. You can change this any time in Settings."
+  basicTitle: "Basic titles"
+  basicMessage: "Clear titles from what you clicked. Works right away, nothing to set up."
+  basicBest: "Best to try Mimik now"
+  basicExample: "Click \"Billing\""
+  aiChoiceTitle: "AI descriptions"
+  aiChoiceMessage: "Full sentences from your AI provider, with your own key. Unlocks voice narration too."
+  aiChoiceMessageNoVoice: "Full sentences from your AI provider, with your own key."
+  aiBest: "Best for guides you share"
+  aiExample: "Open Billing to see your invoices and plan"
+  exampleMeta: "Step 2 · Billing"
+  recordTitle: "Where should the recording controls go?"
+  recordMessage: "Finish, Pause and your latest step stay in reach while you record. You can change this any time in Settings."
+  panelMessage: "A panel beside the page with your controls and steps. It opens when you click the Mimik icon."
+  panelBest: "Best on a wide screen"
+  cardMessage: "A small card floats over the page, so the page keeps its full width. Click the Mimik icon to bring it up."
+  cardBest: "Best on a laptop"
+  keyPrivacy: "Your key stays on this device and only goes to the provider you pick."
+  voiceToggleTitle: "Voice narration"
+  voiceToggleHint: "Say what you're doing; Mimik attaches it to the next step."
+  voiceNeedsKey: "Narration uses OpenAI or Groq for speech to text. Add a key for one of them."
+  makeTitle: "Make it yours"
+  makeMessage: "All optional. You can change any of it later in Settings."
+  brandTitle: "Your brand on exports"
+  brandHint: "Your logo and color on every PDF and HTML guide you export."
+  blurHint: "Blur sensitive details in screenshots before anything leaves your device."
+  readyTitle: "You're ready to capture"
+  readyStepOpen: "Open Mimik"
+  readyStepStart: "Click Start capture"
+  readyStepClick: "Click through your task"
+  readyStepGuide: "Get a step-by-step guide"
+  pinHere: "Pin it here"
+  pinCardTitle: "Pin Mimik for easy access"
+  pinCardMessage: "Click the puzzle icon next to the address bar and pin Mimik to your toolbar."
+  pinMenuTitle: "Extensions"
+  trayTitle: "Mimik lives in your tray"
+  trayMessage: "Start a capture from the Mimik icon next to the clock, or press $1 from any app."
+  menuBarTitle: "Mimik lives in your menu bar"
+  menuBarMessage: "Start a capture from the Mimik icon at the top of your screen, or press $1 from any app."
+  starCardTitle: "Free & MIT, forever"
+  starCardMessage: "No account, no paywalls. A GitHub star helps other people find Mimik."
+  demoApp: "Acme Admin"
+  demoTitle: "Invite a teammate"
+  demoField: "Email"
+  demoButton: "Send invite"
+  demoStepType: "Type \"ana@acme.com\" in Email"
+  demoStepClick: "Click \"Send invite\""
+  demoPlusStep: "+1 step"
+  demoGuideMeta: "2 steps · just now"
+
+steps:
+  pressKey: 'Press $1 on "$2"'
+  toggleCheckbox: 'Toggle "$1"'
+  select: 'Select "$1"'
+  enter: 'Enter "$1"'
+  toggleSwitch: 'Toggle "$1"'
+  clickLink: 'Click link "$1"'
+  click: 'Click "$1"'
+  clickHere: "Click here"
+  rightClick: 'Right-click "$1"'
+  rightClickHere: "Right-click here"
+  typeIntoField: 'Type into $1 field "$2"'
+  typeInto: 'Type into "$1"'
+  type: 'Type "$1"'
+  typeSecret: "Type password"
+  copyFrom: 'Copy from "$1"'
+  pasteInto: 'Paste into "$1"'
+  cutFrom: 'Cut from "$1"'
+  drag: 'Drag "$1"'
+  typeValueInto: 'Type "$1" in $2'
+  clearField: "Clear $1"
+  textField: "text field"
+  navigate: Navigate to page
+  defaultAction: "$1 $2"
+
+export:
+  guideLabel: "GUIDE"
+  endLabel: "GUIDE COMPLETE"
+  stepsRange: "Steps $1–$2 of $3"
+  stepOf: "Step $1 of $2"
+  madeWith: "Made with Mimik"
+  created: Created
+  source: Source
+  step: Step
+  steps: Steps
+  stepLabel: "Step $1"
+  stepsCount: "$1 steps"
+  createdLabel: "Created $1"
+  sourceLabel: "Source: $1"
+
+voice:
+  turnOn: Turn on voice narration
+  turnOff: Turn off voice narration
+  needsApiKey: "Narration needs an API key"
+  pausedWithCapture: Narration is paused with the capture
+  micStarting: Starting microphone…
+  micHearing: Hearing you
+  micQuiet: No sound
+  nextRecording: Voice narration is on and starts with your next recording.
+  orderHint: Say what you're about to do, then do it. Your words attach to the next action.
+  transcribing: Transcribing your narration…
+  transcribingHint: "Step descriptions update when it finishes."
+  narrated: "Narration added to $1 step."
+  narratedPlural: "Narration added to $1 steps."
+  narratedNone: "None of your narration matched a step."
+  guideSafe: "Your guide and screenshots are unaffected."
+  openSettings: Open settings
+  errorPermissionDenied: "Microphone access was blocked."
+  errorNoDevice: "No microphone found."
+  errorNoAudio: "The microphone picked up no sound."
+  errorMissingApiKey: "Narration needs a transcription API key."
+  errorStreamEnded: "The microphone cut out partway through."
+  errorNotRecording: "Narration wasn't running."
+  errorAlreadyRecording: "Narration was already running."
+  errorUnsupported: This browser can't record voice narration.
+  errorUnknown: "Narration stopped unexpectedly."
+
+micPermission:
+  title: Allow microphone access
+  checkingMessage: "Checking microphone access…"
+  promptingMessage: "Choose Allow in your browser's prompt. This tab closes on its own."
+  grantedTitle: Microphone ready
+  grantedMessage: "Taking you back."
+  deniedTitle: Microphone access is blocked
+  deniedMessage: "Click the icon left of the address bar, set Microphone to Allow, then try again."
+  retry: Try again
+  privacy: "Audio goes to your transcription provider. Mimik never stores it."
+
+aiStatus:
+  rejected: "$1 rejected your API key."
+  noCredits: "Your $1 account has no credits."
+  rateLimited: "$1 is rate-limiting Mimik's requests."
+  modelInvalid: "$1 doesn't offer that model to your account."
+  quota: "That request was too large for this model."
+  network: "Mimik couldn't reach $1."
+  unknown: "$1 refused the request."
+  actionCheckKey: "Check your key in Settings."
+  actionAddCredits: "Add credits, then check the key again."
+  actionWait: "Wait a moment before recording more."
+  actionPickModel: "Choose another model in Settings."
+  actionConnection: "Check your connection."
+
+stepSource:
+  ai: "AI"
+  voice: "Voice"
+  basic: "Basic"
+  edited: "Edited"
+  hint: "Where this description came from"
+
+import:
+  title: "Import guide"
+  dialogDescription: "Review a guide file before adding it to your library"
+  button: "Import"
+  dropHere: "Drop a .mimik file to import"
+  reading: "Reading the file"
+  confirm: "Add to library"
+  cancel: "Cancel"
+  guideMeHint: "Recorded on $1. Guide Me only replays on that site."
+  noteRedacted: "Blurred areas were removed by the author and can't be restored."
+  noteInputs: "Text typed into fields was left out."
+  noteUrls: "Links were shortened to the page address."
+  noteUrlsOrigin: "Links were shortened to the site address."
+  errorUnreadable: "This file couldn't be opened. It may be damaged or incomplete."
+  errorNotABundle: "This isn't a Mimik file. Choose a file exported from Mimik."
+  errorVersion: "This file was made with a newer Mimik. Update Mimik, then try again."
+  errorEmpty: "This file has no steps in it."
+  errorFailed: "The guide couldn't be saved to your library. Try importing it again."
+transcript:
+  title: Transcript
+  empty: Nothing was narrated in this recording.
+  loadError: Couldn't load the transcript. Try again.
+  filterAll: "All ($1)"
+  filterUnused: "Unused ($1)"
+  privacyNote: "Kept on this device only. Never included in exported guides, and deleted with the guide."
+  usedInStep: "Step $1"
+  readOnlyHint: Turn on Edit in the top bar to add these lines to a step.
+  notUsed: Unused
+  filteredOut: Filtered out
+  addToStep: "Add to step $1"
+  copyAll: Copy all
+  download: Download
+  delete: Delete transcript
+  confirmDelete: "Delete this transcript? This can't be undone."
+
+stepKind:
+  click: "Click"
+  type: "Type"
+  key: "Key"
+  navigate: "Page"
+  note: "Note"
+outline:
+  title: Contents
+  untitledStep: Untitled step
+  moreSelected: "+$1"
+  instructions: Press Space to pick up a step. Use the arrow keys to move it, Space to drop it, or Escape to cancel.
+  pickedUp: "Picked up $1"
+  movedOver: "$1 moved over $2"
+  droppedOver: "$1 dropped over $2"
+  dropped: "$1 dropped"
+  cancelled: "Moving $1 cancelled"
+  selected: Selected

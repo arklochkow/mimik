@@ -1,0 +1,296 @@
+<div align="center"><a name="readme-top"></a>
+
+<img src="../../apps/extension/public/mascot.svg" width="140" height="140" alt="Mascota de Mimik" />
+
+# Mimik
+
+[English](../../README.md) · **Español** · [Português (BR)](./README.pt-BR.md) · [Français](./README.fr.md) · [简体中文](./README.zh-CN.md)
+
+**Captura cualquier flujo del navegador y conviértelo en una guía paso a paso. Sin cuenta, sin nube, sin rastreo.**
+
+Le das a grabar, haces lo tuyo, y obtienes una guía pulida con capturas anotadas. Edítala, reprodúcela o expórtala.
+
+<!-- SHIELD GROUP -->
+
+[![License][license-shield]][license-link]
+[![Manifest V3][mv3-shield]][mv3-link]
+[![100% Local][local-shield]][local-link]
+[![No Account][no-account-shield]][no-account-link]
+<br/>
+[![Stars][star-shield]][star-link]
+[![Contributors][contributors-shield]][contributors-link]
+![Last Commit][last-commit-shield]
+[![Issues][issues-shield]][issues-link]
+
+</div>
+
+<details>
+<summary><kbd>Tabla de contenidos</kbd></summary>
+
+#### TOC
+
+- [📺 Demo](#-demo)
+- [👋 Empezar](#-empezar)
+- [✨ Funciones](#-funciones)
+  - [🔒 Desenfoque inteligente](#-desenfoque-inteligente)
+  - [🧠 Descripciones con IA (opcional)](#-descripciones-con-ia-opcional)
+  - [▶️ Reproducción con Guíame](#️-reproducción-con-guíame)
+  - [🎙️ Narración por voz (opcional)](#️-narración-por-voz-opcional)
+  - [✏️ Editor de guías](#️-editor-de-guías)
+  - [🔊 Voz en off del vídeo (opcional)](#-voz-en-off-del-vídeo-opcional)
+  - [📤 Exportación multi-formato](#-exportación-multi-formato)
+- [🔐 Privacidad y almacenamiento](#-privacidad-y-almacenamiento)
+- [🤝 Contribuir](#-contribuir)
+- [📜 Licencia](#-licencia)
+
+<br/>
+
+</details>
+
+## 📺 Demo
+
+https://github.com/user-attachments/assets/f71f5898-ee5e-4b22-b9fd-d5b45af73459
+
+## 👋 Empezar
+
+Mimik convierte cualquier tarea repetitiva del navegador en una guía documentada y compartible en segundos. Corre por completo en tu navegador. Sin backend, sin cuenta, sin telemetría, y nada sale de tu dispositivo.
+
+Ya sea que estés documentando herramientas internas, escribiendo tutoriales de producto, o formando a un compañero, Mimik captura cada clic, tecla y navegación automáticamente para que te concentres en lo importante.
+
+Cada acción relevante se convierte en un paso: clics en botones y enlaces, campos de formulario, atajos de teclado, acciones del portapapeles, arrastres y navegaciones. Los clics rápidos sobre elementos cercanos se agrupan para que las guías queden limpias, y el clic se intercepta antes de que la página navegue, así no se pierde nada en SPAs ni en cargas completas.
+
+Cada paso lleva una captura con el elemento pulsado resaltado y ampliado. Sin recortar a mano, sin herramientas de anotación que aprender.
+
+¿Necesitas que la grabación mire hacia otro lado un momento? **Pausar** detiene la captura sin terminar la grabación, y **Reanudar** sigue donde lo dejaste. Entrar en Desenfoque inteligente la pausa igual.
+
+| Navegador | Versión | Instalación |
+| --------- | ------- | ----------- |
+| Chrome    | [![Chrome Version][chrome-version-shield]][chrome-link]   | [Chrome Web Store][chrome-link] |
+| Firefox   | [![Firefox Version][firefox-version-shield]][firefox-link] | [Firefox Add-ons][firefox-link]  |
+| Edge      | [![Edge Version][edge-version-shield]][edge-link]          | [Microsoft Edge Add-ons][edge-link] |
+
+Disponible en inglés, español, portugués brasileño, francés, alemán y chino simplificado. El idioma de las descripciones de IA se configura por separado, así que puedes usar Mimik en inglés y generar guías en español, o cualquier combinación.
+
+> \[!IMPORTANT]
+>
+> **⭐️ Dale una estrella al repo** si Mimik te ahorra tiempo. Ayuda a que otras personas lo descubran.
+
+<a href="https://github.com/westpoint-io/mimik">
+  <img width="100%" alt="Dale una estrella a Mimik en GitHub" src="https://github.com/user-attachments/assets/80d304da-a765-4bde-bf49-b1bdcb4fe804" />
+</a>
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+## ✨ Funciones
+
+### 🔒 Desenfoque inteligente
+
+Desenfoque inteligente es un modo que activas mientras grabas, no un filtro siempre encendido. Pulsa **Desenfoque inteligente** y la captura se pausa, Mimik detecta y enmascara los datos sensibles de la página — correos, teléfonos, números de identificación, tarjetas de crédito, IPs, direcciones MAC — y las capturas de esa página los mantienen ocultos una vez que pulsas **Listo**. Activa o desactiva cada categoría de forma independiente.
+
+¿Necesitas ocultar algo personalizado? El selector manual te deja elegir cualquier elemento del DOM y enmascararlo en todas las capturas donde aparezca.
+
+<details>
+<summary><strong>Lo que Desenfoque inteligente no cubre</strong></summary>
+
+<br/>
+
+Desenfoque inteligente analiza nodos de texto y valores de campos en el marco principal de la página. Eso deja huecos reales, todos estructurales. Si dependes de esto para el RGPD o algo similar, revisa tus capturas en lugar de dar por hecho que una captura limpia es una captura segura:
+
+| Sin cubrir | Por qué |
+|------------|---------|
+| Contenido dentro de iframes | Se omite por completo; los marcos de otro origen son inalcanzables |
+| Shadow DOM | El análisis recorre el documento y no entra en los shadow roots |
+| Texto dibujado en un `<canvas>` y texto dentro de imágenes | Son píxeles, no texto |
+| Contenido CSS `::before` / `::after` | No es un nodo de texto |
+| Texto de `<select>` y `<option>` | Excluido del análisis |
+| Valores que solo viven en atributos, como `title` o `alt` | Solo se analizan nodos de texto y valores de campos |
+| Marcos distintos del principal | El overlay y el análisis corren solo en el marco principal |
+| Cualquier pestaña que no sea la que activaste | Solo se analiza esa pestaña; otra con la misma app no |
+| Texto que aparece después de pulsar **Listo** | El análisis se detiene con el overlay, así que un re-render de la SPA, la página siguiente de una lista o una navegación quedan sin enmascarar — vuelve a entrar en Blur ahí |
+
+Dos cosas que conviene saber sobre lo que sí se maneja: una coincidencia dentro de `<text>` de SVG se elimina del render en vez de difuminarse, porque la máscara es un elemento HTML que SVG no dibuja — el dato no se filtra, pero desaparece en lugar de difuminarse. Y un `<input>` o `<textarea>` que coincide se difumina **como campo completo**, no solo la parte coincidente.
+
+El difuminado aplica desde el momento en que entras al modo. Las capturas tomadas antes no se enmascaran de forma retroactiva — borra esos pasos en el editor.
+
+</details>
+
+https://github.com/user-attachments/assets/f30fbcde-a705-45aa-b7bd-374e4762e6be
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+### 🧠 Descripciones con IA (opcional)
+
+Trae tu propia API key (OpenAI o Anthropic) y Mimik genera descripciones naturales como *"Haz clic en el botón **Enviar** para guardar los cambios"* en lugar de `Click button "Submit"`.
+
+Las descripciones se generan a partir de un contexto ligero del DOM (~50-100 tokens), no desde capturas. Unas 15-30 veces más barato que los modelos con visión. Elige el idioma de las descripciones (inglés, español, portugués, francés, alemán, chino).
+
+https://github.com/user-attachments/assets/ce797986-56d1-4f72-b149-17463684cdd7
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+### ▶️ Reproducción con Guíame
+
+Reproduce cualquier guía en vivo sobre una página real. Mimik resalta el siguiente elemento, marca tu progreso paso a paso, y avanza solo conforme vas interactuando. Ideal para formar a un compañero o para guiarte a ti mismo.
+
+https://github.com/user-attachments/assets/8df5662f-e5e1-4a79-9c84-6f38becc4d03
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+### 🎙️ Narración por voz (opcional)
+
+Habla en voz alta mientras grabas y Mimik convierte lo que dijiste en las descripciones de los
+pasos. El audio se transcribe con tu propia key (OpenAI o Groq) y se empareja con el paso al que
+corresponde, así narras una vez en lugar de escribir cada paso a mano.
+
+Se guarda la transcripción completa, no solo lo que acabó en un paso. Abre **Transcripción** en una
+guía para ver todo lo que dijiste, incluidas las frases que no se emparejaron con nada, y añade
+cualquiera de ellas a un paso. Editar un paso tampoco destruye el original hablado: el editor
+siempre puede restaurar lo que dijiste. La transcripción se queda en tu dispositivo, nunca forma
+parte de una guía exportada y se elimina junto con la guía.
+
+https://github.com/user-attachments/assets/41ef17fd-0d02-4e17-81c6-30ba2b7c47d0
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+### ✏️ Editor de guías
+
+Arregla una guía después sin volver a grabar. Recorta, anota y censura cualquier captura, reescribe
+un paso con IA sin salir del editor, mete títulos y notas entre pasos, reordena o borra en lote, y
+vuelve atrás con el historial de versiones.
+
+https://github.com/user-attachments/assets/b7eb0f6f-8957-4dbc-ab23-e23747719244
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+### 🔊 Voz en off del vídeo (opcional)
+
+Actívala en el panel de exportación y cada paso del vídeo se leerá en voz alta, con tu propia clave
+de OpenAI o ElevenLabs. Si ya configuraste una clave de OpenAI para las descripciones con IA, Mimik
+la reutiliza: no hay que registrarse en nada más, salvo que las descripciones con IA usen un servidor propio, cuya clave no sale de ahí. Los pasos narrados permanecen en pantalla hasta que
+la voz termina, así que nada se corta, y los clips se guardan en caché local para que volver a
+exportar la misma guía no cueste nada.
+
+Desactivada por defecto: tener una clave nunca activa la narración; lo haces tú.
+
+https://github.com/user-attachments/assets/e82132e4-caf1-49db-9077-d6eade210a89
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+### 📤 Exportación multi-formato
+
+Comparte tus guías en el formato que mejor encaje con tu flujo:
+
+- **Video**: recorrido narrado, mp4/H.264, con el cursor moviéndose a cada objetivo — opcionalmente con una
+  voz en off de ElevenLabs que lee cada paso, lo que además hace el vídeo apto para la Sección 508
+- **PDF**: listo para imprimir, A4 vertical con saltos automáticos
+- **DOCX**: ábrelo y sigue editando en Word
+- **HTML**: autónomo, comparte donde sea, imágenes embebidas en base64
+- **Markdown**: pega en Notion, GitHub, documentación interna, wikis
+
+Todas las exportaciones se generan del lado del cliente. Nada pasa por un servidor.
+
+https://github.com/user-attachments/assets/2a91221b-0f77-484d-9a47-74938a4ee585
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+## 🔐 Privacidad y almacenamiento
+
+Tus guías, pasos y capturas viven en tu dispositivo. No hay backend, no hay cuenta, no hay telemetría. Tus API keys (si usas alguna) nunca salen del navegador. Se guardan localmente y se usan para llamar directo al proveedor que elegiste.
+
+Si estás enmascarando datos personales antes de compartir una guía, lee primero [lo que Desenfoque inteligente no cubre](#-desenfoque-inteligente): no alcanza iframes, shadow DOM ni texto dibujado dentro de imágenes.
+
+Dos cosas sí salen del navegador, ambas documentadas en la [política de privacidad](https://mimik.westpoint.io/privacy/): los iconos de los sitios se piden al servicio de favicons de Google, lo que envía el dominio de ese sitio, y las funciones opcionales de IA, narración por voz y voz en off mandan texto o audio al proveedor que configuraste: la voz en off envía el texto de cada paso al exportar, y solo si la activas.
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+## 🤝 Contribuir
+
+Se agradece todo tipo de contribución: reportes de bugs, ideas nuevas, PRs y traducciones.
+
+Mira [CONTRIBUTING.md](../../CONTRIBUTING.md) para el setup de desarrollo, la estructura del proyecto, y las pautas para contribuidores.
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+## 📜 Licencia
+
+MIT © [Westpoint](https://github.com/westpoint-io). Mira [LICENSE](../../LICENSE) para los detalles.
+
+<div align="right">
+
+[![Back to top][back-to-top]](#readme-top)
+
+</div>
+
+<!-- LINK GROUP -->
+
+[back-to-top]: https://img.shields.io/badge/-BACK_TO_TOP-1E1B4B?style=flat-square
+
+[license-shield]: https://img.shields.io/badge/license-MIT-4F46E5?style=flat-square&labelColor=1E1B4B
+[license-link]: ./LICENSE
+
+[mv3-shield]: https://img.shields.io/badge/manifest-v3-3730A3?style=flat-square&labelColor=1E1B4B
+[mv3-link]: https://developer.chrome.com/docs/extensions/mv3/intro/
+
+[local-shield]: https://img.shields.io/badge/storage-100%25%20local-4F46E5?style=flat-square&labelColor=1E1B4B
+[local-link]: #-almacenamiento-100-local
+
+[no-account-shield]: https://img.shields.io/badge/account-not%20required-4F46E5?style=flat-square&labelColor=1E1B4B
+[no-account-link]: #-almacenamiento-100-local
+
+[star-shield]: https://img.shields.io/github/stars/westpoint-io/mimik?style=flat-square&label=stars&color=4F46E5&labelColor=1E1B4B
+[star-link]: https://github.com/westpoint-io/mimik/stargazers
+
+[contributors-shield]: https://img.shields.io/github/contributors/westpoint-io/mimik?style=flat-square&labelColor=1E1B4B
+[contributors-link]: https://github.com/westpoint-io/mimik/graphs/contributors
+
+[last-commit-shield]: https://img.shields.io/github/last-commit/westpoint-io/mimik?style=flat-square&label=commit&labelColor=1E1B4B
+
+[issues-shield]: https://img.shields.io/github/issues/westpoint-io/mimik?style=flat-square&labelColor=1E1B4B
+[issues-link]: https://github.com/westpoint-io/mimik/issues
+
+[chrome-version-shield]: https://img.shields.io/chrome-web-store/v/jmfohdaflahliammccpiadmkcibohgha?label=Chrome%20Version&style=flat-square&logo=googlechrome&logoColor=C7D2FE&color=4F46E5&labelColor=1E1B4B
+[chrome-link]: https://chromewebstore.google.com/detail/mimik/jmfohdaflahliammccpiadmkcibohgha
+[firefox-version-shield]: https://img.shields.io/amo/v/mimik?label=Firefox%20Version&style=flat-square&logo=firefoxbrowser&logoColor=C7D2FE&color=4F46E5&labelColor=1E1B4B
+[firefox-link]: https://addons.mozilla.org/en-US/firefox/addon/mimik/
+[edge-version-shield]: https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fhgjemhfoffebbollleajkpefblppleai&query=%24.version&label=Edge%20Version&style=flat-square&logo=microsoftedge&logoColor=C7D2FE&color=4F46E5&labelColor=1E1B4B
+[edge-link]: https://microsoftedge.microsoft.com/addons/detail/hgjemhfoffebbollleajkpefblppleai

@@ -1,4 +1,6 @@
 import { vi } from "vitest";
+import { configureCore } from "@/core/env";
+import { fakeBrowser } from "wxt/testing/fake-browser";
 import "@testing-library/jest-dom";
 
 console.log = () => {};
@@ -44,6 +46,20 @@ Object.defineProperty(globalThis, "sessionStorage", {
   value: new MemoryStorage(),
 });
 
+if (typeof window !== "undefined" && !window.matchMedia) {
+  window.matchMedia = (query: string) =>
+    ({
+      matches: true,
+      media: query,
+      onchange: null,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: () => false,
+    }) as MediaQueryList;
+}
+
 const mockI18n = {
   i18n: {
     t: (key: string, subs?: string[]) => {
@@ -54,6 +70,17 @@ const mockI18n = {
 };
 
 vi.mock("#i18n", () => mockI18n);
+
+configureCore({
+  t: mockI18n.i18n.t,
+  assetUrl: (path: string) => `chrome-extension://mimik-test/${path}`,
+  storage: {
+    get: async (keys) => (await fakeBrowser.storage.local.get(keys as never)) as never,
+    set: async (items) => {
+      await fakeBrowser.storage.local.set(items);
+    },
+  },
+});
 
 vi.mock("#imports", () => ({
   ...mockI18n,
@@ -70,8 +97,8 @@ vi.mock("#imports", () => ({
   defineContentScript: vi.fn(),
 }));
 
-vi.mock("wxt/testing", async () => {
-  const actual = await vi.importActual<any>("wxt/testing");
+vi.mock("wxt/testing/fake-browser", async () => {
+  const actual = await vi.importActual<any>("wxt/testing/fake-browser");
   return {
     ...actual,
     fakeBrowser: {

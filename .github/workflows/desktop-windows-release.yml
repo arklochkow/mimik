@@ -1,0 +1,77 @@
+name: Desktop Windows release
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      AZURE_TENANT_ID:
+        required: false
+      AZURE_CLIENT_ID:
+        required: false
+      AZURE_CLIENT_SECRET:
+        required: false
+
+concurrency:
+  group: desktop-windows-release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    name: Signed Windows installer
+    runs-on: windows-latest
+    timeout-minutes: 45
+    environment: desktop-production
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build the accessibility addon
+        run: pnpm --filter @mimik/capture-native build
+
+      - name: Build the app
+        run: pnpm build:desktop
+
+      - name: Package and sign the installer
+        env:
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+        run: pnpm --filter @mimik/desktop exec electron-builder --win --config electron-builder.signed.yml --publish never
+
+      - name: Verify the signatures
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem -Path apps/desktop/dist -Recurse -Filter *.exe
+          if ($files.Count -eq 0) { throw "No executables in apps/desktop/dist" }
+          foreach ($file in $files) {
+            $signature = Get-AuthenticodeSignature -FilePath $file.FullName
+            $subject = $signature.SignerCertificate.Subject
+            Write-Host "$($file.FullName): $($signature.Status) $subject"
+            if ($signature.Status -ne "Valid" -or $subject -notlike "*CN=Westpoint Software Solutions Limited*") {
+              throw "$($file.Name) is not signed by Westpoint Software Solutions Limited"
+            }
+            if (-not $signature.TimeStamperCertificate) { throw "$($file.Name) has no timestamp" }
+          }
+          $updateConfig = Get-Content -Raw -Path apps/desktop/dist/win-unpacked/resources/app-update.yml
+          if ($updateConfig -notmatch "publisherName:\s*\r?\n\s*-\s*Westpoint Software Solutions Limited") { throw "app-update.yml does not pin the publisher" }
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: mimik-windows-signed
+          path: |
+            apps/desktop/dist/*.exe
+            apps/desktop/dist/*.exe.blockmap
+            apps/desktop/dist/latest.yml
+          if-no-files-found: error

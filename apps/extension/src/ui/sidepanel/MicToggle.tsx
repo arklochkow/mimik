@@ -1,0 +1,74 @@
+import { logger } from '@mimik/core/logger';
+import { MicButton } from '@mimik/ui';
+import { useCallback, useEffect, useState } from 'react';
+import { browser, i18n } from '#imports';
+import { hasVoiceApiKey, VOICE_KEY_SETTINGS } from '@/core/capture/voice/api-key';
+import { micToggleState } from '@/core/capture/voice/mic-toggle-state';
+import { getActiveTab } from '@/lib/browser-api/get-active-tab';
+import { localStorage } from '@/lib/browser-api/local-storage';
+import { sendMessage } from '@/lib/messaging';
+import { openMicPermissionPage } from '@/lib/offscreen/open-mic-permission-page';
+import { microphoneGranted } from './lib/microphone-granted';
+
+interface MicToggleProps {
+  enabled: boolean;
+  live: boolean;
+  paused?: boolean;
+  onChange: (enabled: boolean) => void;
+}
+
+export function MicToggle({ enabled, live, paused = false, onChange }: MicToggleProps) {
+  const [keyed, setKeyed] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    const read = () =>
+      localStorage.get([...VOICE_KEY_SETTINGS]).then((stored) => {
+        if (active) setKeyed(hasVoiceApiKey(stored));
+      });
+
+    void read();
+
+    const handler = (changes: Record<string, unknown>) => {
+      if (VOICE_KEY_SETTINGS.some((key) => key in changes)) void read();
+    };
+
+    browser.storage.local.onChanged.addListener(handler);
+    return () => {
+      active = false;
+      browser.storage.local.onChanged.removeListener(handler);
+    };
+  }, []);
+
+  const { locked, labelKey } = micToggleState(enabled, keyed, paused);
+
+  const toggle = useCallback(async () => {
+    if (locked) return;
+    const next = !enabled;
+    onChange(next);
+    await localStorage.set({ voiceEnabled: next });
+
+    if (!next) {
+      if (live) {
+        await sendMessage('stopNarration', undefined).catch((error) => {
+          logger.error('voice: the background did not take the request to stop narration', error);
+        });
+      }
+      return;
+    }
+
+    if (!(await microphoneGranted())) {
+      const tab = await getActiveTab();
+      await openMicPermissionPage(tab?.id).catch((error) => {
+        logger.error('voice: the microphone permission page could not be opened', error);
+      });
+      return;
+    }
+
+    await sendMessage('startNarration', undefined).catch((error) => {
+      logger.error('voice: the background did not take the request to start narration', error);
+    });
+  }, [enabled, live, locked, onChange]);
+
+  return <MicButton enabled={enabled} locked={locked} label={i18n.t(labelKey)} onClick={() => void toggle()} />;
+}

@@ -1,0 +1,109 @@
+import type { ElementNode, UiElement } from '@mimik/capture-native';
+import { screen } from 'electron';
+import { toDip } from './focused-window';
+import { loadNative as load } from './native';
+
+const LOOKUP_TIMEOUT_MS = 1500;
+
+export interface ScreenElement {
+  role: string | null;
+  name: string | null;
+  textContent: string | null;
+  ariaLabel: string | null;
+  altText: string | null;
+  password: boolean;
+  length?: number | null;
+  rect: { x: number; y: number; width: number; height: number } | null;
+  ancestors: { role: string | null; name: string | null }[];
+  children: { role: string | null; name: string | null }[];
+}
+
+const TEXT_ROLES = new Set(['textbox', 'combobox', 'document']);
+
+function within<T>(work: Promise<T>, ms: number): Promise<T | null> {
+  return new Promise((resolve) => {
+    const timer = setTimeout(() => resolve(null), ms);
+    timer.unref?.();
+    const settle = (value: T | null) => {
+      clearTimeout(timer);
+      resolve(value);
+    };
+    work.then(settle, () => settle(null));
+  });
+}
+
+function toPhysical(point: { x: number; y: number }): { x: number; y: number } {
+  if (process.platform !== 'win32' || typeof screen.dipToScreenPoint !== 'function') return point;
+  try {
+    return screen.dipToScreenPoint(point);
+  } catch {
+    return point;
+  }
+}
+
+const node = (found: ElementNode) => ({ role: found.role ?? null, name: found.name ?? null });
+
+function describe(found: UiElement): ScreenElement {
+  return {
+    role: found.role ?? null,
+    name: found.automationId ?? null,
+    textContent: found.isPassword ? null : (found.value ?? null),
+    ariaLabel: found.name ?? null,
+    altText: found.helpText ?? null,
+    password: found.isPassword,
+    length: found.valueLength ?? null,
+    rect: toDip(found.rect ?? null),
+    ancestors: (found.ancestors ?? []).map(node),
+    children: (found.children ?? []).map(node),
+  };
+}
+
+export function isTextField(element: ScreenElement | null): boolean {
+  return element?.role !== undefined && element?.role !== null && TEXT_ROLES.has(element.role);
+}
+
+export async function elementAt(point: { x: number; y: number }): Promise<ScreenElement | null> {
+  const native = await load();
+  if (!native) return null;
+
+  const at = toPhysical(point);
+  const found = await within(native.elementAtPoint(Math.round(at.x), Math.round(at.y)), LOOKUP_TIMEOUT_MS);
+  return found ? describe(found) : null;
+}
+
+export async function focusedField(): Promise<ScreenElement | null> {
+  const native = await load();
+  if (!native) return null;
+  const found = await within(native.focusedElement(), LOOKUP_TIMEOUT_MS);
+  return found ? describe(found) : null;
+}
+
+export async function keyLabel(keycode: number): Promise<string | null> {
+  const native = await load();
+  return native?.keyLabel(keycode) ?? null;
+}
+
+export async function resolveKey(keycode: number, shift: boolean, ctrl: boolean, alt: boolean): Promise<string | null> {
+  const native = await load();
+  return native?.resolveKey(keycode, shift, ctrl, alt) ?? null;
+}
+
+export async function clearDeadKey(): Promise<void> {
+  const native = await load();
+  native?.clearDeadKey();
+}
+
+export async function releaseWebContent(): Promise<void> {
+  const native = await load();
+  native?.releaseWebContent();
+}
+
+export async function enableAccessibility(): Promise<void> {
+  const native = await load();
+  native?.enableAccessibility();
+}
+
+export async function elementLookupAvailable(): Promise<boolean> {
+  const native = await load();
+  return native?.isSupported() ?? false;
+}

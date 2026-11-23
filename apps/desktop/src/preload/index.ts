@@ -1,0 +1,99 @@
+import type { AiFailureUpdate } from '@mimik/core/capture/ai/errors';
+import type { CaptureInsert } from '@mimik/core/capture/capture-insert';
+import type { CardNarration } from '@mimik/core/capture/card-view';
+import type { Rect } from '@mimik/core/rect';
+import { contextBridge, ipcRenderer } from 'electron';
+import type { CaptureSettings } from '../main/capture/settings';
+import type { DesktopStateUpdate, RendererRequest, RendererRequests, UpdateStatus } from '../main/ipc';
+import type { CapturePermissions, MicrophoneAccess, PermissionKind } from '../main/permissions';
+
+const api = {
+  version: (): Promise<string> => ipcRenderer.invoke('mimik:version'),
+  capture: {
+    region: (): Promise<Rect> => ipcRenderer.invoke('mimik:capture:region'),
+    edit: (insert?: CaptureInsert): Promise<void> => ipcRenderer.invoke('mimik:capture:edit', insert),
+    arm: (insert?: CaptureInsert): Promise<void> => ipcRenderer.invoke('mimik:capture:arm', insert),
+    described: (
+      stepId: string,
+      description: string | null,
+      failure: AiFailureUpdate | null,
+      source: 'ai' | 'narration' = 'ai',
+    ): void => ipcRenderer.send('mimik:capture:described', stepId, description, failure, source),
+    narration: (narration: CardNarration | null): void => ipcRenderer.send('mimik:capture:narration', narration),
+    settings: {
+      get: (): Promise<CaptureSettings> => ipcRenderer.invoke('mimik:capture:settings:get'),
+      set: (patch: Partial<CaptureSettings>): Promise<CaptureSettings> =>
+        ipcRenderer.invoke('mimik:capture:settings:set', patch),
+    },
+    onOpenSheet: (handler: () => void): void => {
+      ipcRenderer.on('mimik:capture:openSheet', () => handler());
+    },
+    getState: (): Promise<DesktopStateUpdate> => ipcRenderer.invoke('mimik:capture:getState'),
+    onStateUpdate: (handler: (update: DesktopStateUpdate) => void): void => {
+      ipcRenderer.on('mimik:capture:stateUpdate', (_event, update: DesktopStateUpdate) => handler(update));
+    },
+  },
+  microphone: {
+    get: (): Promise<MicrophoneAccess> => ipcRenderer.invoke('mimik:microphone:get'),
+    request: (): Promise<MicrophoneAccess> => ipcRenderer.invoke('mimik:microphone:request'),
+  },
+  permissions: {
+    get: (): Promise<CapturePermissions & { pending: boolean }> => ipcRenderer.invoke('mimik:permissions:get'),
+    request: (kind: PermissionKind): Promise<void> => ipcRenderer.invoke('mimik:permissions:request', kind),
+    continue: (): void => ipcRenderer.send('mimik:permissions:continue'),
+    cancel: (): void => ipcRenderer.send('mimik:permissions:cancel'),
+    restart: (): void => ipcRenderer.send('mimik:permissions:restart'),
+    onShow: (handler: () => void): void => {
+      ipcRenderer.on('mimik:permissions:show', () => handler());
+    },
+  },
+  ai: {
+    fetch: (request: unknown): Promise<unknown> => ipcRenderer.invoke('mimik:ai:fetch', request),
+    abort: (id: string): void => ipcRenderer.send('mimik:ai:abort', id),
+  },
+  onRequest: <K extends RendererRequest>(
+    channel: K,
+    handler: (payload: RendererRequests[K][0]) => Promise<RendererRequests[K][1]> | RendererRequests[K][1],
+  ): void => {
+    ipcRenderer.on(channel, async (_event, replyChannel: string, payload: RendererRequests[K][0]) => {
+      try {
+        ipcRenderer.send(replyChannel, await handler(payload));
+      } catch (error) {
+        ipcRenderer.send(replyChannel, { error: error instanceof Error ? error.message : String(error) });
+      }
+    });
+  },
+  relocalise: (): void => ipcRenderer.send('mimik:app:relocalise'),
+  onOpen: (handler: (target: 'library' | 'capture' | 'settings') => void): void => {
+    ipcRenderer.on('mimik:app:open', (_event, target) => handler(target));
+  },
+  locale: (code: string): void => ipcRenderer.send('mimik:app:locale', code),
+  updates: {
+    check: (): Promise<void> => ipcRenderer.invoke('mimik:updates:check'),
+    status: (): Promise<UpdateStatus | undefined> => ipcRenderer.invoke('mimik:updates:status'),
+    onStatus: (handler: (status: UpdateStatus) => void): (() => void) => {
+      const listener = (_event: unknown, status: UpdateStatus) => handler(status);
+      ipcRenderer.on('mimik:updates:status', listener);
+      return () => ipcRenderer.removeListener('mimik:updates:status', listener);
+    },
+    install: (): Promise<void> => ipcRenderer.invoke('mimik:updates:install'),
+    notes: (): Promise<void> => ipcRenderer.invoke('mimik:updates:notes'),
+  },
+  screenshots: {
+    sweep: (keep: string[]): Promise<number> => ipcRenderer.invoke('mimik:screenshots:sweep', keep),
+  },
+  openedFile: {
+    take: (): Promise<{ name: string; bytes: Uint8Array } | null> => ipcRenderer.invoke('mimik:app:takeOpenedFile'),
+    onOpen: (handler: () => void): void => {
+      ipcRenderer.on('mimik:app:fileOpened', () => handler());
+    },
+  },
+  openAtLogin: {
+    get: (): Promise<boolean> => ipcRenderer.invoke('mimik:openAtLogin:get'),
+    set: (enabled: boolean): Promise<boolean> => ipcRenderer.invoke('mimik:openAtLogin:set', enabled),
+  },
+};
+
+contextBridge.exposeInMainWorld('mimik', api);
+
+export type MimikDesktopApi = typeof api;

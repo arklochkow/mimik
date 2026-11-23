@@ -1,0 +1,218 @@
+import { splitAtShortcut } from '@mimik/core/capture/split-at-shortcut';
+import { i18n } from '@mimik/core/env';
+import { replaceScreenshot, restoreNarratedDescription } from '@mimik/core/guides/service';
+import type { Screenshot, Step } from '@mimik/core/guides/types';
+import { logger } from '@mimik/core/logger';
+import { imageDimensions, renderScreenshot } from '@mimik/core/screenshot/render';
+import { Check, Copy, Loader2, Trash2, Undo2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useAskAi } from '../../ai/hooks/use-ask-ai';
+import { ConfirmDialog } from '../../common/components/ConfirmDialog';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../../components/ui/tooltip';
+import { ImagePlaceholder } from './ImagePlaceholder';
+import { ScreenshotView } from './ScreenshotView';
+import { StepSourceBadge } from './StepSourceBadge';
+
+interface StepCardProps {
+  step: Step;
+  number: number;
+  screenshot: Screenshot | undefined;
+  onDescriptionChange?: (stepId: string, description: string) => void;
+  onDelete?: (stepId: string) => void;
+  onOpenEditor?: (stepId: string, tool: 'annotate' | 'redact' | 'crop' | 'target') => void;
+  onCopy?: (stepId: string) => void;
+  placeholderRatio?: number;
+  frameRatio?: number;
+  readOnly?: boolean;
+  onChanged?: () => void;
+  hasApiKey?: boolean;
+  isNew?: boolean;
+}
+
+export function StepCard({
+  step,
+  number,
+  screenshot,
+  onDescriptionChange,
+  onDelete,
+  onOpenEditor,
+  placeholderRatio,
+  frameRatio,
+  readOnly,
+  onChanged,
+  hasApiKey,
+  isNew,
+}: StepCardProps) {
+  const [description, setDescription] = useState(step.description);
+  const shortcut = splitAtShortcut(step.description, step.action);
+  const [copied, setCopied] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  useEffect(() => {
+    setDescription(step.description);
+  }, [step.description]);
+
+  const handleDescriptionBlur = () => {
+    if (description !== step.description) onDescriptionChange?.(step.id, description);
+  };
+
+  const askAi = useAskAi(
+    description,
+    (next) => {
+      setDescription(next);
+      onDescriptionChange?.(step.id, next);
+    },
+    !readOnly && !step.aiPending && Boolean(hasApiKey),
+  );
+
+  const spoken = step.narratedDescription?.trim();
+  const canRestoreSpoken = !readOnly && !step.aiPending && Boolean(spoken) && spoken !== description.trim();
+
+  const handleRestoreSpoken = async () => {
+    const restored = await restoreNarratedDescription(step.id);
+    if (!restored) return;
+    setDescription(restored);
+    onChanged?.();
+  };
+
+  const handleDelete = () => {
+    setConfirmDelete(false);
+    onDelete?.(step.id);
+  };
+
+  const handleCopy = async () => {
+    if (!screenshot) return;
+    try {
+      const rendered = await renderScreenshot(screenshot, { format: 'image/png' });
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': rendered })]);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (err) {
+      logger.error(' Copy to clipboard failed', err);
+    }
+  };
+
+  const handleUpload = async (file: File) => {
+    await replaceScreenshot(step.id, file, await imageDimensions(file));
+    onChanged?.();
+  };
+
+  return (
+    <div
+      className={`rounded-xl mb-3 overflow-hidden transition-shadow border bg-card ${isNew ? 'border-violet/60' : 'border-border'}`}
+    >
+      {screenshot ? (
+        <ScreenshotView
+          screenshot={screenshot}
+          alt={`Step ${number} screenshot`}
+          className="!rounded-none !border-0"
+          crop
+          frameRatio={frameRatio}
+          readOnly={readOnly}
+          onOpenEditor={!readOnly && onOpenEditor ? (tool) => onOpenEditor(step.id, tool) : undefined}
+          onChanged={onChanged}
+        />
+      ) : (
+        <ImagePlaceholder
+          label={i18n.t('editor.noScreenshot')}
+          ratio={placeholderRatio}
+          className="w-full !rounded-none border-x-0 border-t-0"
+          onUpload={readOnly ? undefined : handleUpload}
+        />
+      )}
+
+      <div className={`px-3 pt-2 pb-2 ${isNew ? 'bg-secondary' : ''}`}>
+        <div className="flex items-center gap-2">
+          <span className="flex items-center justify-center w-[22px] h-[22px] rounded-full text-[11px] font-bold shrink-0 bg-primary text-primary-foreground">
+            {number}
+          </span>
+          {step.aiPending ? (
+            <span className="flex items-center gap-1.5 text-[13px] font-medium leading-snug flex-1 text-muted-foreground">
+              <Loader2 size={13} className="animate-spin" />
+              {i18n.t('editor.writingStepDescription')}
+            </span>
+          ) : readOnly ? (
+            <p className="text-[13px] font-medium leading-snug flex-1 text-foreground whitespace-pre-wrap">
+              {shortcut ? (
+                <>
+                  {shortcut[0]}
+                  <kbd className="rounded-[5px] border border-border bg-card px-1.5 py-px font-[inherit] text-[0.85em] font-semibold whitespace-nowrap">
+                    {shortcut[1]}
+                  </kbd>
+                  {shortcut[2]}
+                </>
+              ) : (
+                step.description
+              )}
+            </p>
+          ) : (
+            <textarea
+              className="w-full text-[13px] font-medium resize-none outline-none border-0 bg-transparent p-0 leading-snug flex-1 text-foreground"
+              value={description}
+              rows={1}
+              onChange={(e) => setDescription(e.target.value)}
+              onSelect={askAi.onSelect}
+              onBlur={handleDescriptionBlur}
+            />
+          )}
+          {isNew && (
+            <span className="shrink-0 text-[11px] font-semibold text-violet-dark">{i18n.t('editor.newStep')}</span>
+          )}
+        </div>
+        <div className="flex items-center justify-between gap-2 mt-1">
+          {step.aiPending ? <span /> : <StepSourceBadge source={step.descriptionSource} />}
+          <div className="flex items-center gap-0.5">
+            {canRestoreSpoken && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={() => void handleRestoreSpoken()}
+                    aria-label={i18n.t('editor.restoreSpoken')}
+                    className="p-1 rounded-md transition-colors text-border hover:text-success"
+                  >
+                    <Undo2 size={13} />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>{i18n.t('editor.restoreSpoken')}</TooltipContent>
+              </Tooltip>
+            )}
+            {askAi.trigger}
+            {screenshot && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={handleCopy}
+                    className={`p-1 rounded-md transition-colors ${copied ? 'text-success' : 'text-border hover:text-success'}`}
+                  >
+                    {copied ? <Check size={13} /> : <Copy size={13} />}
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>{i18n.t('editor.copyScreenshot')}</TooltipContent>
+              </Tooltip>
+            )}
+            {!readOnly && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={() => setConfirmDelete(true)}
+                    className="p-1 rounded-md transition-colors text-border hover:text-destructive"
+                  >
+                    <Trash2 size={13} />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>{i18n.t('recording.deleteStep')}</TooltipContent>
+              </Tooltip>
+            )}
+          </div>
+        </div>
+      </div>
+      <ConfirmDialog
+        open={confirmDelete}
+        heading={i18n.t('editor.deleteThisStep')}
+        destructive
+        onConfirm={handleDelete}
+        onCancel={() => setConfirmDelete(false)}
+      />
+    </div>
+  );
+}

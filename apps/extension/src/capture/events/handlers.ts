@@ -1,0 +1,389 @@
+import { logger } from '@mimik/core/logger';
+import PQueue from 'p-queue';
+import { browser } from '#imports';
+import { extensionCaptureSink } from '@/capture/sink';
+import { extractDOMContext } from '@/core/capture/dom/context';
+import { extractElementMeta, freezeRect } from '@/core/capture/dom/element-meta';
+import {
+  eventTarget,
+  findFocusableAncestor,
+  isMimikElement,
+  isNavigatingClick,
+  isSensitiveField,
+  isTextField,
+  isTooLarge,
+} from '@/core/capture/dom/element-utils';
+import { locateFrame, placeInTab } from '@/core/capture/dom/frame-placement';
+import { isReplayedClick, replayClick, replayInit, shouldInterceptClick } from '@/core/capture/events/click-intercept';
+import { keyCombo } from '@/core/capture/key-combo';
+import type { CaptureSink } from '@/core/capture/sink';
+import type { StepAction } from '@/core/capture/step-action';
+import { DEFAULT_TARGET_COLOR } from '@/core/screenshot/types';
+import { localStorage } from '@/lib/browser-api/local-storage';
+import { HoverRing } from '@/lib/hover-ring';
+import { InputSession } from './input-session';
+import { isRecordableKey } from './is-recordable-key';
+import { PressHold } from './press-hold';
+
+const REPEAT_CLICK_MS = 300;
+const MAC = /Mac/i.test(navigator.platform);
+const DRAG_MIN_PX = 30;
+const PAINT_FRAMES = 3;
+const CAPTURE_BUDGET_MS = 2500;
+const EMBED_TAGS = new Set(['IFRAME', 'EMBED', 'OBJECT']);
+const EMBED_SELECTOR = 'iframe, embed, object';
+
+function focusInEmbed(): boolean {
+  const active = document.activeElement;
+  return !!active && EMBED_TAGS.has(active.tagName);
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function waitForPaint(): Promise<void> {
+  return new Promise((resolve) => {
+    let remaining = PAINT_FRAMES;
+    const tick = () => {
+      if (--remaining <= 0) resolve();
+      else requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+}
+
+let lastClickTarget: Element | null = null;
+let lastClickTime = 0;
+
+export interface CaptureHandle {
+  stop: () => Promise<void>;
+  captureNow: () => void;
+}
+
+const PASSIVE_CAPTURE = { capture: true, passive: true } as const;
+const ACTIVE_CAPTURE = { capture: true } as const;
+
+class CaptureController {
+  private input: InputSession;
+  private press = new PressHold();
+  private queue = new PQueue({ concurrency: 1 });
+  private listeners: [string, EventListener, AddEventListenerOptions][] = [];
+  private dragStartX: number | null = null;
+  private dragStartY: number | null = null;
+  private dragStartElement: Element | null = null;
+  private ring = new HoverRing(DEFAULT_TARGET_COLOR);
+  private hovered: HTMLElement | null = null;
+  private pointer: { x: number; y: number } | null = null;
+  private busy = false;
+  private recordKeys = false;
+  private recordTyping = true;
+  private readonly onSettingsChanged = (changes: Record<string, { newValue?: unknown }>) => {
+    if (changes.recordKeys) this.recordKeys = changes.recordKeys.newValue === true;
+    if (changes.recordTyping) this.recordTyping = changes.recordTyping.newValue !== false;
+    const color = changes.targetColor?.newValue;
+    if (typeof color === 'string' && color) this.ring.setColor(color);
+  };
+
+  constructor(
+    private guideId: string,
+    isTopFrame: boolean,
+    private sink: CaptureSink,
+  ) {
+    this.input = new InputSession(guideId, sink);
+    this.listeners = [
+      ...this.press.listeners,
+      ['click', this.onClick.bind(this), ACTIVE_CAPTURE],
+      ['auxclick', this.onAuxClick.bind(this), ACTIVE_CAPTURE],
+      ['keydown', this.onKeydown.bind(this), ACTIVE_CAPTURE],
+      ['input', this.onInput.bind(this), PASSIVE_CAPTURE],
+      ['focusout', this.onFocusOut.bind(this), PASSIVE_CAPTURE],
+    ];
+    if (isTopFrame) {
+      this.listeners.push(
+        ['copy', this.onClipboard.bind(this), PASSIVE_CAPTURE],
+        ['paste', this.onClipboard.bind(this), PASSIVE_CAPTURE],
+        ['cut', this.onClipboard.bind(this), PASSIVE_CAPTURE],
+        ['pointerdown', this.onPointerDown.bind(this), PASSIVE_CAPTURE],
+        ['pointerup', this.onPointerUp.bind(this), PASSIVE_CAPTURE],
+        ['pointermove', this.onPointerMove.bind(this), PASSIVE_CAPTURE],
+        ['dragend', this.onDragEnd.bind(this), PASSIVE_CAPTURE],
+        ['mouseover', this.onMouseOver.bind(this), PASSIVE_CAPTURE],
+        ['mouseout', this.onMouseOut.bind(this), PASSIVE_CAPTURE],
+      );
+      localStorage
+        .get(['targetColor'])
+        .then(({ targetColor }) => {
+          if (typeof targetColor === 'string' && targetColor) this.ring.setColor(targetColor);
+        })
+        .catch(() => {});
+    }
+    localStorage
+      .get(['recordKeys', 'recordTyping'])
+      .then(({ recordKeys, recordTyping }) => {
+        this.recordKeys = recordKeys === true;
+        this.recordTyping = recordTyping !== false;
+      })
+      .catch(() => {});
+    browser.storage.local.onChanged.addListener(this.onSettingsChanged);
+    for (const [event, handler, opts] of this.listeners) {
+      window.addEventListener(event, handler, opts);
+    }
+  }
+
+  private capture(action: StepAction, target: HTMLElement, point?: { x: number; y: number }) {
+    const atEvent = freezeRect(target);
+    return async () => {
+      const placement = locateFrame();
+      const elementMeta = extractElementMeta(target, atEvent);
+      await this.sink.captureStep({
+        guideId: this.guideId,
+        action,
+        elementMeta: placeInTab(point ? { ...elementMeta, clickPoint: point } : elementMeta, await placement),
+        domContext: extractDOMContext(target, action),
+      });
+    };
+  }
+
+  private enqueue(task: () => Promise<unknown>, after?: () => void) {
+    this.ring.hide();
+    const wasIdle = !this.busy;
+    this.busy = true;
+    this.queue.add(async () => {
+      await waitForPaint();
+      try {
+        await Promise.race([task(), sleep(CAPTURE_BUDGET_MS)]);
+      } catch (err) {
+        logger.error('Capture failed', err);
+      } finally {
+        after?.();
+      }
+    });
+    if (wasIdle) {
+      this.queue.onIdle().then(() => {
+        this.busy = false;
+        if (this.hovered?.isConnected && !focusInEmbed()) this.ring.show(this.hovered);
+      });
+    }
+  }
+
+  private hoverTarget(raw: EventTarget | null): HTMLElement | null {
+    if (!(raw instanceof Element) || isMimikElement(raw)) return null;
+    const target = findFocusableAncestor(raw);
+    if (target === document.body || target === document.documentElement) return null;
+    if (EMBED_TAGS.has(target.tagName) || isTooLarge(target)) return null;
+    if (target.querySelector(EMBED_SELECTOR)) return null;
+    return target;
+  }
+
+  private onMouseOver(e: Event) {
+    const target = this.hoverTarget(eventTarget(e));
+    if (target === this.hovered) return;
+    this.hovered = target;
+    if (this.busy) return;
+    if (target && !focusInEmbed()) this.ring.show(target);
+    else this.ring.hide();
+  }
+
+  private onMouseOut(e: Event) {
+    const related = (e as MouseEvent).relatedTarget;
+    if (related instanceof Element && this.hovered?.contains(related)) return;
+    this.hovered = null;
+    this.ring.hide();
+  }
+
+  private onClick(e: Event) {
+    const me = e as MouseEvent;
+    if (isReplayedClick(me)) return;
+    const press = this.press.take();
+    if (!this.interceptClick(me, press)) this.press.replay(press);
+  }
+
+  private interceptClick(me: MouseEvent, press: ReturnType<PressHold['take']>): boolean {
+    const raw = eventTarget(me);
+    if (!raw || !(raw instanceof Element) || me.shiftKey) return false;
+    const target = findFocusableAncestor(raw);
+    if (isMimikElement(target)) return false;
+
+    const now = Date.now();
+    if (target === lastClickTarget && now - lastClickTime < REPEAT_CLICK_MS) return false;
+    lastClickTarget = target;
+    lastClickTime = now;
+
+    if (isTextField(target)) {
+      const atEvent = freezeRect(target);
+      this.enqueue(async () => {
+        if (this.input.active && this.input.target !== target) await this.input.finalize();
+        if (!this.input.active) await this.input.start(target, atEvent);
+      });
+      return false;
+    }
+
+    if (isNavigatingClick(target)) {
+      me.preventDefault();
+      me.stopImmediatePropagation();
+      const href = (target.closest('a[href]') as HTMLAnchorElement | null)?.href;
+      this.enqueue(this.capture('click', target, { x: me.clientX, y: me.clientY }), () => {
+        if (href) window.location.href = href;
+      });
+      return false;
+    }
+
+    const task = this.capture('click', target, { x: me.clientX, y: me.clientY });
+
+    if (!shouldInterceptClick(target, me)) {
+      this.enqueue(task);
+      return false;
+    }
+
+    me.preventDefault();
+    me.stopImmediatePropagation();
+    const init = replayInit(me);
+    this.enqueue(task, () => {
+      this.press.replay(press);
+      replayClick(target, init);
+    });
+    return true;
+  }
+
+  private onAuxClick(e: Event) {
+    const raw = eventTarget(e);
+    if (!raw || !(raw instanceof Element)) return;
+    const target = findFocusableAncestor(raw);
+    if (isMimikElement(target)) return;
+    this.enqueue(this.capture('auxclick', target, { x: (e as MouseEvent).clientX, y: (e as MouseEvent).clientY }));
+  }
+
+  private onKeydown(e: Event) {
+    const ke = e as KeyboardEvent;
+    const resolved = eventTarget(ke);
+    const target = resolved instanceof HTMLElement ? resolved : document.activeElement;
+    if (!target || !(target instanceof HTMLElement) || isMimikElement(target)) return;
+
+    if (this.input.active && (ke.key === 'Enter' || ke.key === 'Escape')) {
+      this.enqueue(() => this.input.finalize());
+      return;
+    }
+
+    if (isSensitiveField(target) || isTextField(target)) return;
+    if (!this.recordKeys || !isRecordableKey(ke)) return;
+    const held = { ctrl: ke.ctrlKey, alt: ke.altKey, shift: ke.shiftKey, meta: ke.metaKey };
+    this.enqueue(this.capture(`keydown:${keyCombo(held, ke.key, MAC)}`, target));
+  }
+
+  private onInput(e: Event) {
+    const target = eventTarget(e);
+    if (!target || !(target instanceof HTMLElement)) return;
+    if (
+      !(
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target instanceof HTMLSelectElement ||
+        target.isContentEditable
+      )
+    )
+      return;
+
+    if (target instanceof HTMLSelectElement) {
+      this.enqueue(this.capture('input', target));
+      return;
+    }
+
+    if (target instanceof HTMLInputElement && (target.type === 'checkbox' || target.type === 'radio')) return;
+    if (!this.recordTyping) return;
+
+    if (this.input.active && this.input.target !== target) {
+      this.enqueue(() => this.input.finalize());
+    }
+
+    if (!this.input.active) {
+      this.enqueue(() => this.input.start(target));
+    } else {
+      this.input.update(target);
+    }
+  }
+
+  private onFocusOut(e: Event) {
+    if (!this.input.active) return;
+    const related = (e as FocusEvent).relatedTarget;
+    if (related instanceof Element && related === this.input.target) return;
+    this.enqueue(() => this.input.finalize());
+  }
+
+  private onClipboard(e: Event) {
+    const resolved = eventTarget(e);
+    const target = resolved instanceof HTMLElement ? resolved : document.activeElement;
+    if (!target || !(target instanceof HTMLElement) || isMimikElement(target)) return;
+    this.enqueue(this.capture(e.type as 'copy' | 'paste' | 'cut', target));
+  }
+
+  private onPointerMove(e: Event) {
+    const pe = e as PointerEvent;
+    this.pointer = { x: pe.clientX, y: pe.clientY };
+  }
+
+  captureNow() {
+    const point = this.pointer ?? undefined;
+    const raw = point ? document.elementFromPoint(point.x, point.y) : document.activeElement;
+    const target = raw && !isMimikElement(raw) ? findFocusableAncestor(raw) : document.body;
+    this.enqueue(this.capture('click', target, point));
+  }
+
+  private onPointerDown(e: Event) {
+    this.ring.hide();
+    const pe = e as PointerEvent;
+    this.dragStartX = pe.pageX;
+    this.dragStartY = pe.pageY;
+    this.dragStartElement = eventTarget(pe);
+  }
+
+  private onPointerUp(e: Event) {
+    const pe = e as PointerEvent;
+    if (this.dragStartX == null || this.dragStartY == null || !this.dragStartElement) {
+      this.dragStartX = this.dragStartY = null;
+      this.dragStartElement = null;
+      return;
+    }
+
+    const dx = Math.abs(pe.pageX - this.dragStartX);
+    const dy = Math.abs(pe.pageY - this.dragStartY);
+
+    if (dx >= DRAG_MIN_PX || dy >= DRAG_MIN_PX) {
+      const target = findFocusableAncestor(this.dragStartElement);
+      if (!isMimikElement(target)) this.enqueue(this.capture('drag', target));
+    }
+
+    this.dragStartX = this.dragStartY = null;
+    this.dragStartElement = null;
+  }
+
+  private onDragEnd(e: Event) {
+    const target = eventTarget(e);
+    if (!target || isMimikElement(target)) return;
+    this.enqueue(this.capture('drag', findFocusableAncestor(target)));
+  }
+
+  stop(): Promise<void> {
+    this.press.flush();
+    browser.storage.local.onChanged.removeListener(this.onSettingsChanged);
+    for (const [event, handler, opts] of this.listeners) {
+      window.removeEventListener(event, handler, opts);
+    }
+    this.hovered = null;
+    this.ring.dispose();
+    this.queue.add(() => this.input.finalize());
+    return this.queue.onIdle();
+  }
+}
+
+export function startCapture(
+  guideId: string,
+  isTopFrame = true,
+  sink: CaptureSink = extensionCaptureSink,
+): CaptureHandle {
+  const controller = new CaptureController(guideId, isTopFrame, sink);
+  return {
+    stop: () => controller.stop(),
+    captureNow: () => controller.captureNow(),
+  };
+}

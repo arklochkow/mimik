@@ -1,0 +1,182 @@
+import type { CustomPrompts } from '@/core/capture/ai/custom-prompts';
+import type { AIApiKeys, AiChoice, ApiKeys, ServerHeader } from '@/core/capture/ai/keys';
+import type { AIProtocol } from '@/core/capture/ai/models';
+import type { VoiceProvider } from '@/core/capture/voice/transcribe';
+import type { TranscriptLine } from '@/core/capture/voice/types';
+import type { BrandLogo } from '@/core/export/branding';
+import type { ExportOptions } from '@/core/export/options';
+import type { VoiceoverApiKeys } from '@/core/export/voiceover/config';
+import type { VoiceoverProviderKey } from '@/core/export/voiceover/providers';
+import type { GuideMeSession } from '@/core/guideme/session';
+import type { ScreenshotEdits } from '@/core/screenshot/types';
+
+export interface Guide {
+  id: string;
+  title: string;
+  description?: string;
+  createdAt: number;
+  updatedAt: number;
+  stepIds: string[];
+  starred: boolean;
+  deletedAt: number | null;
+  staging?: boolean;
+}
+
+export type DescriptionSource = 'narration' | 'ai' | 'heuristic' | 'manual';
+
+export type BlockType = 'heading' | 'callout';
+
+export type CalloutVariant = 'info' | 'warning' | 'error' | 'success' | 'custom';
+
+export interface Step {
+  id: string;
+  guideId: string;
+  index: number;
+  description: string;
+  action: string;
+  url: string;
+  app?: { name: string; id?: string };
+  window?: { title: string | null };
+  timestamp: number;
+  screenshotId?: string;
+  elementMeta?: ElementMeta;
+  inputValue?: string;
+  descriptionSource?: DescriptionSource;
+  narratedDescription?: string;
+  aiPending?: boolean;
+  blockType?: BlockType;
+  calloutVariant?: CalloutVariant;
+  calloutColor?: string;
+}
+
+export interface ScreenshotBounds {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface Screenshot {
+  id: string;
+  stepId: string;
+  blob: Blob;
+  src?: string;
+  mimeType: string;
+  width: number;
+  height: number;
+  bounds?: ScreenshotBounds;
+  pixelRatio?: number;
+  clickPoint?: { x: number; y: number };
+  edits?: ScreenshotEdits;
+}
+
+export type StoredScreenshot = Omit<Screenshot, 'blob'> & { blob?: Blob };
+
+export interface Settings {
+  apiKeys: ApiKeys;
+  aiApiKey: string;
+  aiApiKeys: AIApiKeys;
+  aiProvider: AiChoice;
+  aiModel: string;
+  aiPrompts: CustomPrompts;
+  aiBaseUrl: string;
+  aiServerUrl: string;
+  aiServerProtocol: AIProtocol;
+  aiServerHeaders: ServerHeader[];
+  aiLanguage: string;
+  aiForSteps: boolean;
+  aiForGuide: boolean;
+  voiceEnabled: boolean;
+  voiceProvider: VoiceProvider;
+  voiceApiKey: string;
+  voiceMicrophoneId: string;
+  voiceLanguage: string;
+  voiceoverProvider: VoiceoverProviderKey;
+  voiceoverApiKeys: VoiceoverApiKeys;
+  voiceoverVoiceId: string;
+  voiceoverModelId: string;
+  blurPresets: Record<string, boolean>;
+  targetColor: string;
+  brandColor: string;
+  brandLogo: BrandLogo | null;
+  brandFooter: string;
+  brandAttribution: boolean;
+  exportOptions: ExportOptions;
+  guideMeSession: GuideMeSession | null;
+  guideMeStep: Step | null;
+  guideMeBlocked: number | null;
+  guideMeManual: boolean;
+  onboardingCompleted: boolean;
+  appLanguage: string;
+  recordKeys: boolean;
+  recordTyping: boolean;
+  recordingCard: boolean;
+}
+
+export type SettingsKey = keyof Settings;
+
+export type ElementSource = 'dom' | 'ax' | 'uia' | 'screen';
+
+export interface ElementNode {
+  role: string | null;
+  name: string | null;
+}
+
+export interface ElementMeta {
+  source?: ElementSource;
+  textContent: string | null;
+  ariaLabel: string | null;
+  label?: string | null;
+  placeholder: string | null;
+  altText: string | null;
+  name: string | null;
+  role: string | null;
+  rect: { x: number; y: number; width: number; height: number };
+  devicePixelRatio: number;
+  clickPoint?: { x: number; y: number };
+  tag?: string;
+  cssSelector?: string;
+  href?: string | null;
+  inputType?: string | null;
+  dataTestId?: string | null;
+  app?: { name: string; id?: string };
+  window?: { title: string | null };
+  ancestors?: ElementNode[];
+  children?: ElementNode[];
+}
+
+export function elementSource(meta: ElementMeta): ElementSource {
+  return meta.source ?? 'dom';
+}
+
+export interface GuideTranscript {
+  id: string;
+  guideId: string;
+  epochMs: number;
+  createdAt: number;
+  lines: TranscriptLine[];
+}
+
+export interface GuideMerge {
+  id: string;
+  targetGuideId: string;
+  mergedAt: number;
+}
+
+export interface VoiceClip {
+  id: string;
+  bytes: ArrayBuffer;
+  createdAt: number;
+}
+
+export interface Snapshot {
+  id: string;
+  guideId: string;
+  createdAt: number;
+  contentHash: string;
+  name?: string;
+  title: string;
+  stepIds: string[];
+  steps: Step[];
+  screenshots: Omit<Screenshot, 'blob'>[];
+}

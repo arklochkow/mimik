@@ -1,141 +1,121 @@
 name: Release
 
-# Three ways in, one outcome: the built zips are attached to the release for the tag, which is
-# what the READMEs tell users to download.
-#
-#   * publishing a release by hand - the usual way here. It used to attach nothing: the only path
-#     was `gh release create`, which runs for a pushed tag, and no tag push ever happened, so the
-#     release page kept GitHub's generated source archives and nothing else.
-#   * pushing a tag - `v1.2.0` or `1.2.0`; this fork has used both, so both are accepted.
-#   * Actions -> Release -> Run workflow - name the tag to fill a release that already exists,
-#     which is how the empty 1.1.0 gets its files.
-#
-# GitHub attaches "Source code (zip)" and "Source code (tar.gz)" to every release itself and they
-# cannot be removed. The assets listed underneath them are this workflow's, and those are the
-# compiled extension.
-#
-# The store submission stays separate and manual: run "Submit to Stores" with the same tag once
-# the release looks right.
-
 on:
   push:
-    tags:
-      - "v*"
-      - "[0-9]*"
-  release:
-    types: [published]
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: "Tag to build and attach, named as it exists (1.2.0 or v1.2.0)"
-        required: true
-        type: string
+    branches:
+      - main
 
 concurrency:
-  # The tag alone, so a tag push and the release it creates share one queue instead of racing to
-  # write the same assets.
-  group: release-${{ github.event.inputs.tag || github.ref_name }}
+  group: release
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  release:
-    name: Build and publish
+  release-pr:
+    name: Release PR
     runs-on: ubuntu-latest
-    env:
-      TAG: ${{ github.event.inputs.tag || github.ref_name }}
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      extension: ${{ steps.extension.outputs.release_created }}
+      extension-tag: ${{ steps.extension.outputs.tag_name }}
+      desktop: ${{ steps.desktop.outputs.release_created }}
+      desktop-tag: ${{ steps.desktop.outputs.tag_name }}
     steps:
-      - name: Checkout the tag
-        uses: actions/checkout@v6
+      - id: extension
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         with:
-          ref: ${{ github.event.inputs.tag || github.ref }}
+          target-branch: main
+          config-file: .github/release-please/extension-config.json
+          manifest-file: .github/release-please/extension-manifest.json
 
-      - uses: pnpm/action-setup@v5
+      - id: desktop
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+        with:
+          target-branch: main
+          config-file: .github/release-please/desktop-config.json
+          manifest-file: .github/release-please/desktop-manifest.json
 
-      - uses: actions/setup-node@v6
+  desktop-windows:
+    needs: release-pr
+    if: needs.release-pr.outputs.desktop == 'true'
+    uses: $/.github/workflows/desktop-windows-release.yml
+    secrets:
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+  desktop-linux:
+    needs: release-pr
+    if: needs.release-pr.outputs.desktop == 'true'
+    uses: $/.github/workflows/desktop-linux-release.yml
+
+  desktop:
+    name: Desktop installers
+    needs: [release-pr, desktop-windows, desktop-linux]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: mimik-windows-signed
+          path: dist
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: mimik-linux
+          path: dist
+
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.release-pr.outputs.desktop-tag }}
+        run: |
+          gh release upload "$TAG" dist/* --repo "$GITHUB_REPOSITORY"
+          {
+            gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json body -q .body
+            printf '\n\n### Linux (beta)\n\n'
+            printf 'The AppImage, deb and rpm are a beta for x86_64. Recording needs an X11 session; on Wayland, pick an Xorg or X11 session at the login screen. '
+            printf 'On Ubuntu 24.04 and later, install the deb: the AppImage cannot set up the sandbox there and closes at launch. '
+            printf 'Elsewhere the AppImage needs FUSE 2: `libfuse2` on Ubuntu 22.04 and Debian, `fuse-libs` on Fedora.\n'
+          } > notes.md
+          gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --draft=false --latest --title "Desktop ${TAG#desktop-}" --notes-file notes.md
+
+  extension:
+    name: Extension packages
+    needs: release-pr
+    if: needs.release-pr.outputs.extension == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "22"
-          cache: pnpm
 
       - run: pnpm install --frozen-lockfile
 
-      # A tag that disagrees with the manifest would ship a build whose version is not the one
-      # users clicked on. Either tag style is allowed; the version is what has to match.
-      - name: Check the tag against package.json
-        run: |
-          set -euo pipefail
-          version="$(node -p "require('./package.json').version")"
-          name="$(node -p "require('./package.json').name")"
-          if [ "${TAG#v}" != "$version" ]; then
-            echo "::error::Tag $TAG does not match package.json version $version"
-            exit 1
-          fi
-          {
-            echo "PKG_NAME=$name"
-            echo "PKG_VERSION=$version"
-          } >> "$GITHUB_ENV"
-          echo "Releasing $name $version for tag $TAG"
+      - run: pnpm zip:all
 
-      - name: Lint
-        run: pnpm lint
-
-      - name: Typecheck
-        run: pnpm typecheck
-
-      - name: Test
-        run: pnpm test
-
-      - name: Build and zip
-        run: pnpm zip:all
-
-      - name: Verify the zips and checksum them
-        run: |
-          set -euo pipefail
-          for target in chrome firefox sources; do
-            zip=".output/$PKG_NAME-$PKG_VERSION-$target.zip"
-            if [ ! -f "$zip" ]; then
-              echo "::error::$zip is missing - the READMEs tell users to download exactly this name"
-              exit 1
-            fi
-            printf '%s  %s\n' "$(sha256sum "$zip" | cut -d' ' -f1)" "$(basename "$zip")" >> SHA256SUMS.txt
-          done
-          cat SHA256SUMS.txt
-
-      - name: Publish the release
-        env:
+      - env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.release-pr.outputs.extension-tag }}
         run: |
-          set -euo pipefail
-          flags=()
-          case "$TAG" in
-            *-*) flags+=(--prerelease) ;;
-          esac
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" .output/*.zip SHA256SUMS.txt --clobber
-          else
-            # Only a pushed tag reaches this branch. Creating the release publishes it, which
-            # fires this workflow once more; that run takes the branch above and rewrites the
-            # same assets with --clobber. A wasted run, not a duplicate asset.
-            gh release create "$TAG" .output/*.zip SHA256SUMS.txt \
-              --verify-tag \
-              --title "Mimik RU $TAG" \
-              --generate-notes \
-              ${flags[@]+"${flags[@]}"}
+          gh release upload "$TAG" \
+            apps/extension/.output/*-chrome.zip \
+            apps/extension/.output/*-firefox.zip \
+            apps/extension/.output/*-sources.zip
+          gh release edit "$TAG" --title "Extension $TAG"
+          desktop=$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/desktop-v" -q '.[].ref' | sed 's|^refs/tags/||' | sort -V | tail -1)
+          if [ -n "$desktop" ]; then
+            gh release edit "$desktop" --latest
           fi
-
-      - name: Summary
-        run: |
-          {
-            echo "## Mimik RU $TAG"
-            echo
-            echo "| asset | size | sha256 |"
-            echo "| --- | --- | --- |"
-            for zip in .output/*.zip; do
-              printf '| %s | %s | `%s` |\n' \
-                "$(basename "$zip")" \
-                "$(du -h "$zip" | cut -f1)" \
-                "$(sha256sum "$zip" | cut -d' ' -f1)"
-            done
-          } >> "$GITHUB_STEP_SUMMARY"

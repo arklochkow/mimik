@@ -1,0 +1,10 @@
+extends: ./electron-builder.yml
+win:
+  azureSignOptions:
+    endpoint: https://eus.codesigning.azure.net/
+    codeSigningAccountName: westpoint-signing
+    certificateProfileName: mimik
+    TimestampRfc3161: http://timestamp.acs.microsoft.com
+    TimestampDigest: SHA256
+  signtoolOptions:
+    publisherName: Westpoint Software Solutions Limited

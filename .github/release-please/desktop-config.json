@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "a43d1d9ff113b9d5e0f4f835ff032015fcd09e46",
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "component": "desktop",
+      "changelog-path": "apps/desktop/CHANGELOG.md",
+      "exclude-paths": ["apps/extension"],
+      "draft": true,
+      "force-tag-creation": true,
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "apps/desktop/package.json",
+          "jsonpath": "$.version"
+        }
+      ]
+    }
+  }
+}

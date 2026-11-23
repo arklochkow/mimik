@@ -1,0 +1,16 @@
+@import "@mimik/ui/global.css";
+
+@source ".";
+
+html,
+body {
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+  user-select: none;
+  cursor: default;
+}
+
+button {
+  -webkit-app-region: no-drag;
+}

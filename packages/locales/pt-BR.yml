@@ -1,0 +1,884 @@
+meta:
+  locale: pt-BR
+
+app:
+  name: Mimik
+  store_title: "Mimik: guias passo a passo e tutoriais"
+  description: "Grave qualquer tarefa do navegador como um guia passo a passo. Edite, narre com voz e exporte em vídeo, PDF ou DOCX. Código aberto."
+
+common:
+  loading: Carregando…
+  cancel: Cancelar
+  save: Salvar
+  delete: Excluir
+  back: Voltar
+  continue: Continuar
+  skip: Pular
+  export: Exportar
+  close: Fechar
+  undo: Desfazer
+  star: Favoritar
+  unstar: "Remover dos favoritos"
+  restore: Restaurar
+  updated: "Atualizado para a v$1"
+  whatsNew: Ver as novidades
+
+sidepanel:
+  connected: Conectado
+  connecting: Conectando…
+  heroTitle: "O que você quer capturar?"
+  heroSubtitle: "Grave qualquer fluxo de trabalho automaticamente"
+  searchPlaceholder: Buscar guias…
+  recentLabel: Recentes
+  notRecordable: Abra um site para começar a gravar
+
+library:
+  noGuidesTitle: Nenhum guia ainda
+  noGuidesSub: "Faça sua primeira captura para criar um guia"
+  noStarredTitle: Sem favoritos
+  noStarredSub: "Marque um guia como favorito para encontrá-lo rapidamente"
+  trashEmptyTitle: Lixeira vazia
+  trashEmptySub: "Tudo limpo por aqui!"
+  noMatchingGuides: Nenhum guia encontrado
+  moveToTrash: "Mover para a lixeira"
+  deletePermanently: "Excluir permanentemente"
+  openInFullView: "Abrir no painel"
+  openDashboard: "Abrir painel"
+  openDashboardHint: "Navegue, importe e exporte guias no painel"
+  duplicate: Duplicar
+  copyOfTitle: "Cópia de $1"
+  duplicateFailed: Não foi possível duplicar este guia
+  collapseSidebar: Recolher a barra lateral
+  expandSidebar: Expandir a barra lateral
+  allGuides: Todos os guias
+  starred: Favoritos
+  trash: Lixeira
+  searchPlaceholder: Buscar guias…
+
+guideme:
+  live: Ao vivo
+  roadblock: "Não encontramos este passo na página. Faça-o você mesmo para continuar."
+  manualStep: "Passos editados não são detectados. Clique em Próximo quando terminar."
+  stepOf: "Passo $1 de $2"
+  noDescription: Sem descrição
+  prev: Anterior
+  next: Próximo
+  finish: "Concluir"
+  exitTitle: "Vai sair?"
+  exitMessage: "O passo a passo e o destaque na página vão fechar."
+  stay: Ficar
+  exit: Sair
+  guideNotFound: Guia não encontrado
+
+guidemeCompletion:
+  title: "Arrasou, campeão!"
+  stepsCompleted: "$1 passo concluído."
+  stepsCompletedPlural: "Todos os $1 passos concluídos."
+  allDone: Pronto
+  runAgain: Repetir
+
+recording:
+  capturePaused: Captura em pausa
+  capturePausedBlur: Modo desfoque · captura em pausa
+  pauseCapture: Pausar captura
+  resumeCapture: Retomar captura
+  recording: "Gravando \xB7 $1 passo"
+  recordingPlural: "Gravando \xB7 $1 passos"
+  readyTitle: "Pronto para gravar"
+  readySub: "Clique na página para começar"
+  finishRecording: Terminar gravação
+  finish: Concluir
+  smartBlur: Desfoque inteligente
+  discard: Descartar
+  deleteStep: Excluir passo
+  justNow: Agora
+  secondsAgo: "$1s atrás"
+  minutesAgo: "$1min atrás"
+
+settings:
+  cardKeyboard: "Digitação e teclas"
+  cardKeyboardHint: "O que o seu teclado acrescenta a um guia."
+  shortcutsHint: "Funcionam em qualquer página que você visitar."
+  shortcutsChange: "Alterar no navegador"
+  shortcutRecordHint: "Começa na aba que você está vendo."
+  shortcutPauseHint: "Durante a gravação."
+  shortcutCaptureHint: "Salva a tela como um passo sem clicar, para menus abertos."
+  shortcutNotSet: "Não definido"
+  shortcutsChangeNote: "Seu navegador guarda os atalhos em uma página própria."
+  recordKeys: "Registrar atalhos e teclas nomeadas"
+  recordKeysHint: "Ctrl+S, Enter e afins viram passos."
+  recordTyping: "Registrar o que você digita"
+  recordTypingHint: "Tudo o que você digita em um campo vira uma etapa."
+  microphoneAccess: "Acesso ao microfone"
+  microphoneAccessAsk: "Seu navegador pergunta uma vez antes que o Mimik possa ouvir você."
+  microphoneAccessAllow: "Permitir"
+  title: Ajustes
+  aiDescriptions: "Descrições das etapas"
+  aiDescriptionsHint: "O Mimik escreve o texto de cada etapa e dá nome ao seu guia com o seu provedor de IA."
+  aiUseFor: "Usar IA para"
+  aiForSteps: "Descrições dos passos"
+  aiForStepsHint: "O texto abaixo de cada captura."
+  aiForGuide: "Título e resumo do guia"
+  aiForGuideHint: "Escritos quando você termina a gravação."
+  aiUnusedNote: "Os passos mantêm os títulos básicos e o guia recebe o nome do site ou app. A narração e a locução continuam usando sua chave."
+  provider: Provedor
+  model: Modelo
+  modelCustom: Modelo personalizado
+  baseUrl: URL base
+  ownServerHintOpenai: "Funciona com Ollama, LM Studio, vLLM ou qualquer servidor compatível com OpenAI."
+  ownServerHintAnthropic: "Funciona com um proxy LiteLLM ou qualquer servidor compatível com Anthropic."
+  apiKey: "Chave de API"
+  showKey: Mostrar chave
+  hideKey: Ocultar chave
+  clearKey: Limpar chave
+  aiLanguage: "Idioma das descrições"
+  aiAdvanced: "Avançado"
+  aiAdvancedHint: "Veja e altere os prompts que o Mimik envia."
+  aiPromptsTitle: "Prompts de IA"
+  aiPromptsHint: "Altere o que o Mimik pede ao seu provedor de IA ou adicione suas próprias regras abaixo."
+  aiPromptLabel: "Prompt do Mimik"
+  aiPromptDefault: "Padrão"
+  aiPromptEdited: "Editado"
+  aiPromptReset: "Redefinir prompt"
+  aiInstructionsLabel: "Suas instruções"
+  aiInstructionsPlaceholder: "ex.: Escreva na segunda pessoa. Chame o produto de “Acme”."
+  aiCustomised: "Personalizado"
+  aiReset: "Redefinir"
+  aiResetConfirmTitle: "Redefinir “$1”?"
+  aiResetConfirmMessage: "Seu prompt editado e suas instruções desta seção serão removidos. Não é possível desfazer."
+  aiExamplesSwitched: "Exemplos alterados para $1"
+  apiKeys: "Chaves de API"
+  aiSection: "IA"
+  ownServer: "Seu próprio servidor"
+  optional: "Opcional"
+  serverSpeaks: "Compatível com"
+  serverHeaders: "Cabeçalhos"
+  headerName: "Nome do cabeçalho"
+  headerValue: "Valor"
+  addHeader: "Adicionar cabeçalho"
+  removeHeader: "Remover cabeçalho"
+  protocolOpenai: "OpenAI"
+  protocolAnthropic: "Anthropic"
+  noServer: "Ainda não há endereço de servidor."
+  noKeyFor: "Ainda não há chave da $1."
+  addOneInKeys: "Adicione uma em Chaves de API."
+  addKey: "Adicionar chave"
+  noKey: "Sem chave"
+  voiceover: "Narração do vídeo"
+  voiceoverHint: "O Mimik lê o texto de cada passo sobre o vídeo exportado."
+  voice: "Voz"
+  voiceNarrationHint: "Explique o fluxo em voz alta e o Mimik escreve cada passo com o que você disse."
+  voiceNarration: "Narração por voz"
+  aiNoKey: "Sem chave de API, os passos recebem descrições simples baseadas em regras."
+  microphone: Microfone
+  microphoneDefault: "Padrão do sistema"
+  microphoneNeedsAccess: "Permita o acesso ao microfone para ver o nome dos seus dispositivos."
+  microphoneGrantAccess: Permitir acesso ao microfone
+  microphoneNone: "Nenhum microfone encontrado. Conecte um para vê-lo aqui."
+  microphoneUnavailable: "Microfone indisponível"
+  microphoneMissing: "O microfone escolhido não está conectado. Usando o padrão do sistema."
+  microphoneTest: Testar microfone
+  microphoneStatusAllowed: Permitido
+  microphoneStatusBlocked: Bloqueado
+  microphoneStatusPending: Ainda sem permissão
+  microphoneBlocked: "Microfone bloqueado. No ícone à esquerda da barra de endereço, defina Microfone como Permitir."
+  microphoneUnblockHow: Como desbloquear?
+  microphoneTestStop: Parar teste
+  microphoneTestFailed: "Não foi possível abrir esse microfone. Tente outro."
+  targetColor: "Destaque dos cliques"
+  brandColor: "Cor da marca"
+  targetColorHint: "O contorno ao redor do que você clicou."
+  brandColorHint: "Detalhes dos guias exportados."
+  branding: "Marca nas exportações"
+  logoAndFooter: "Logotipo e rodapé"
+  logoAndFooterHint: "Aparece em todo guia que você exporta."
+  brandLogo: "Logotipo"
+  uploadLogo: "Enviar logotipo"
+  replaceLogo: "Substituir"
+  removeLogo: "Remover logotipo"
+  footerLine: "Linha de rodapé"
+  footerLinePlaceholder: "ex.: Confidencial · Uso interno"
+  footerPresetConfidential: "Confidencial · Uso interno"
+  footerPresetNoDistribute: "Não distribuir"
+  attribution: 'Mostrar "Made with Mimik"'
+  saveSettings: Salvar ajustes
+  saved: Salvo
+  validatingKey: "Verificando chave\u2026"
+  keyValid: Chave de API verificada.
+  keyChecking: "Verificando…"
+  keyVerified: "Verificada"
+  keyRejected: "Recusada"
+  keyOffline: "Inacessível"
+  keyCheckModel: "Verifique o modelo"
+  keyInvalid: "O provedor recusou esta chave. Verifique e tente de novo."
+  keyModelRequired: Escolha um modelo antes de verificar esta chave.
+  keyModelInvalid: O modelo selecionado não está disponível neste provedor.
+  checkKey: Verificar chave
+  keyCannotSpend: "Esta chave não tem créditos. Só modelos gratuitos vão funcionar."
+  keyUnreachable: "Não foi possível se conectar ao provedor. Verifique sua conexão."
+  modelsFound: "$1 modelos disponíveis"
+  smartBlur: Desfoque inteligente
+  version: "Versão $1"
+  reportBug: "Relatar um erro"
+  machineTranslated: "Este idioma foi traduzido com IA, então alguns textos podem soar estranhos. Encontrou um erro? Abra um pull request no GitHub."
+  fixTranslation: "Corrigir uma tradução"
+  aboutSection: "Sobre"
+  appearance: "Aparência"
+  appearanceHint: "Claro, escuro ou igual ao seu sistema."
+  recordingControls: "Controles de gravação"
+  recordingControlsHint: "Onde Concluir, Pausar e sua última etapa aparecem enquanto você grava. Com o cartão, a página mantém a largura total."
+  recordingInPanel: "Painel lateral"
+  recordingInCard: "Cartão na página"
+  themeSystem: "Sistema"
+  themeLight: "Claro"
+  themeDark: "Escuro"
+  starCtaTitle: "Gostou do Mimik?"
+  starCtaMessage: "Uma estrela no GitHub ajuda outras pessoas a encontrar o Mimik."
+  starOnGithub: "Deixar uma estrela no GitHub"
+
+blurPresets:
+  email: E-mail
+  phoneNumbers: Telefones
+  ssn: SSN
+  creditCard: Cartão de crédito
+  ipAddress: Endereço IP
+  macAddress: Endereço MAC
+
+desktop:
+  collapse: "Recolher"
+  expand: "Expandir"
+  starting: "Iniciando…"
+  capturingStep: "Capturando a etapa $1"
+  tipArmed: "Cada clique é salvo como uma etapa."
+  tipPaused: "Nada é gravado enquanto está pausado."
+  tipWaiting: "Seu primeiro clique vai aparecer aqui."
+  tipLabel: "Dica:"
+  hintStartStop: "pressione $1 para iniciar e parar."
+  hintCapture: "pressione $1 para capturar sem clicar."
+  micAccessAsk: "O macOS pergunta uma vez antes que o Mimik possa ouvir você."
+  micAccessRefused: "Recusado. Ative o Mimik em Privacidade e Segurança."
+  armed: "Pronto"
+  screenshotDelay: "Atraso da captura"
+  keepClicksBeyondArea: "Capturar cliques fora da área"
+  keepClicksBeyondAreaHint: "No modo Área, cliques fora da área também viram etapas, enquadradas na área."
+  guideInApp: "Guia no $1"
+  capturingSection: "Captura"
+  milliseconds: ms
+  captureMode: O que capturar
+  modeWindow: Janela
+  modeScreen: Tela
+  modeArea: Área
+  drawArea: "Arraste para desenhar a área de captura"
+  startSheetTitle: Iniciar uma captura
+  permissionsTitle: "Permita que o Mimik grave"
+  permissionsIntro: "O Mimik precisa de duas permissões antes de gravar."
+  permissionAccessibility: "Acessibilidade"
+  permissionAccessibilityHint: "Permite que o Mimik veja onde você clica e o que digita."
+  permissionScreen: "Gravação de tela"
+  permissionScreenHint: "Permite que o Mimik tire a captura de cada passo."
+  permissionScreenRestart: "Reinicie o Mimik para terminar de ativar."
+  permissionRestart: "Reiniciar o Mimik"
+  moreStepsAfter: "As novas etapas entram depois da etapa $1."
+  moreStepsFirst: "As novas etapas entram antes da etapa 1."
+  startButton: Iniciar
+  shortcutsSection: "Atalhos"
+  generalSection: "Geral"
+  appLanguage: "Idioma do app"
+  appLanguageHint: "O idioma das telas do Mimik. As descrições das etapas têm sua própria configuração de idioma."
+  languageSystem: "Igual ao sistema"
+  cardLanguage: "Idioma"
+  cardStartup: "Inicialização"
+  cardUpdates: "Atualizações"
+  startAtLogin: "Abrir ao iniciar a sessão"
+  startAtLoginHint: "O Mimik abre na bandeja, sem janela."
+  startAtLoginHintMac: "O Mimik abre quando você inicia a sessão."
+  version: "Versão $1"
+  versionHint: "O Mimik procura atualizações enquanto está aberto."
+  checkUpdates: "Procurar atualizações"
+  lastChecked: "Última verificação: $1"
+  checking: "Verificando…"
+  downloading: "Baixando $1%"
+  restartToUpdate: "Reiniciar para atualizar"
+  versionAvailable: "Versão $1 disponível"
+  versionDownloaded: "Versão $1 baixada"
+  tryAgain: "Tentar novamente"
+  updatesUnavailable: "Ainda não há atualizações para esta versão"
+  restart: "Reiniciar"
+  trayChecking: "Procurando atualizações…"
+  trayDownloading: "Baixando atualização $1%"
+  trayQuit: "Sair do Mimik"
+  trayRecording: "O Mimik está gravando. Clique para terminar."
+  cannotRecord: "O Mimik não consegue gravar"
+  needsX11: "Para gravar outros apps é preciso uma sessão X11. Saia da sessão, escolha uma sessão Xorg ou X11 na tela de login e abra o Mimik de novo. Para gravar no navegador, use a extensão do Mimik."
+  getExtension: "Obter a extensão"
+  updateReady: "Atualização pronta"
+  updateReadyMessage: "Reinicie o Mimik para instalar a versão $1."
+  later: "Mais tarde"
+  updateFailed: "Não foi possível acessar o servidor de atualizações"
+  upToDate: "Você está com a versão mais recente"
+  cardScreenshots: "Capturas de tela"
+  cardGlobalKeys: "Teclas globais"
+  cardGlobalKeysHint: "Retiradas de todos os aplicativos enquanto o Mimik estiver em execução."
+  zoomLevel: "Aproximar no clique"
+  zoomLevelHint: "Novas gravações começam aqui. Automático mantém todas as etapas do mesmo tamanho."
+  zoomAuto: "Automático"
+  zoomGuide: "Zoom"
+  typingDebounce: "Encerrar a etapa de digitação após"
+  typingDebounceHint: "Uma pausa desse tamanho encerra a etapa de digitação."
+  cardScreenshotsHint: "O que a captura de cada etapa mostra."
+  captureModeHint: "Janela acompanha o app em que você clica."
+  screenshotDelayHint: "Espera antes da captura, para menus com animação."
+  seconds: "s"
+  shortcutRecord: "Iniciar ou finalizar uma gravação"
+  shortcutPause: "Pausar ou retomar"
+  shortcutCapture: "Capturar uma etapa agora"
+  shortcutPress: "Pressione as teclas…"
+  shortcutClear: "Limpar"
+
+guide:
+  guideMe: "Me guie"
+  untitled: Guia sem título
+  writingTitle: Escrevendo um título com os passos capturados...
+  writingDescription: "Escrevendo uma descri\xE7\xE3o\u2026"
+  notFound: "Guia não encontrado."
+  stepCount: "$1 passo"
+  stepCountPlural: "$1 passos"
+  pageOf: "$1 / $2"
+  onDomain: "Guia em $1"
+  newGuide: Novo guia
+
+sort:
+  recentFirst: Mais recentes
+  oldestFirst: Mais antigos
+  alphaAZ: "A–Z"
+  mostSteps: Mais passos
+  gridView: Ver em grade
+  listView: Ver em lista
+
+search:
+  recent: "Recentes"
+  results: "$1 guias"
+  resultsOne: "1 guia"
+  noMatch: "Nenhum guia corresponde a “$1”"
+  noMatchHint: "Tente uma palavra do título do guia."
+  noGuidesYet: Nenhum guia ainda
+
+confirmDelete:
+  title: "Excluir este guia?"
+  message: Vai ser excluído de vez. Não tem como desfazer.
+  confirm: "Excluir permanentemente"
+
+editor:
+  backToLibrary: "Voltar para a biblioteca"
+  openInDashboard: Abrir
+  openInDashboardHint: "Abra no painel para editar ou exportar"
+  guideMe: "Me guie"
+  guideMeUnavailable: "Este guia não tem passos para repetir"
+  deleteThisStep: "Excluir este passo?"
+  selectStep: Selecionar passo
+  selectedCount: "$1 selecionados"
+  deleteSelectedStep: "Excluir $1 passo selecionado?"
+  deleteSelectedSteps: "Excluir $1 passos selecionados?"
+  copyTo: Copiar para
+  deselect: Desmarcar
+  copyStepTo: "Copiar 1 passo para…"
+  copyStepsTo: "Copiar $1 passos para…"
+  copyStepsHint: "Capturas, desfoque e edições vão junto. Este guia continua como está."
+  searchGuidesToCopyTo: Buscar guias pelo título
+  allGuides: Todos os guias
+  sameSite: Mesmo site
+  sameApp: Mesmo app
+  newGuide: Novo guia
+  noGuidesToCopyTo: Nenhum guia encontrado
+  copyStep: Copiar 1 passo
+  copySteps: "Copiar $1 passos"
+  copyStepsFailed: Não foi possível copiar estes passos. Tente novamente.
+  stepCopied: "1 passo copiado de “$2”"
+  stepsCopied: "$1 passos copiados de “$2”"
+  newStep: Novo
+  copyScreenshot: Copiar captura
+  noScreenshot: Sem captura
+  edit: Editar
+  done: Pronto
+  versionHistory: Histórico de versões
+  moreActions: Mais ações
+  generateDescription: Gerar descrição
+  regenerateDescription: Regenerar descrição
+  generatingDescription: "Gerando\u2026"
+  descriptionPlaceholder: Adicionar uma descrição
+  descriptionErrorNoApiKey: "Adicione uma chave de API de IA em Ajustes para gerar descrições."
+  descriptionErrorNoSteps: "Este guia não tem passos descritos para resumir."
+  descriptionErrorFailed: "Não foi possível gerar uma descrição. Tente de novo."
+  descriptionErrorSaveFailed: "Não foi possível salvar a nova descrição. Tente de novo."
+  writingStepDescription: "Escrevendo descri\xE7\xE3o\u2026"
+  transcribingStepDescription: "Transcrevendo o que você disse…"
+  rewriteAskAi: "Perguntar \xE0 IA"
+  rewritePlaceholder: "Diga \xE0 IA como editar este texto\u2026"
+  rewriteEnter: Enter
+  rewriteShorter: Mais curto
+  rewriteDetail: Mais detalhes
+  rewriteGrammar: "Corrigir gram\xE1tica"
+  rewriteFormal: Mais formal
+  rewriteCasual: Mais informal
+  rewriteReplace: Substituir
+  rewriteDiscard: Descartar
+  rewriteErrorNoApiKey: "Adicione uma chave de API de IA em Ajustes para reescrever textos."
+  rewriteErrorFailed: "Não foi possível reescrever a seleção. Tente de novo."
+  rewriteErrorStale: "O texto mudou. Selecione-o de novo."
+  restoreSpoken: Restaurar o que você falou
+
+capture:
+  recordSteps: "Gravar passos"
+  moreStepsTitle: "Capturar mais passos"
+  moreStepsBody: "Os novos passos entram aqui. Escolha a aba que quer gravar."
+  newCaptureBody: Escolha a aba em que gravar.
+  startCapture: "Começar a capturar"
+  noRecordableTabs: Nenhuma aba gravável está aberta nesta janela.
+
+blocks:
+  add: Adicionar bloco
+  heading: "Título"
+  callout: Nota
+  headingPlaceholder: "Título da seção"
+  calloutPlaceholder: Escreva uma nota
+  deleteHeading: "Excluir este título?"
+  deleteCallout: "Excluir esta nota?"
+  variantInfo: "Informação"
+  variantWarning: Aviso
+  variantError: Erro
+  variantSuccess: Sucesso
+  variantCustom: Personalizado
+
+history:
+  title: Histórico de versões
+  current: Atual
+  restore: Restaurar
+  unchangedVersions: "Versões sem alterações ($1)"
+  readOnlyBanner: "Você está vendo uma versão anterior. Feche o histórico de versões para voltar."
+  loadError: "Não foi possível carregar o histórico de versões. Tente de novo."
+  restoreError: "Não foi possível restaurar. Tente de novo daqui a pouco."
+  storageFull: "Sem espaço para salvar um ponto de desfazer. Exclua um guia e tente de novo."
+  empty: "Nenhuma versão anterior ainda. Edite o guia para criar uma."
+  nameVersion: "Dar um nome a esta versão"
+  namePlaceholder: Nome da versão
+  allVersions: Todas as versões
+  namedOnly: Só versões com nome
+  emptyNamed: "Nenhuma versão com nome ainda."
+  renameError: "Não foi possível salvar o nome. Tente de novo."
+  changeTitle: Título alterado
+  changeStepAdded: "$1 passo adicionado"
+  changeStepsAdded: "$1 passos adicionados"
+  changeStepRemoved: "$1 passo excluído"
+  changeStepsRemoved: "$1 passos excluídos"
+  changeStepEdited: "$1 passo editado"
+  changeStepsEdited: "$1 passos editados"
+  changeStepReordered: Passos reordenados
+  changeLink: "$1 link alterado"
+  changeLinks: "$1 links alterados"
+  changeImageReplaced: "$1 imagem substituída"
+  changeImagesReplaced: "$1 imagens substituídas"
+  changeImageCropped: "$1 imagem recortada"
+  changeImagesCropped: "$1 imagens recortadas"
+  changeImageAnnotated: "$1 imagem anotada"
+  changeImagesAnnotated: "$1 imagens anotadas"
+  changeImageBlurred: "$1 imagem desfocada"
+  changeImagesBlurred: "$1 imagens desfocadas"
+  changeAltText: Texto alternativo editado
+
+emptyGuide:
+  title: "Este guia está vazio"
+  subtitle: "Grave passos para preenchê-lo"
+
+blurPanel:
+  title: Desfoque inteligente
+  manualMode: Modo manual
+  selectElements: "Selecione elementos para desfocar"
+  clickToBlur: "Clique para desfocar"
+  done: Pronto
+  doneResume: "Pronto \xB7 Continuar gravação"
+  resetAll: Limpar tudo
+
+screenshotView:
+  zoomIn: Aumentar zoom
+  zoomOut: Diminuir zoom
+  saved: Salvo
+  editMenu: Editar captura
+  downloadEdited: "Imagem editada"
+  downloadOriginal: "Imagem original"
+  edit: "Editar"
+  addImage: Adicionar imagem
+  replaceImage: Substituir imagem
+  replaceHint: "Escolha uma nova imagem para este passo"
+  replaceDrop: "Clique para procurar ou solte uma imagem aqui"
+  replaceFormats: "PNG, JPG ou WebP"
+  download: Baixar
+  deleteImage: Excluir imagem
+  deleteConfirm: "Excluir esta captura? Não é possível desfazer."
+  imageDeleted: Imagem excluída
+  altButton: ALT
+  altLabel: Texto alternativo
+  altPlaceholder: "Descreva esta imagem para leitores de tela"
+
+annotationEditor:
+  title: Editar captura
+  toolBox: Retângulo
+  toolArrow: Seta
+  toolText: Texto
+  toolSelect: "Selecionar"
+  addTarget: "Adicionar alvo de clique"
+  toolRedact: Ocultar
+  toolCrop: Recortar
+  colorLabel: Cor
+  textPlaceholder: Digite algo…
+  targetBorder: Estilo da borda
+  modeAnnotate: "Anotar"
+  toolLine: "Linha"
+  duplicate: "Duplicar"
+  toolEllipse: "Elipse"
+  lineColor: "Cor da linha"
+  fillColor: "Preenchimento"
+  lineWidth: "Espessura"
+  cornerRadius: "Raio"
+  font: "Fonte"
+  bold: "Negrito"
+  italic: "Itálico"
+  lineHeight: "Entrelinha"
+  width_none: "Sem contorno"
+  width_xs: "Muito fina"
+  width_sm: "Fina"
+  width_ms: "Média fina"
+  width_md: "Média"
+  width_ml: "Média grossa"
+  width_lg: "Grossa"
+  width_xl: "Muito grossa"
+  zoom: "Zoom"
+  cropHint: "Arraste para recortar ou arraste um canto para redimensionar"
+  resetCrop: "Redefinir recorte"
+  arrowEnd: "Ponta da seta"
+  fontSize: "Tamanho"
+  undo: "Desfazer"
+  redo: "Refazer"
+  end_none: "Nenhuma"
+  end_bar: "Barra"
+  end_arrow: "Seta"
+  end_arrow_solid: "Seta sólida"
+  end_circle: "Círculo"
+  end_circle_solid: "Círculo sólido"
+  end_square: "Quadrado"
+  end_square_solid: "Quadrado sólido"
+  done: Pronto
+
+exportPreview:
+  voiceover: "Narração"
+  voiceoverHint: "Lê cada passo em voz alta. Cada passo fica na tela até a voz terminar."
+  audio: "Áudio"
+  audioSilent: "Sem som"
+  audioNarrated: "Narrado"
+  voiceoverNoKey: "Adicione uma chave da OpenAI ou ElevenLabs em Ajustes para narrar os vídeos."
+  videoLength: "Duração do vídeo $1"
+  videoLengthVoice: "Duração do vídeo $1 → $2 com narração"
+  voiceoverCost: "$1 clipes · cerca de $2 caracteres a sintetizar"
+  voiceoverFailed: "A narração do vídeo falhou. Verifique a chave de API em Ajustes."
+  voiceoverNoAudioCodec: "O vídeo está sem som. Este navegador não consegue adicionar áudio aos vídeos."
+  voiceoverNoKeySkip: "O vídeo está sem som. Adicione uma chave de API de narração em Ajustes."
+  voiceoverNothingToSay: "O vídeo está sem som. Este guia não tem texto para ler em voz alta."
+  narrating: "Narrando o passo $1 de $2"
+  preparingVoiceover: "Preparando a narração"
+  stepDescriptions: "Textos dos passos"
+  stepDescriptionsHint: "Desenhar o texto do passo em cada quadro"
+  stepNumbers: "Números dos passos"
+  stepNumbersHint: "Começar o texto de cada passo no vídeo e no GIF com o número dele"
+  resolution: "Qualidade do vídeo"
+  gifQuality: "Qualidade do GIF"
+  gif_low: "Baixa"
+  gif_medium: "Média"
+  gif_high: "Alta"
+  res_720p: "720p"
+  res_1080p: "1080p"
+  title: "Prévia da exportação"
+  cover: "Capa"
+  coverHint: "Uma primeira página separada com o título e os detalhes"
+  screenshots: "Capturas"
+  screenshotsHint: "Desative para um documento compacto só de texto"
+  stepUrls: "Links dos passos"
+  stepUrlsHint: "Mostrar o endereço da página em que cada passo aconteceu"
+  imageScale: "Tamanho da captura"
+  scale_small: "Pequeno"
+  scale_medium: "Médio"
+  scale_large: "Grande"
+  download: "Exportar $1"
+  rendering: "Atualizando prévia"
+  videoReady: "$1 passos · cerca de $2 min de vídeo"
+  videoReadyHint: "Guias longos não são codificados automaticamente. A prévia cobre todos os passos."
+  videoGenerate: "Gerar prévia"
+  modeDocument: "Documento"
+  modeVideo: "Vídeo"
+  encodingVideo: "Codificando a prévia do vídeo"
+  videoFailed: "Não foi possível criar a prévia do vídeo"
+  bundle: "Arquivo Mimik"
+  bundleHint: "Um arquivo .mimik que outra pessoa pode importar e editar"
+  bundleStripInputs: "Remover texto digitado"
+  bundleStripInputsHint: "Remove esse texto dos passos e dos links. As capturas continuam mostrando o que estava na tela."
+  bundleUrls: "Detalhe dos links"
+  url_origin: "Site"
+  url_path: "Página"
+  url_full: "Completo"
+  bundleRedactionNote: "As áreas desfocadas são apagadas das imagens exportadas."
+  bundleTypedWarning: "$1 captura mostra texto que você digitou. Desfoque-a antes de compartilhar."
+  bundleTypedWarningPlural: "$1 capturas mostram texto que você digitou. Desfoque-as antes de compartilhar."
+videoPlayer:
+  stepCount: "$1 passos"
+  previousStep: "Passo anterior"
+  nextStep: "Próximo passo"
+  speed: "Velocidade de reprodução"
+  mute: "Silenciar"
+  unmute: "Ativar som"
+  spoken: "Passo narrado"
+  play: "Reproduzir"
+  pause: "Pausar"
+  fullscreen: "Tela cheia"
+  exitFullscreen: "Sair da tela cheia"
+
+exportMenu:
+  docx: DOCX
+  html: HTML
+  markdown: Markdown
+  pdf: PDF
+  gif: GIF
+  video: Vídeo
+  cancelProgress: "Cancelar · $1%"
+  bundle: "Arquivo Mimik"
+
+onboarding:
+  getStarted: "Começar"
+  blurTitle: Desfoque inteligente
+  openMimik: "Abrir o Mimik"
+  letterHello: "Mais uma coisa 👋"
+  letterNote: "Um recado do time 👋"
+  letterThanks: "A gente precisa dizer: $1 Nas últimas semanas, as estrelas do Mimik no GitHub explodiram, e é tudo graças a vocês. Vocês compartilharam o Mimik com amigos, colegas e comunidades, e a gente ficou de queixo caído."
+  letterThankYou: "obrigado."
+  letterWorld: "A melhor parte de criar o Mimik tem sido ver como pessoas do mundo todo usam ele. Esperamos que ele continue economizando tempo e dinheiro para vocês e mantendo seus dados onde eles devem ficar: com vocês. Tem uma ideia, um pedido de recurso ou feedback? $1. A gente lê cada mensagem."
+  letterSayHi: "Venham dar um oi no GitHub"
+  letterNewsTitle: "🚀 Novidade: o Mimik Desktop chegou!"
+  letterNewsBody: "Tudo o que vocês amam na extensão do Mimik, agora direto no computador. Já disponível para Windows, e em breve para Mac."
+  letterNewsAction: "Baixar o Mimik Desktop"
+  letterPromiseTitle: "Primeiro, uma promessa"
+  letterPromise: "O Mimik sempre vai ser gratuito e com licença MIT. Sem pegadinhas nem paywalls no futuro. Essa é a nossa promessa para vocês e para a comunidade incrível que está crescendo em volta dele."
+  letterAskTitle: "E um pequeno pedido 🙏"
+  letterAskIntro: "Vocês são o motivo de o Mimik estar crescendo, então continuem assim:"
+  letterAskWrite: "Escrevam sobre ele no blog, na newsletter ou nas redes (principalmente no Reddit, a gente ama o Reddit!)"
+  letterAskVideo: "Façam um tutorial ou uma demonstração no YouTube"
+  letterAskFriend: "Contem para um amigo ou colega que vai adorar"
+  letterSponsor: "Cada artigo, vídeo e menção ajuda mais pessoas a encontrar o Mimik, e a gente vê e ama cada um. Querem ir além? Vocês podem $1. Todo apoio, grande ou pequeno, ajuda o projeto a continuar crescendo."
+  letterSponsorLink: "patrocinar o Mimik no GitHub"
+  letterSignoff: "Com muito carinho,"
+  letterTeam: "Equipe Westpoint ❤️"
+  helloTitle: "Obrigado por instalar o Mimik!"
+  helloMessage: "Faça uma tarefa uma vez, do jeito de sempre, e o Mimik transforma cada clique em um passo com captura de tela. Vamos configurar, leva só um minuto."
+  chipDevice: "Roda no seu dispositivo"
+  chipAccount: "Sem conta"
+  chipFree: "Grátis e MIT"
+  loginWelcome: "Bem-vindo de volta"
+  loginReady: "Mimik está pronto"
+  writeTitle: "Como o Mimik deve escrever seus passos?"
+  writeMessage: "Cada clique vira um passo com uma captura de tela. Escolha como o texto é escrito. Dá para mudar isso quando quiser em Ajustes."
+  basicTitle: "Títulos básicos"
+  basicMessage: "Títulos claros a partir do que você clicou. Funciona na hora, sem configurar nada."
+  basicBest: "Melhor para testar o Mimik agora"
+  basicExample: "Clicar em \"Cobrança\""
+  aiChoiceTitle: "Descrições com IA"
+  aiChoiceMessage: "Frases completas do seu provedor de IA, com sua própria chave. Também libera a narração por voz."
+  aiChoiceMessageNoVoice: "Frases completas do seu provedor de IA, com sua própria chave."
+  aiBest: "Melhor para guias que você compartilha"
+  aiExample: "Abra Cobrança para ver suas faturas e seu plano"
+  exampleMeta: "Passo 2 · Cobrança"
+  recordTitle: "Onde devem ficar os controles de gravação?"
+  recordMessage: "Concluir, Pausar e sua última etapa ficam à mão enquanto você grava. Você pode mudar isso quando quiser nas Configurações."
+  panelMessage: "Um painel ao lado da página com seus controles e etapas. Ele abre quando você clica no ícone do Mimik."
+  panelBest: "Melhor em telas largas"
+  cardMessage: "Um pequeno cartão flutua sobre a página, que mantém a largura total. Clique no ícone do Mimik para abri-lo."
+  cardBest: "Melhor em notebooks"
+  keyPrivacy: "Sua chave fica neste dispositivo e só vai para o provedor que você escolher."
+  voiceToggleTitle: "Narração por voz"
+  voiceToggleHint: "Diga o que está fazendo e o Mimik junta isso ao próximo passo."
+  voiceNeedsKey: "A narração usa OpenAI ou Groq para converter fala em texto. Adicione uma chave de um deles."
+  makeTitle: "Deixe com a sua cara"
+  makeMessage: "Tudo opcional. Dá para mudar qualquer coisa depois em Ajustes."
+  brandTitle: "Sua marca nas exportações"
+  brandHint: "Seu logotipo e sua cor em todo guia PDF e HTML que você exportar."
+  blurHint: "Desfoque dados sensíveis nas capturas antes que qualquer coisa saia do seu dispositivo."
+  readyTitle: "Tudo pronto para capturar"
+  readyStepOpen: "Abra o Mimik"
+  readyStepStart: "Clique em \"Começar a capturar\""
+  readyStepClick: "Faça sua tarefa clicando normalmente"
+  readyStepGuide: "Receba um guia passo a passo"
+  pinHere: "Fixe aqui"
+  pinCardTitle: "Fixe o Mimik para acesso rápido"
+  pinCardMessage: "Clique no ícone de quebra-cabeça ao lado da barra de endereço e fixe o Mimik na barra de ferramentas."
+  pinMenuTitle: "Extensões"
+  trayTitle: "O Mimik fica na sua bandeja"
+  trayMessage: "Comece uma captura pelo ícone do Mimik ao lado do relógio ou pressione $1 em qualquer app."
+  menuBarTitle: "O Mimik fica na sua barra de menus"
+  menuBarMessage: "Comece uma captura pelo ícone do Mimik no topo da tela ou pressione $1 em qualquer app."
+  starCardTitle: "Gratuito e MIT, para sempre"
+  starCardMessage: "Sem conta, sem paywall. Uma estrela no GitHub ajuda outras pessoas a encontrar o Mimik."
+  demoApp: "Acme Admin"
+  demoTitle: "Convidar um colega"
+  demoField: "E-mail"
+  demoButton: "Enviar convite"
+  demoStepType: "Digitar \"ana@acme.com\" em E-mail"
+  demoStepClick: "Clicar em \"Enviar convite\""
+  demoPlusStep: "+1 passo"
+  demoGuideMeta: "2 passos · agora"
+
+steps:
+  pressKey: 'Pressionar $1 em "$2"'
+  toggleCheckbox: 'Marcar "$1"'
+  select: 'Selecionar "$1"'
+  enter: 'Digitar em "$1"'
+  toggleSwitch: 'Ligar/desligar "$1"'
+  clickLink: 'Clicar no link "$1"'
+  click: 'Clicar em "$1"'
+  clickHere: "Clicar aqui"
+  rightClick: 'Clicar com o botão direito em "$1"'
+  rightClickHere: "Clicar com o botão direito aqui"
+  typeIntoField: 'Digitar no campo $1 "$2"'
+  typeInto: 'Digitar em "$1"'
+  type: 'Digitar "$1"'
+  typeSecret: "Digitar senha"
+  copyFrom: 'Copiar de "$1"'
+  pasteInto: 'Colar em "$1"'
+  cutFrom: 'Recortar de "$1"'
+  drag: 'Arrastar "$1"'
+  navigate: "Ir para a página"
+  typeValueInto: 'Digitar "$1" em $2'
+  clearField: "Limpar $1"
+  textField: "campo de texto"
+  defaultAction: "$1 $2"
+
+export:
+  guideLabel: "GUIA"
+  endLabel: "GUIA CONCLUÍDO"
+  stepsRange: "Passos $1–$2 de $3"
+  stepOf: "Passo $1 de $2"
+  madeWith: "Made with Mimik"
+  created: Criado
+  source: Origem
+  step: Passo
+  steps: Passos
+  stepLabel: "Passo $1"
+  stepsCount: "$1 passos"
+  createdLabel: "Criado em $1"
+  sourceLabel: "Origem: $1"
+
+voice:
+  turnOn: "Ligar narração por voz"
+  turnOff: "Desligar narração por voz"
+  needsApiKey: "A narração precisa de uma chave de API"
+  pausedWithCapture: "A narração está em pausa junto com a captura"
+  micStarting: "Ligando o microfone…"
+  micHearing: "Ouvindo você"
+  micQuiet: Sem som
+  nextRecording: "A narração por voz está ligada e começa na sua próxima gravação."
+  orderHint: "Diga o que você vai fazer e depois faça. Suas palavras vão para a próxima ação."
+  transcribing: "Transcrevendo sua narração…"
+  transcribingHint: "As descrições dos passos são atualizadas ao terminar."
+  narrated: "Narração adicionada a $1 passo."
+  narratedPlural: "Narração adicionada a $1 passos."
+  narratedNone: "Nenhuma narração correspondeu a um passo."
+  guideSafe: "Seu guia e suas capturas não foram afetados."
+  openSettings: Abrir ajustes
+  errorPermissionDenied: "O acesso ao microfone foi bloqueado."
+  errorNoDevice: "Nenhum microfone encontrado."
+  errorNoAudio: "O microfone não captou nenhum som."
+  errorMissingApiKey: "A narração precisa de uma chave de API de transcrição."
+  errorStreamEnded: "O microfone parou no meio da gravação."
+  errorNotRecording: "A narração não estava ativa."
+  errorAlreadyRecording: "A narração já estava ativa."
+  errorUnsupported: "Este navegador não consegue gravar narração por voz."
+  errorUnknown: "A narração parou inesperadamente."
+
+micPermission:
+  title: Permitir acesso ao microfone
+  checkingMessage: "Verificando o acesso ao microfone…"
+  promptingMessage: "Escolha Permitir no aviso do navegador. Esta aba fecha sozinha."
+  grantedTitle: Microfone pronto
+  grantedMessage: "Voltando."
+  deniedTitle: O acesso ao microfone está bloqueado
+  deniedMessage: "Clique no ícone à esquerda da barra de endereço, defina Microfone como Permitir e tente de novo."
+  retry: Tentar de novo
+  privacy: "O áudio vai para o seu provedor de transcrição. O Mimik nunca o armazena."
+
+aiStatus:
+  rejected: "$1 rejeitou sua chave de API."
+  noCredits: "Sua conta $1 não tem créditos."
+  rateLimited: "$1 está limitando as requisições do Mimik."
+  modelInvalid: "$1 não oferece esse modelo para sua conta."
+  quota: "Essa requisição foi grande demais para este modelo."
+  network: "Não foi possível contatar $1."
+  unknown: "$1 recusou a requisição."
+  actionCheckKey: "Confira sua chave em Ajustes."
+  actionAddCredits: "Adicione créditos e verifique a chave de novo."
+  actionWait: "Espere um momento antes de continuar gravando."
+  actionPickModel: "Escolha outro modelo em Ajustes."
+  actionConnection: "Verifique sua conexão."
+
+stepSource:
+  ai: "IA"
+  voice: "Voz"
+  basic: "Básica"
+  edited: "Editada"
+  hint: "De onde veio esta descrição"
+
+import:
+  title: "Importar guia"
+  dialogDescription: "Revise um arquivo de guia antes de adicioná-lo à sua biblioteca"
+  button: "Importar"
+  dropHere: "Solte um arquivo .mimik para importar"
+  reading: "Lendo o arquivo"
+  confirm: "Adicionar à biblioteca"
+  cancel: "Cancelar"
+  guideMeHint: "Gravado em $1. O \"Me guie\" só reproduz nesse site."
+  noteRedacted: "As áreas desfocadas foram removidas pelo autor e não podem ser recuperadas."
+  noteInputs: "O texto digitado nos campos foi deixado de fora."
+  noteUrls: "Os links foram encurtados para o endereço da página."
+  noteUrlsOrigin: "Os links foram encurtados para o endereço do site."
+  errorUnreadable: "Não foi possível abrir este arquivo. Ele pode estar danificado ou incompleto."
+  errorNotABundle: "Este não é um arquivo Mimik. Escolha um arquivo exportado do Mimik."
+  errorVersion: "Este arquivo foi criado em uma versão mais nova do Mimik. Atualize o Mimik e tente de novo."
+  errorEmpty: "Este arquivo não tem nenhum passo."
+  errorFailed: "Não foi possível salvar o guia na sua biblioteca. Tente importar de novo."
+transcript:
+  title: Transcrição
+  empty: Nada foi narrado nesta gravação.
+  loadError: "Não foi possível carregar a transcrição. Tente de novo."
+  filterAll: "Tudo ($1)"
+  filterUnused: "Não usadas ($1)"
+  privacyNote: "Fica só neste dispositivo. Nunca entra nos guias exportados e é apagada com o guia."
+  usedInStep: "Passo $1"
+  readOnlyHint: "Ative Editar na barra superior para adicionar estas falas a um passo."
+  notUsed: "Não usada"
+  filteredOut: "Filtrada"
+  addToStep: "Adicionar ao passo $1"
+  copyAll: Copiar tudo
+  download: Baixar
+  delete: "Excluir transcrição"
+  confirmDelete: "Excluir esta transcrição? Não é possível desfazer."
+
+stepKind:
+  click: "Clique"
+  type: "Digitar"
+  key: "Tecla"
+  navigate: "Página"
+  note: "Nota"
+outline:
+  title: Sumário
+  untitledStep: Passo sem título
+  moreSelected: "+$1"
+  instructions: Pressione Espaço para pegar um passo. Mova com as setas, solte com Espaço ou cancele com Esc.
+  pickedUp: "$1 selecionado"
+  movedOver: "$1 movido sobre $2"
+  droppedOver: "$1 solto sobre $2"
+  dropped: "$1 solto"
+  cancelled: "Movimentação de $1 cancelada"
+  selected: Selecionado

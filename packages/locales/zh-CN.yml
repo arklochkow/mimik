@@ -1,0 +1,884 @@
+meta:
+  locale: zh-CN
+
+app:
+  name: Mimik
+  store_title: "Mimik：分步指南与教程"
+  description: "将任何浏览器工作流录制成分步指南。可编辑、添加语音讲解，并导出为视频、PDF 或 DOCX。本地优先，开源透明。"
+
+common:
+  loading: 正在加载…
+  cancel: 取消
+  save: 保存
+  delete: 删除
+  back: 返回
+  continue: 继续
+  skip: 跳过
+  export: 导出
+  close: 关闭
+  undo: 撤销
+  star: 收藏
+  unstar: 取消收藏
+  restore: 恢复
+  updated: "已更新到 v$1"
+  whatsNew: 查看更新内容
+
+sidepanel:
+  connected: 已连接
+  connecting: 正在连接…
+  heroTitle: 想要捕获什么内容？
+  heroSubtitle: 自动录制任何工作流
+  searchPlaceholder: 搜索指南…
+  recentLabel: 最近使用
+  notRecordable: 打开一个网站即可开始捕获
+
+library:
+  noGuidesTitle: 暂无指南
+  noGuidesSub: 开始捕获，创建你的第一份指南
+  noStarredTitle: 暂无收藏指南
+  noStarredSub: 收藏指南后可快速找到它
+  trashEmptyTitle: 回收站为空
+  trashEmptySub: 干干净净！
+  noMatchingGuides: 没有匹配的指南
+  moveToTrash: 移至回收站
+  deletePermanently: 永久删除
+  openInFullView: 在完整视图中打开
+  openDashboard: "打开仪表盘"
+  openDashboardHint: "在那里浏览、导入和导出指南"
+  duplicate: 创建副本
+  copyOfTitle: "$1 的副本"
+  duplicateFailed: "无法创建此指南的副本"
+  collapseSidebar: 收起侧边栏
+  expandSidebar: 展开侧边栏
+  allGuides: 全部指南
+  starred: 已收藏
+  trash: 回收站
+  searchPlaceholder: 搜索指南…
+
+guideme:
+  live: 实时
+  roadblock: "在页面上找不到此步骤。请手动完成以继续。"
+  manualStep: "已编辑的步骤无法自动检测。完成后请点击“下一步”。"
+  stepOf: "第 $1 步，共 $2 步"
+  noDescription: 无描述
+  prev: 上一步
+  next: 下一步
+  finish: 完成
+  exitTitle: 要离开了吗？
+  exitMessage: "引导及页面覆盖层将关闭。"
+  stay: 留在此处
+  exit: 退出
+  guideNotFound: 未找到指南
+
+guidemeCompletion:
+  title: "全部完成！"
+  stepsCompleted: "已完成 $1 个步骤。"
+  stepsCompletedPlural: "已完成全部 $1 个步骤。"
+  allDone: 完成
+  runAgain: 再运行一次
+
+recording:
+  capturePaused: 捕获已暂停
+  capturePausedBlur: 模糊模式 · 捕获已暂停
+  pauseCapture: 暂停捕获
+  resumeCapture: 继续捕获
+  recording: "正在录制 · $1 个步骤"
+  recordingPlural: "正在录制 · $1 个步骤"
+  readyTitle: "已准备好捕获"
+  readySub: 点击页面开始
+  finishRecording: 完成录制
+  finish: 完成
+  smartBlur: 智能模糊
+  discard: 丢弃
+  deleteStep: 删除步骤
+  justNow: 刚刚
+  secondsAgo: "$1 秒前"
+  minutesAgo: "$1 分钟前"
+
+settings:
+  cardKeyboard: "输入与按键"
+  cardKeyboardHint: "键盘为指南添加的内容。"
+  shortcutsHint: "在你浏览的任意页面上可用。"
+  shortcutsChange: "在浏览器中更改"
+  shortcutRecordHint: "在你正在查看的标签页上开始。"
+  shortcutPauseHint: "录制时可用。"
+  shortcutCaptureHint: "无需点击即可把当前屏幕保存为一个步骤，适合展开的菜单。"
+  shortcutNotSet: "未设置"
+  shortcutsChangeNote: "浏览器在单独的页面中管理快捷键。"
+  recordKeys: "记录快捷键和命名按键"
+  recordKeysHint: "Ctrl+S、Enter 等会成为步骤。"
+  recordTyping: "记录输入内容"
+  recordTypingHint: "在一个输入框中输入的内容会成为一个步骤。"
+  microphoneAccess: "麦克风权限"
+  microphoneAccessAsk: "浏览器会先询问一次，Mimik 才能听到你的声音。"
+  microphoneAccessAllow: "允许"
+  title: 设置
+  aiDescriptions: "步骤描述"
+  aiDescriptionsHint: "Mimik 使用你的 AI 服务商撰写每个步骤的文字并为指南命名。"
+  aiUseFor: "AI 用于"
+  aiForSteps: "步骤描述"
+  aiForStepsHint: "每张截图下方的文字。"
+  aiForGuide: "指南标题和摘要"
+  aiForGuideHint: "在结束录制时生成。"
+  aiUnusedNote: "步骤保留基础标题，指南以网站或应用命名。语音旁白和配音仍使用你的密钥。"
+  provider: 提供商
+  model: 模型
+  modelCustom: 自定义模型
+  baseUrl: 基础 URL
+  ownServerHintOpenai: "支持 Ollama、LM Studio、vLLM 或任何兼容 OpenAI 的服务器。"
+  ownServerHintAnthropic: "支持 LiteLLM 代理或任何兼容 Anthropic 的服务器。"
+  apiKey: API 密钥
+  showKey: 显示密钥
+  hideKey: 隐藏密钥
+  clearKey: 清除密钥
+  aiLanguage: 描述语言
+  aiAdvanced: "高级"
+  aiAdvancedHint: "查看和修改 Mimik 发送的提示词。"
+  aiPromptsTitle: "AI 提示词"
+  aiPromptsHint: "修改 Mimik 要求你的 AI 提供商做的事，或在下方添加你自己的规则。"
+  aiPromptLabel: "Mimik 的提示词"
+  aiPromptDefault: "默认"
+  aiPromptEdited: "已编辑"
+  aiPromptReset: "重置提示词"
+  aiInstructionsLabel: "你的指令"
+  aiInstructionsPlaceholder: "例如：使用第二人称写作。将产品称为“Acme”。"
+  aiCustomised: "已自定义"
+  aiReset: "重置"
+  aiResetConfirmTitle: "重置“$1”？"
+  aiResetConfirmMessage: "此部分中已编辑的提示词和你的指令将被移除。此操作无法撤销。"
+  aiExamplesSwitched: "示例已切换为 $1"
+  apiKeys: "API 密钥"
+  aiSection: "AI"
+  ownServer: "自己的服务器"
+  optional: "可选"
+  serverSpeaks: "兼容"
+  serverHeaders: "请求头"
+  headerName: "请求头名称"
+  headerValue: "值"
+  addHeader: "添加请求头"
+  removeHeader: "移除请求头"
+  protocolOpenai: "OpenAI"
+  protocolAnthropic: "Anthropic"
+  noServer: "尚未填写服务器地址。"
+  noKeyFor: "尚未添加 $1 密钥。"
+  addOneInKeys: "请在 API 密钥中添加。"
+  addKey: "添加密钥"
+  noKey: "无密钥"
+  voiceover: "视频配音"
+  voiceoverHint: "Mimik 会在导出的视频中朗读每个步骤的文本。"
+  voice: "语音"
+  voiceNarrationHint: "边录边讲，Mimik 会根据你说的内容写出每个步骤。"
+  voiceNarration: 语音讲解
+  aiNoKey: "没有 API 密钥时，步骤使用基于规则的简单描述。"
+  microphone: 麦克风
+  microphoneDefault: 系统默认
+  microphoneNeedsAccess: 允许麦克风访问后即可查看设备名称。
+  microphoneGrantAccess: 允许麦克风访问
+  microphoneNone: "未找到麦克风。接入后会显示在这里。"
+  microphoneUnavailable: 不可用的麦克风
+  microphoneMissing: "所选麦克风未连接，正在使用系统默认设备。"
+  microphoneTest: 测试麦克风
+  microphoneStatusAllowed: 已允许
+  microphoneStatusBlocked: 已阻止
+  microphoneStatusPending: 尚未允许
+  microphoneBlocked: "麦克风已被阻止。点击地址栏左侧的图标，将“麦克风”设为“允许”。"
+  microphoneUnblockHow: 如何解除阻止？
+  microphoneTestStop: 停止测试
+  microphoneTestFailed: "无法打开该麦克风，请换一个试试。"
+  targetColor: "点击高亮"
+  brandColor: "品牌颜色"
+  targetColorHint: "围绕你所点击内容绘制的轮廓。"
+  brandColorHint: "导出指南中的强调色。"
+  branding: "导出品牌设置"
+  logoAndFooter: "徽标和页脚"
+  logoAndFooterHint: "显示在你导出的每份指南上。"
+  brandLogo: "Logo"
+  uploadLogo: "上传 Logo"
+  replaceLogo: "替换"
+  removeLogo: "移除 Logo"
+  footerLine: "页脚文本"
+  footerLinePlaceholder: "例如：机密 · 仅供内部使用"
+  footerPresetConfidential: "机密 · 仅供内部使用"
+  footerPresetNoDistribute: "请勿分发"
+  attribution: '显示“Made with Mimik”'
+  saveSettings: 保存设置
+  saved: 已保存
+  validatingKey: "正在检查密钥…"
+  keyValid: API 密钥已验证。
+  keyChecking: "正在检查…"
+  keyVerified: "已验证"
+  keyRejected: "已拒绝"
+  keyOffline: "无法连接"
+  keyCheckModel: "检查模型"
+  keyInvalid: "提供商拒绝了该密钥。请检查后重试。"
+  keyModelInvalid: "所选模型在此提供商上不可用。"
+  keyModelRequired: "请先选择模型，再检查此密钥。"
+  checkKey: 检查密钥
+  keyCannotSpend: "该密钥没有额度。只能使用免费模型。"
+  keyUnreachable: "无法连接到提供商。请检查网络。"
+  modelsFound: "$1 个可用模型"
+  smartBlur: 智能模糊
+  version: "版本 $1"
+  reportBug: "报告问题"
+  machineTranslated: "此语言由 AI 翻译，部分措辞可能不够准确。发现错误？欢迎在 GitHub 上提交 pull request。"
+  fixTranslation: "修正翻译"
+  aboutSection: "关于"
+  appearance: "外观"
+  appearanceHint: "浅色、深色或跟随系统。"
+  recordingControls: "录制控件"
+  recordingControlsHint: "录制时“完成”、“暂停”和最新步骤显示的位置。使用卡片时，页面保持完整宽度。"
+  recordingInPanel: "侧边栏"
+  recordingInCard: "页面上的卡片"
+  themeSystem: "跟随系统"
+  themeLight: "浅色"
+  themeDark: "深色"
+  starCtaTitle: "喜欢 Mimik 吗？"
+  starCtaMessage: "在 GitHub 上加星能帮助更多人发现 Mimik。"
+  starOnGithub: 在 GitHub 上加星
+
+blurPresets:
+  email: 邮箱
+  phoneNumbers: 电话号码
+  ssn: 社会安全号码
+  creditCard: 信用卡
+  ipAddress: IP 地址
+  macAddress: MAC 地址
+
+desktop:
+  collapse: "收起"
+  expand: "展开"
+  starting: "正在开始…"
+  capturingStep: "正在捕获第 $1 步"
+  tipArmed: "每次点击都会保存为一个步骤。"
+  tipPaused: "暂停期间不会录制任何内容。"
+  tipWaiting: "你的第一次点击会显示在这里。"
+  tipLabel: "提示："
+  hintStartStop: "按 $1 开始或停止。"
+  hintCapture: "按 $1 无需点击即可捕获。"
+  micAccessAsk: "macOS 会先询问一次，Mimik 才能听到你的声音。"
+  micAccessRefused: "已拒绝。请在“隐私与安全性”中打开 Mimik。"
+  armed: "就绪"
+  screenshotDelay: "截图延迟"
+  keepClicksBeyondArea: "捕获区域外的点击"
+  keepClicksBeyondAreaHint: "在区域模式下，区域外的点击也会成为步骤，并以该区域取景。"
+  guideInApp: "$1 中的指南"
+  capturingSection: "捕获"
+  milliseconds: ms
+  captureMode: 捕获范围
+  modeWindow: 窗口
+  modeScreen: 屏幕
+  modeArea: 区域
+  drawArea: "拖动以绘制捕获区域"
+  startSheetTitle: 开始捕获
+  permissionsTitle: "允许 Mimik 录制"
+  permissionsIntro: "Mimik 需要两项权限才能开始录制。"
+  permissionAccessibility: "辅助功能"
+  permissionAccessibilityHint: "让 Mimik 能看到你点击和输入的内容。"
+  permissionScreen: "屏幕录制"
+  permissionScreenHint: "让 Mimik 能为每一步截取屏幕。"
+  permissionScreenRestart: "重启 Mimik 以完成开启。"
+  permissionRestart: "重启 Mimik"
+  moreStepsAfter: "新步骤会插入到第 $1 步之后。"
+  moreStepsFirst: "新步骤会插入到第 1 步之前。"
+  startButton: 开始
+  shortcutsSection: "快捷键"
+  generalSection: "通用"
+  appLanguage: "应用语言"
+  appLanguageHint: "Mimik 界面的语言。步骤描述有单独的语言设置。"
+  languageSystem: "跟随系统"
+  cardLanguage: "语言"
+  cardStartup: "启动"
+  cardUpdates: "更新"
+  startAtLogin: "登录时启动"
+  startAtLoginHint: "Mimik 在托盘中打开，不显示窗口。"
+  startAtLoginHintMac: "登录时打开 Mimik。"
+  version: "版本 $1"
+  versionHint: "Mimik 运行期间会检查更新。"
+  checkUpdates: "检查更新"
+  lastChecked: "上次检查：$1"
+  checking: "正在检查…"
+  downloading: "正在下载 $1%"
+  restartToUpdate: "重启以更新"
+  versionAvailable: "版本 $1 可用"
+  versionDownloaded: "版本 $1 已下载"
+  tryAgain: "重试"
+  updatesUnavailable: "此版本暂不支持更新"
+  restart: "重启"
+  trayChecking: "正在检查更新…"
+  trayDownloading: "正在下载更新 $1%"
+  trayQuit: "退出 Mimik"
+  trayRecording: "Mimik 正在录制。点击即可完成。"
+  cannotRecord: "Mimik 无法录制"
+  needsX11: "录制其他应用需要 X11 会话。请注销，在登录界面选择 Xorg 或 X11 会话，然后重新打开 Mimik。如需在浏览器中录制，请使用 Mimik 扩展。"
+  getExtension: "获取扩展"
+  updateReady: "更新已就绪"
+  updateReadyMessage: "重启 Mimik 以安装版本 $1。"
+  later: "稍后"
+  updateFailed: "无法连接更新服务器"
+  upToDate: "已是最新版本"
+  cardScreenshots: "屏幕截图"
+  cardGlobalKeys: "全局快捷键"
+  cardGlobalKeysHint: "Mimik 运行期间会从所有应用程序中接管这些按键。"
+  zoomLevel: "向点击处缩放"
+  zoomLevelHint: "新录制从这里开始。自动会让每一步保持相同大小。"
+  zoomAuto: "自动"
+  zoomGuide: "缩放"
+  typingDebounce: "输入步骤结束延迟"
+  typingDebounceHint: "停顿这么久会结束输入步骤。"
+  cardScreenshotsHint: "每个步骤的截图所显示的内容。"
+  captureModeHint: "窗口模式跟随你点击的应用。"
+  screenshotDelayHint: "截图前等待，适用于带动画的菜单。"
+  seconds: "秒"
+  shortcutRecord: "开始或结束录制"
+  shortcutPause: "暂停或继续"
+  shortcutCapture: "立即捕获一步"
+  shortcutPress: "请按下按键…"
+  shortcutClear: "清除"
+
+guide:
+  guideMe: "引导我"
+  untitled: 未命名指南
+  writingTitle: 正在根据捕获的步骤生成标题...
+  writingDescription: "正在生成描述…"
+  notFound: "未找到指南。"
+  stepCount: "$1 个步骤"
+  stepCountPlural: "$1 个步骤"
+  pageOf: "$1 / $2"
+  onDomain: "$1 上的指南"
+  newGuide: 新指南
+
+sort:
+  recentFirst: 最近优先
+  oldestFirst: 最早优先
+  alphaAZ: "A–Z"
+  mostSteps: 步骤最多
+  gridView: 网格视图
+  listView: 列表视图
+
+search:
+  recent: "最近"
+  results: "$1 个指南"
+  resultsOne: "1 个指南"
+  noMatch: "没有与“$1”匹配的指南"
+  noMatchHint: "试试指南标题中的某个词。"
+  noGuidesYet: 暂无指南
+
+confirmDelete:
+  title: "删除指南？"
+  message: 这将永久删除该指南，且无法撤销。
+  confirm: 永久删除
+
+editor:
+  backToLibrary: 返回资料库
+  openInDashboard: 打开
+  openInDashboardHint: 在仪表盘中打开以编辑或导出
+  guideMe: "引导我"
+  guideMeUnavailable: "此指南中没有可回放的步骤"
+  deleteThisStep: "删除此步骤？"
+  selectStep: 选择步骤
+  selectedCount: "已选择 $1 项"
+  deleteSelectedStep: "删除选中的 $1 个步骤？"
+  deleteSelectedSteps: "删除选中的 $1 个步骤？"
+  copyTo: 复制到
+  deselect: 取消选择
+  copyStepTo: "将 1 个步骤复制到…"
+  copyStepsTo: "将 $1 个步骤复制到…"
+  copyStepsHint: "截图、模糊和编辑都会一并复制。此指南保持不变。"
+  searchGuidesToCopyTo: 按标题搜索指南
+  allGuides: 所有指南
+  sameSite: 同一网站
+  sameApp: 同一应用
+  newGuide: 新建指南
+  noGuidesToCopyTo: 没有匹配的指南
+  copyStep: 复制 1 个步骤
+  copySteps: "复制 $1 个步骤"
+  copyStepsFailed: "无法复制这些步骤，请重试。"
+  stepCopied: "已从“$2”复制 1 个步骤"
+  stepsCopied: "已从“$2”复制 $1 个步骤"
+  newStep: 新
+  copyScreenshot: 复制截图
+  noScreenshot: 无截图
+  edit: 编辑
+  done: 完成
+  versionHistory: 版本历史
+  moreActions: 更多操作
+  generateDescription: 生成描述
+  regenerateDescription: 重新生成描述
+  generatingDescription: "正在生成…"
+  descriptionPlaceholder: 添加描述
+  descriptionErrorNoApiKey: 请在设置中添加 AI API 密钥以生成描述。
+  descriptionErrorNoSteps: 此指南没有可用于总结的已描述步骤。
+  descriptionErrorFailed: 无法生成描述。请重试。
+  descriptionErrorSaveFailed: "无法保存新描述。请重试。"
+  writingStepDescription: "正在生成描述…"
+  transcribingStepDescription: "正在转写你说的话…"
+  rewriteAskAi: 询问 AI
+  rewritePlaceholder: "告诉 AI 如何编辑这段文字…"
+  rewriteEnter: 回车
+  rewriteShorter: 更简短
+  rewriteDetail: 更详细
+  rewriteGrammar: 修正语法
+  rewriteFormal: 更正式
+  rewriteCasual: 更随意
+  rewriteReplace: 替换
+  rewriteDiscard: 丢弃
+  rewriteErrorNoApiKey: 请在设置中添加 AI API 密钥以改写文本。
+  rewriteErrorFailed: 无法改写选中文本。请重试。
+  rewriteErrorStale: 文本已变化。请重新选择。
+  restoreSpoken: 恢复你说过的内容
+
+capture:
+  recordSteps: 录制步骤
+  moreStepsTitle: 捕获更多步骤
+  moreStepsBody: 新步骤会插入到这里。请选择要录制的标签页。
+  newCaptureBody: 选择要录制的标签页。
+  startCapture: 开始捕获
+  noRecordableTabs: 当前窗口没有可录制的标签页。
+
+blocks:
+  add: 添加区块
+  heading: 标题
+  callout: 备注
+  headingPlaceholder: 章节标题
+  calloutPlaceholder: 写一条备注
+  deleteHeading: "删除此标题？"
+  deleteCallout: "删除此备注？"
+  variantInfo: 信息
+  variantWarning: 警告
+  variantError: 错误
+  variantSuccess: 成功
+  variantCustom: 自定义
+
+history:
+  title: 版本历史
+  current: 当前版本
+  restore: 恢复
+  unchangedVersions: "未变化的版本（$1）"
+  readOnlyBanner: "你正在查看早期版本。关闭版本历史即可返回。"
+  loadError: 无法加载版本历史。请重试。
+  restoreError: 暂时无法恢复。请稍后重试。
+  storageFull: "存储空间不足，无法保存撤销点。请删除一份指南后重试。"
+  empty: "暂无早期版本。编辑指南后即会生成。"
+  nameVersion: 命名此版本
+  namePlaceholder: 版本名称
+  allVersions: 全部版本
+  namedOnly: 仅显示已命名版本
+  emptyNamed: "暂无已命名版本。"
+  renameError: 无法保存该名称。请重试。
+  changeTitle: 标题已更改
+  changeStepAdded: "新增 $1 个步骤"
+  changeStepsAdded: "新增 $1 个步骤"
+  changeStepRemoved: "删除 $1 个步骤"
+  changeStepsRemoved: "删除 $1 个步骤"
+  changeStepEdited: "编辑 $1 个步骤"
+  changeStepsEdited: "编辑 $1 个步骤"
+  changeStepReordered: 步骤已重新排序
+  changeLink: "更改 $1 个链接"
+  changeLinks: "更改 $1 个链接"
+  changeImageReplaced: "替换 $1 张图片"
+  changeImagesReplaced: "替换 $1 张图片"
+  changeImageCropped: "裁剪 $1 张图片"
+  changeImagesCropped: "裁剪 $1 张图片"
+  changeImageAnnotated: "标注 $1 张图片"
+  changeImagesAnnotated: "标注 $1 张图片"
+  changeImageBlurred: "模糊处理 $1 张图片"
+  changeImagesBlurred: "模糊处理 $1 张图片"
+  changeAltText: 已编辑替代文本
+
+emptyGuide:
+  title: 此指南为空
+  subtitle: "录制步骤以填充此指南"
+
+blurPanel:
+  title: 智能模糊
+  manualMode: 手动模式
+  selectElements: 选择要模糊的元素
+  clickToBlur: "点击以模糊"
+  done: 完成
+  doneResume: "完成 · 继续录制"
+  resetAll: 全部重置
+
+screenshotView:
+  zoomIn: 放大
+  zoomOut: 缩小
+  saved: 已保存
+  editMenu: 编辑截图
+  downloadEdited: "已编辑图片"
+  downloadOriginal: "原始图片"
+  edit: "编辑"
+  addImage: 添加图片
+  replaceImage: 替换图片
+  replaceHint: "为此步骤选择一张新图片"
+  replaceDrop: "点击浏览或将图片拖放到这里"
+  replaceFormats: "PNG、JPG 或 WebP"
+  download: 下载
+  deleteImage: 删除图片
+  deleteConfirm: "删除此截图？此操作无法撤销。"
+  imageDeleted: 图片已删除
+  altButton: ALT
+  altLabel: 替代文本
+  altPlaceholder: 为屏幕阅读器描述此图片
+
+annotationEditor:
+  title: 编辑截图
+  toolBox: 方框
+  toolArrow: 箭头
+  toolText: 文本
+  toolSelect: "选择"
+  addTarget: "添加点击目标"
+  toolRedact: 遮盖
+  toolCrop: 裁剪
+  colorLabel: 颜色
+  textPlaceholder: 输入内容…
+  targetBorder: 边框样式
+  modeAnnotate: "标注"
+  toolLine: "直线"
+  duplicate: "复制"
+  toolEllipse: "椭圆"
+  lineColor: "线条颜色"
+  fillColor: "填充颜色"
+  lineWidth: "线条宽度"
+  cornerRadius: "圆角半径"
+  font: "字体"
+  bold: "加粗"
+  italic: "斜体"
+  lineHeight: "行高"
+  width_none: "无轮廓"
+  width_xs: "极小"
+  width_sm: "小"
+  width_ms: "中小"
+  width_md: "中"
+  width_ml: "中大"
+  width_lg: "大"
+  width_xl: "极大"
+  zoom: "缩放"
+  cropHint: "拖动以裁剪，或拖动角点调整大小"
+  resetCrop: "重置裁剪"
+  arrowEnd: "箭头端点"
+  fontSize: "字号"
+  undo: "撤销"
+  redo: "重做"
+  end_none: "无"
+  end_bar: "短线"
+  end_arrow: "箭头"
+  end_arrow_solid: "实心箭头"
+  end_circle: "圆形"
+  end_circle_solid: "实心圆形"
+  end_square: "方形"
+  end_square_solid: "实心方形"
+  done: 完成
+
+exportPreview:
+  voiceover: "配音"
+  voiceoverHint: "朗读每个步骤，画面会保持到语音结束。"
+  audio: "音频"
+  audioSilent: "静音"
+  audioNarrated: "配音"
+  voiceoverNoKey: "在设置中添加 OpenAI 或 ElevenLabs 密钥即可为视频配音。"
+  videoLength: "视频时长 $1"
+  videoLengthVoice: "视频时长 $1 → $2（含配音）"
+  voiceoverCost: "$1 段音频 · 约 $2 个字符待合成"
+  voiceoverFailed: "配音失败。请在设置中检查 API 密钥。"
+  voiceoverNoAudioCodec: "该视频无声。此浏览器无法为视频添加音频。"
+  voiceoverNoKeySkip: "该视频无声。请在设置中添加配音 API 密钥。"
+  voiceoverNothingToSay: "该视频无声。该指南没有可朗读的文本。"
+  narrating: "正在为第 $1 步配音，共 $2 步"
+  preparingVoiceover: "正在准备配音"
+  stepDescriptions: "步骤字幕"
+  stepDescriptionsHint: "将步骤文字绘制到每一帧视频中"
+  stepNumbers: "步骤编号"
+  stepNumbersHint: "在视频和 GIF 的每个步骤字幕前加上编号"
+  resolution: "视频质量"
+  gifQuality: "GIF 质量"
+  gif_low: "低"
+  gif_medium: "中"
+  gif_high: "高"
+  res_720p: "720p"
+  res_1080p: "1080p"
+  title: "导出预览"
+  cover: "封面页"
+  coverHint: "包含标题和详情的独立第一页"
+  screenshots: "截图"
+  screenshotsHint: "关闭后将生成更紧凑的纯文字文档"
+  stepUrls: "步骤链接"
+  stepUrlsHint: "显示每个步骤发生的页面地址"
+  imageScale: "截图大小"
+  scale_small: "小"
+  scale_medium: "中"
+  scale_large: "大"
+  download: "导出 $1"
+  rendering: "正在更新预览"
+  videoReady: "$1 个步骤 · 约 $2 分钟视频"
+  videoReadyHint: "较长的指南不会自动编码。预览会覆盖每个步骤。"
+  videoGenerate: "生成预览"
+  modeDocument: "文档"
+  modeVideo: "视频"
+  encodingVideo: "正在编码视频预览"
+  videoFailed: "无法创建视频预览"
+  bundle: "Mimik 文件"
+  bundleHint: "可供他人导入和编辑的 .mimik 文件"
+  bundleStripInputs: "移除输入的文字"
+  bundleStripInputsHint: "从步骤文字和链接中移除。截图仍会显示当时屏幕上的内容。"
+  bundleUrls: "链接详细程度"
+  url_origin: "站点"
+  url_path: "页面"
+  url_full: "完整"
+  bundleRedactionNote: "模糊区域会从导出的图片中抹除。"
+  bundleTypedWarning: "有 $1 张截图显示你输入的文字。请在分享前进行模糊处理。"
+  bundleTypedWarningPlural: "有 $1 张截图显示你输入的文字。请在分享前进行模糊处理。"
+videoPlayer:
+  stepCount: "$1 个步骤"
+  previousStep: "上一步"
+  nextStep: "下一步"
+  speed: "播放速度"
+  mute: "静音"
+  unmute: "取消静音"
+  spoken: "已配音的步骤"
+  play: "播放"
+  pause: "暂停"
+  fullscreen: "全屏"
+  exitFullscreen: "退出全屏"
+
+exportMenu:
+  docx: DOCX
+  html: HTML
+  markdown: Markdown
+  pdf: PDF
+  gif: GIF
+  video: 视频
+  cancelProgress: "取消 · $1%"
+  bundle: "Mimik 文件"
+
+onboarding:
+  getStarted: 开始使用
+  blurTitle: 智能模糊
+  openMimik: 打开 Mimik
+  letterHello: "还有一件事 👋"
+  letterNote: "来自团队的一封信 👋"
+  letterThanks: "有句话我们一定要说：$1过去几周，Mimik 在 GitHub 上的星标数一路暴涨，这全靠你们。你们把它分享给朋友、同事和各个社区，我们真的又惊又喜。"
+  letterThankYou: "谢谢你们！"
+  letterWorld: "打造 Mimik 最开心的事，就是看到世界各地的人都在用它。希望它继续帮你们省时省钱，也让你们的数据留在该在的地方：你们自己手里。有想法、功能需求或反馈？$1，每一条我们都会认真看。"
+  letterSayHi: "来 GitHub 打个招呼"
+  letterNewsTitle: "🚀 好消息：Mimik Desktop 来了！"
+  letterNewsBody: "你们喜爱的 Mimik 扩展，现在直接来到桌面。现已支持 Windows，Mac 版即将推出。"
+  letterNewsAction: "下载 Mimik Desktop"
+  letterPromiseTitle: "首先，一个承诺"
+  letterPromise: "Mimik 将永远免费，并采用 MIT 许可。以后也不会有任何套路或付费墙。这是我们对你们，以及围绕它成长起来的出色社区的承诺。"
+  letterAskTitle: "还有一个小请求 🙏"
+  letterAskIntro: "Mimik 的成长离不开你们，请继续支持我们："
+  letterAskWrite: "在你的博客、邮件通讯或社交媒体上聊聊它（特别是 Reddit，我们超爱 Reddit！）"
+  letterAskVideo: "在 YouTube 上做一期教程或演示"
+  letterAskFriend: "推荐给会喜欢它的朋友或同事"
+  letterSponsor: "每一篇文章、每一个视频、每一次推荐，都能帮更多人发现 Mimik，我们都看在眼里，也都非常珍惜。还想多出一份力？你可以$1。无论支持大小，都能让这个项目持续成长。"
+  letterSponsorLink: "在 GitHub 上赞助 Mimik"
+  letterSignoff: "满怀爱意，"
+  letterTeam: "Westpoint 团队 ❤️"
+  helloTitle: "感谢安装 Mimik！"
+  helloMessage: "像平常一样完成一次任务，Mimik 会把每次点击变成带截图的步骤。我们来设置一下，只需一分钟。"
+  chipDevice: "在你的设备上运行"
+  chipAccount: "无需账号"
+  chipFree: "免费且 MIT 开源"
+  loginWelcome: "欢迎回来"
+  loginReady: "Mimik 已就绪"
+  writeTitle: "Mimik 该如何撰写你的步骤？"
+  writeMessage: "每次点击都会成为一个带截图的步骤。选择步骤文字的写法。你可以随时在设置中更改。"
+  basicTitle: "基础标题"
+  basicMessage: "根据你点击的内容生成清晰的标题。立即可用，无需设置。"
+  basicBest: "最适合马上试用 Mimik"
+  basicExample: "点击“账单”"
+  aiChoiceTitle: "AI 描述"
+  aiChoiceMessage: "由你的 AI 提供商写出完整句子，使用你自己的密钥。还能解锁语音讲解。"
+  aiChoiceMessageNoVoice: "由你的 AI 提供商写出完整句子，使用你自己的密钥。"
+  aiBest: "最适合要分享的指南"
+  aiExample: "打开账单，查看你的发票和套餐"
+  exampleMeta: "第 2 步 · 账单"
+  recordTitle: "录制控件放在哪里？"
+  recordMessage: "录制时，完成、暂停和最新步骤始终触手可及。你可以随时在设置中更改。"
+  panelMessage: "页面旁边的面板，显示控件和步骤。点击 Mimik 图标即可打开。"
+  panelBest: "适合宽屏"
+  cardMessage: "一张小卡片浮在页面上，页面保持完整宽度。点击 Mimik 图标即可调出。"
+  cardBest: "适合笔记本电脑"
+  keyPrivacy: "你的密钥保存在本设备上，只会发送给你选择的提供商。"
+  voiceToggleTitle: "语音讲解"
+  voiceToggleHint: "说出你正在做什么，Mimik 会把它关联到下一个步骤。"
+  voiceNeedsKey: "语音讲解使用 OpenAI 或 Groq 进行语音转文字。请为其中之一添加密钥。"
+  makeTitle: "打造你的专属风格"
+  makeMessage: "全部可选。之后都可以在设置中更改。"
+  brandTitle: "导出时使用你的品牌"
+  brandHint: "你导出的每份 PDF 和 HTML 指南上都会显示你的 Logo 和颜色。"
+  blurHint: "在任何内容离开你的设备之前，模糊截图中的敏感信息。"
+  readyTitle: "一切就绪，可以开始捕获了"
+  readyStepOpen: "打开 Mimik"
+  readyStepStart: "点击“开始捕获”"
+  readyStepClick: "照常点击完成你的任务"
+  readyStepGuide: "获得一份分步指南"
+  pinHere: "固定在这里"
+  pinCardTitle: "固定 Mimik，方便随时使用"
+  pinCardMessage: "点击地址栏旁边的拼图图标，将 Mimik 固定到工具栏。"
+  pinMenuTitle: "扩展程序"
+  trayTitle: "Mimik 常驻在托盘中"
+  trayMessage: "点击时钟旁边的 Mimik 图标开始捕获，或在任意应用中按 $1。"
+  menuBarTitle: "Mimik 常驻在菜单栏中"
+  menuBarMessage: "点击屏幕顶部的 Mimik 图标开始捕获，或在任意应用中按 $1。"
+  starCardTitle: "永久免费，MIT 许可"
+  starCardMessage: "无需账号，没有付费墙。在 GitHub 上加星能帮助更多人发现 Mimik。"
+  demoApp: "Acme Admin"
+  demoTitle: "邀请队友"
+  demoField: "邮箱"
+  demoButton: "发送邀请"
+  demoStepType: "在邮箱中输入“ana@acme.com”"
+  demoStepClick: "点击“发送邀请”"
+  demoPlusStep: "+1 个步骤"
+  demoGuideMeta: "2 个步骤 · 刚刚"
+
+steps:
+  pressKey: '在“$2”上按 $1'
+  toggleCheckbox: '切换“$1”'
+  select: '选择“$1”'
+  enter: '在“$1”中输入'
+  toggleSwitch: '切换“$1”'
+  clickLink: '点击链接“$1”'
+  click: '点击“$1”'
+  clickHere: "点击此处"
+  rightClick: '右键点击“$1”'
+  rightClickHere: "右键点击此处"
+  typeIntoField: '在 $1 字段“$2”中输入'
+  typeInto: '在“$1”中输入'
+  type: "输入“$1”"
+  typeSecret: "输入密码"
+  copyFrom: '从“$1”复制'
+  pasteInto: '粘贴到“$1”'
+  cutFrom: '从“$1”剪切'
+  drag: '拖动“$1”'
+  typeValueInto: '在 $2 中输入 "$1"'
+  clearField: "清空 $1"
+  textField: "文本框"
+  navigate: 导航到页面
+  defaultAction: "$1 $2"
+
+export:
+  guideLabel: "指南"
+  endLabel: "指南完成"
+  stepsRange: "第 $1–$2 步，共 $3 步"
+  stepOf: "第 $1 步，共 $2 步"
+  madeWith: "使用 Mimik 制作"
+  created: 创建时间
+  source: 来源
+  step: 步骤
+  steps: 步骤
+  stepLabel: "步骤 $1"
+  stepsCount: "$1 个步骤"
+  createdLabel: "创建于 $1"
+  sourceLabel: "来源：$1"
+
+voice:
+  turnOn: 开启语音讲解
+  turnOff: 关闭语音讲解
+  needsApiKey: "语音讲解需要 API 密钥"
+  pausedWithCapture: 语音讲解已随捕获一起暂停
+  micStarting: 正在启动麦克风…
+  micHearing: 正在听你说话
+  micQuiet: 没有声音
+  nextRecording: 语音讲解已开启，将从下一次录制开始。
+  orderHint: 先说出你将要做的事，然后执行操作。你的话会关联到下一个动作。
+  transcribing: 正在转写你的语音讲解…
+  transcribingHint: "完成后步骤描述会更新。"
+  narrated: "已为 $1 个步骤添加语音讲解。"
+  narratedPlural: "已为 $1 个步骤添加语音讲解。"
+  narratedNone: "没有语音讲解匹配到任何步骤。"
+  guideSafe: "你的指南和截图不受影响。"
+  openSettings: 打开设置
+  errorPermissionDenied: "麦克风访问被阻止。"
+  errorNoDevice: "未找到麦克风。"
+  errorNoAudio: "麦克风没有采集到声音。"
+  errorMissingApiKey: "语音讲解需要转写 API 密钥。"
+  errorStreamEnded: "麦克风中途断开。"
+  errorNotRecording: "语音讲解未在运行。"
+  errorAlreadyRecording: "语音讲解已在运行。"
+  errorUnsupported: 此浏览器无法录制语音讲解。
+  errorUnknown: "语音讲解意外停止。"
+
+micPermission:
+  title: 允许麦克风访问
+  checkingMessage: "正在检查麦克风权限…"
+  promptingMessage: "请在浏览器弹窗中选择“允许”。此标签页会自动关闭。"
+  grantedTitle: 麦克风已就绪
+  grantedMessage: "正在返回。"
+  deniedTitle: 麦克风访问被阻止
+  deniedMessage: "点击地址栏左侧的图标，将“麦克风”设为“允许”，然后重试。"
+  retry: 重试
+  privacy: "音频会发送到你的转写提供商。Mimik 从不存储音频。"
+
+aiStatus:
+  rejected: "$1 拒绝了你的 API 密钥。"
+  noCredits: "你的 $1 账户没有额度。"
+  rateLimited: "$1 正在限制 Mimik 的请求频率。"
+  modelInvalid: "$1 未向你的账户提供该模型。"
+  quota: "该请求内容超出了模型上限。"
+  network: "Mimik 无法连接到 $1。"
+  unknown: "$1 拒绝了该请求。"
+  actionCheckKey: "请在设置中检查密钥。"
+  actionAddCredits: "充值后再次检查密钥。"
+  actionWait: "稍等一下再继续录制。"
+  actionPickModel: "请在设置中选择其他模型。"
+  actionConnection: "请检查网络连接。"
+
+stepSource:
+  ai: "AI"
+  voice: "语音"
+  basic: "基础"
+  edited: "已编辑"
+  hint: "这条描述的来源"
+
+import:
+  title: "导入指南"
+  dialogDescription: "将指南文件添加到资料库前，请先查看"
+  button: "导入"
+  dropHere: "拖入 .mimik 文件即可导入"
+  reading: "正在读取文件"
+  confirm: "添加到资料库"
+  cancel: "取消"
+  guideMeHint: "录制于 $1。“引导我”只能在该网站上回放。"
+  noteRedacted: "模糊区域已被作者移除，无法恢复。"
+  noteInputs: "输入框中键入的文字未包含在内。"
+  noteUrls: "链接已缩短为页面地址。"
+  noteUrlsOrigin: "链接已缩短为站点地址。"
+  errorUnreadable: "无法打开这个文件，它可能已损坏或不完整。"
+  errorNotABundle: "这不是 Mimik 文件。请选择从 Mimik 导出的文件。"
+  errorVersion: "这个文件来自更新版本的 Mimik。请更新 Mimik 后重试。"
+  errorEmpty: "这个文件里没有任何步骤。"
+  errorFailed: "无法将此指南保存到资料库。请重新导入。"
+transcript:
+  title: "转写文本"
+  empty: "此次录制没有语音讲解。"
+  loadError: "无法加载转写文本，请重试。"
+  filterAll: "全部（$1）"
+  filterUnused: "未使用（$1）"
+  privacyNote: "仅保存在本设备上。不会包含在导出的指南中，并会随指南一起删除。"
+  usedInStep: "步骤 $1"
+  readOnlyHint: "在顶部栏打开“编辑”，即可把这些语句添加到步骤中。"
+  notUsed: 未使用
+  filteredOut: 已过滤
+  addToStep: "添加到步骤 $1"
+  copyAll: 全部复制
+  download: 下载
+  delete: "删除转写文本"
+  confirmDelete: "删除这份转写文本？此操作无法撤销。"
+
+stepKind:
+  click: "点击"
+  type: "输入"
+  key: "按键"
+  navigate: "页面"
+  note: "备注"
+outline:
+  title: 目录
+  untitledStep: 未命名步骤
+  moreSelected: "+$1"
+  instructions: 按空格键拿起步骤，用方向键移动，再按空格键放下，或按 Esc 取消。
+  pickedUp: "已拿起 $1"
+  movedOver: "$1 移到 $2 上方"
+  droppedOver: "$1 已放到 $2"
+  dropped: "$1 已放下"
+  cancelled: "已取消移动 $1"
+  selected: 已选择

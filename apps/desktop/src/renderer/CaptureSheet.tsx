@@ -1,0 +1,128 @@
+import type { CaptureInsert } from '@mimik/core/capture/capture-insert';
+import { i18n } from '@mimik/core/env';
+import { Button } from '@mimik/ui';
+import { AppWindow, Crop, Monitor, Video, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import type { CaptureSettings } from '../main/capture/settings';
+
+type Mode = CaptureSettings['captureMode'];
+
+const MODES: { id: Mode; label: string; Icon: typeof AppWindow }[] = [
+  { id: 'window', label: 'desktop.modeWindow', Icon: AppWindow },
+  { id: 'screen', label: 'desktop.modeScreen', Icon: Monitor },
+  { id: 'area', label: 'desktop.modeArea', Icon: Crop },
+];
+
+export function CaptureSheet({ insert, onClose }: { insert?: CaptureInsert; onClose(): void }) {
+  const [settings, setSettings] = useState<CaptureSettings | null>(null);
+
+  useEffect(() => {
+    window.mimik.capture.settings.get().then(setSettings);
+  }, []);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  const save = async (patch: Partial<CaptureSettings>) => {
+    setSettings(await window.mimik.capture.settings.set(patch));
+  };
+
+  const start = async () => {
+    onClose();
+    if (settings?.captureMode === 'area') await window.mimik.capture.edit(insert);
+    else await window.mimik.capture.arm(insert);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex justify-end">
+      <button
+        type="button"
+        aria-label={i18n.t('common.close')}
+        onClick={onClose}
+        className="absolute inset-0 bg-overlay-strong"
+      />
+
+      <aside className="relative flex h-full w-[416px] flex-col border-l border-border bg-card shadow-2xl">
+        <div className={`flex border-b border-secondary px-6 pb-4 pt-5 ${insert ? 'items-start' : 'items-center'}`}>
+          <div className="mr-auto flex flex-col gap-1">
+            <h2 className="text-base font-semibold text-foreground">
+              {i18n.t(insert ? 'capture.moreStepsTitle' : 'desktop.startSheetTitle')}
+            </h2>
+            {insert && (
+              <p className="text-[12.5px] text-muted-foreground">
+                {insert.afterStep === 0
+                  ? i18n.t('desktop.moreStepsFirst')
+                  : i18n.t('desktop.moreStepsAfter', [String(insert.afterStep)])}
+              </p>
+            )}
+          </div>
+          <button
+            type="button"
+            aria-label={i18n.t('common.close')}
+            onClick={onClose}
+            className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+          >
+            <X size={17} />
+          </button>
+        </div>
+
+        <div className="flex flex-1 flex-col gap-5 px-6 py-5">
+          <div>
+            <p className="mb-2.5 text-[10.5px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+              {i18n.t('desktop.captureMode')}
+            </p>
+            <div className="flex flex-col gap-2">
+              {MODES.map(({ id, label, Icon }) => {
+                const active = settings?.captureMode === id;
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => save({ captureMode: id })}
+                    className={`flex w-full items-center gap-3.5 rounded-xl bg-clip-padding text-left transition-colors ${
+                      active
+                        ? 'border-2 border-option-on-border bg-option-on px-[13px] py-3'
+                        : 'border border-border bg-card px-[14px] py-[13px] hover:border-accent'
+                    }`}
+                  >
+                    <span
+                      className={`flex size-[34px] shrink-0 items-center justify-center rounded-[10px] ${
+                        active ? 'bg-option-on-tile text-primary-foreground' : 'bg-secondary text-muted-foreground'
+                      }`}
+                    >
+                      <Icon size={17} />
+                    </span>
+                    <span className="min-w-0 flex-1 text-sm font-semibold text-foreground">{i18n.t(label)}</span>
+                    <span
+                      className={`flex size-5 shrink-0 items-center justify-center rounded-full border-2 ${
+                        active ? 'border-accent' : 'border-border'
+                      }`}
+                    >
+                      {active && <span className="size-2.5 rounded-full bg-option-on-dot" />}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex gap-2.5 border-t border-secondary px-6 pb-5 pt-4">
+          <Button variant="outline" className="flex-1" onClick={onClose}>
+            {i18n.t('common.cancel')}
+          </Button>
+          <Button className="flex-[1.6]" disabled={!settings} onClick={start}>
+            <Video size={17} />
+            {i18n.t('desktop.startButton')}
+          </Button>
+        </div>
+      </aside>
+    </div>
+  );
+}

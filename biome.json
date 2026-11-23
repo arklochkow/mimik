@@ -1,12 +1,23 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.10/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.3/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["src/**/*.ts", "src/**/*.tsx", "*.json"]
+    "includes": [
+      "apps/extension/src/**/*.ts",
+      "apps/extension/src/**/*.tsx",
+      "packages/core/src/**/*.ts",
+      "packages/core/src/**/*.tsx",
+      "packages/ui/src/**/*.ts",
+      "packages/ui/src/**/*.tsx",
+      "apps/desktop/src/**/*.ts",
+      "apps/desktop/src/**/*.tsx",
+      "scripts/**/*.mjs",
+      "*.json"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -26,7 +37,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "correctness": {
         "noUnusedImports": "error",
         "noUnusedVariables": "warn"
@@ -36,7 +47,8 @@
         "useConst": "error"
       },
       "suspicious": {
-        "noExplicitAny": "off"
+        "noExplicitAny": "off",
+        "noImportCycles": "error"
       },
       "a11y": {
         "useButtonType": "off",
@@ -44,6 +56,14 @@
         "useKeyWithClickEvents": "off",
         "noSvgWithoutTitle": "off",
         "noLabelWithoutControl": "off"
+      },
+      "complexity": {
+        "noExcessiveCognitiveComplexity": {
+          "level": "warn",
+          "options": {
+            "maxAllowedComplexity": 25
+          }
+        }
       }
     }
   },
@@ -54,5 +74,105 @@
         "organizeImports": "on"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["packages/**/*.ts", "packages/**/*.tsx"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": ["@/lib/*", "@/ui/*", "@/entrypoints/*", "#imports", "**/apps/**"],
+                    "message": "Shared packages must not import from an app. Move the code into the app, or the dependency the other way."
+                  },
+                  {
+                    "group": ["@mimik/ui/**"],
+                    "message": "Import by relative path inside the ui package. Other packages never import it."
+                  }
+                ],
+                "paths": {
+                  "@mimik/ui": "Import by relative path inside the ui package. Other packages never import it."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": ["apps/extension/src/**/*.ts", "apps/extension/src/**/*.tsx", "apps/**/*.ts", "apps/**/*.tsx"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": [
+                      "@mimik/ui/**",
+                      "!@mimik/ui/env",
+                      "!@mimik/ui/global.css",
+                      "!@mimik/ui/common/lib/mascot-shapes"
+                    ],
+                    "message": "Import from '@mimik/ui'. Add the export to packages/ui/src/index.ts if it is missing."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "packages/ui/src/**/*.ts",
+        "packages/ui/src/**/*.tsx",
+        "apps/extension/src/ui/**",
+        "apps/extension/src/lib/**",
+        "apps/desktop/src/renderer/**",
+        "!packages/ui/src/components/ui/**",
+        "!**/__tests__/**"
+      ],
+      "linter": {
+        "rules": {
+          "performance": {
+            "noBarrelFile": "error"
+          },
+          "style": {
+            "useComponentExportOnlyModules": "error"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["packages/ui/src/index.ts"],
+      "linter": {
+        "rules": {
+          "performance": {
+            "noBarrelFile": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "packages/ui/src/**",
+        "apps/extension/src/ui/**",
+        "apps/extension/src/lib/**",
+        "apps/desktop/src/renderer/**"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDefaultExport": "error"
+          }
+        }
+      }
+    }
+  ]
 }

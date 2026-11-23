@@ -1,0 +1,52 @@
+{
+  "name": "@mimik/desktop",
+  "version": "1.2.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "pack": "electron-vite build && electron-builder --dir",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "check:capture": "electron-vite build && electron out/main/check-capture.js",
+    "check:storage": "electron-vite build && electron out/main/check-storage.js",
+    "check:overlay": "electron-vite build && node scripts/run-check.mjs out/main/check-overlay.js",
+    "check:pipeline": "electron-vite build && electron out/main/check-pipeline.js"
+  },
+  "dependencies": {
+    "@fontsource/poppins": "^5.3.0",
+    "@mimik/capture-native": "workspace:*",
+    "@mimik/core": "workspace:*",
+    "@mimik/ui": "workspace:*",
+    "dexie": "^4.4.7",
+    "electron-updater": "^6.8.11",
+    "get-windows": "^9.3.0",
+    "lucide-react": "^1.68.0",
+    "node-screenshots": "^0.2.8",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "uiohook-napi": "^1.5.5",
+    "xstate": "^5.33.3"
+  },
+  "devDependencies": {
+    "@electron/fuses": "^2.1.3",
+    "@tailwindcss/vite": "^4.3.4",
+    "@types/js-yaml": "^4.0.9",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8",
+    "electron-vite": "^2.3.0",
+    "js-yaml": "^4.3.2",
+    "tailwindcss": "^4.3.4",
+    "vite": "^6.4.5"
+  },
+  "description": "Mimik desktop shell",
+  "author": {
+    "name": "Westpoint",
+    "email": "hello@westpoint.io"
+  }
+}
