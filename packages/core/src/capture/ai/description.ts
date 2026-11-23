@@ -1,7 +1,8 @@
 import { generateText } from 'ai';
 import { localStorage } from '@/core/env';
 import { composePrompt } from './custom-prompts';
-import { createModel } from './provider';
+import { defaultAILanguage } from './language';
+import { createModel, localModelOptions } from './provider';
 import { unwrapQuotes } from './text';
 
 export async function getAIDescription(
@@ -13,11 +14,12 @@ export async function getAIDescription(
   headers?: Record<string, string>,
 ): Promise<string | null> {
   const settings = await localStorage.get(['aiLanguage', 'aiPrompts']);
-  const locale = (settings.aiLanguage as string) || 'en';
+  const locale = (settings.aiLanguage as string) || defaultAILanguage();
   const { text } = await generateText({
     model: createModel(provider, model, apiKey, baseUrl, headers),
     prompt: composePrompt('steps', settings.aiPrompts, locale, context),
     maxOutputTokens: 1024,
+    ...localModelOptions(provider, baseUrl),
   });
   return unwrapQuotes(text) || null;
 }

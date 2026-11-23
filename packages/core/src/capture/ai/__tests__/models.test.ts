@@ -128,6 +128,17 @@ describe('custom base URL detection', () => {
     expect(resolveBaseUrl(AI_PROVIDERS.anthropic, '  ')).toBe('https://api.anthropic.com/v1');
     expect(resolveBaseUrl(AI_PROVIDERS.openai, 'http://localhost:8787/v1/')).toBe('http://localhost:8787/v1');
   });
+
+  it('points a bare host at /v1, which is where an OpenAI-compatible server lives', () => {
+    expect(resolveBaseUrl(AI_PROVIDERS.openai, 'http://localhost:11434')).toBe('http://localhost:11434/v1');
+    expect(resolveBaseUrl(AI_PROVIDERS.openai, 'http://localhost:8787')).toBe('http://localhost:8787/v1');
+    expect(resolveBaseUrl(AI_PROVIDERS.openai, 'https://llm.corp.example')).toBe('https://llm.corp.example/v1');
+  });
+
+  it('leaves a URL that already carries a path as typed', () => {
+    expect(resolveBaseUrl(AI_PROVIDERS.openai, 'http://localhost:8787/api/')).toBe('http://localhost:8787/api');
+    expect(resolveBaseUrl(AI_PROVIDERS.anthropic, 'http://localhost:4000')).toBe('http://localhost:4000');
+  });
 });
 
 describe('stored provider keys', () => {

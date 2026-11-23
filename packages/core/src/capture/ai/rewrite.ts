@@ -1,8 +1,9 @@
 import { generateText } from 'ai';
 import { localStorage } from '@/core/env';
 import { logger } from '@/core/logger';
+import { defaultAILanguage } from './language';
 import { getLanguageSuffix, REWRITE_PROMPT } from './prompts';
-import { createModel } from './provider';
+import { createModel, localModelOptions } from './provider';
 import { readAiCredentials } from './read-ai-credentials';
 
 export type RewriteError = 'no-api-key' | 'generation-failed';
@@ -35,8 +36,9 @@ export async function rewriteSelection(text: string, instruction: string): Promi
   try {
     const { text: raw } = await generateText({
       model: createModel(keys.provider, keys.model, keys.apiKey, keys.baseUrl, keys.headers),
-      prompt: buildRewritePrompt(text, instruction, aiLanguage || 'en'),
+      prompt: buildRewritePrompt(text, instruction, aiLanguage || defaultAILanguage()),
       maxOutputTokens: 2048,
+      ...localModelOptions(keys.provider, keys.baseUrl),
     });
 
     const cleaned = cleanRewrite(raw);

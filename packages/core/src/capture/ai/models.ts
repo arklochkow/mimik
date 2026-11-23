@@ -100,14 +100,44 @@ export function normalizeBaseUrl(url: string): string {
   return url.trim().replace(/\/+$/, '');
 }
 
+/**
+ * Point a bare host at `/v1`, which is where an OpenAI-compatible server keeps its API.
+ *
+ * `http://localhost:11434` is what people paste, and the SDK would tack `/chat/completions`
+ * straight onto it - a path Ollama answers with "Forbidden" rather than a completion. A URL
+ * that already carries a path is returned untouched: only its author knows what belongs there.
+ * The Anthropic protocol is left alone as well: its path is `/messages` on whatever base the
+ * user gave, and the shipped default already carries the `/v1` it needs.
+ */
+function ensureVersionPath(config: AIProviderConfig, url: string): string {
+  if (config.protocol !== 'openai') return url;
+  try {
+    const parsed = new URL(url);
+    if (parsed.pathname !== '' && parsed.pathname !== '/') return url;
+    parsed.pathname = '/v1';
+    return parsed.toString();
+  } catch {
+    return url;
+  }
+}
+
 export function resolveBaseUrl(config: AIProviderConfig, baseUrl?: string): string {
-  return normalizeBaseUrl(baseUrl?.trim() || config.defaultBaseUrl);
+  const typed = baseUrl?.trim();
+  if (!typed) return normalizeBaseUrl(config.defaultBaseUrl);
+  return normalizeBaseUrl(ensureVersionPath(config, typed));
+}
+
+/** True when the URL the user typed is the provider's own default, however it was written. */
+function isProviderDefault(config: AIProviderConfig, url: string): boolean {
+  const fallback = normalizeBaseUrl(config.defaultBaseUrl);
+  const normalized = normalizeBaseUrl(url);
+  return normalized === fallback || normalizeBaseUrl(ensureVersionPath(config, normalized)) === fallback;
 }
 
 export function isCustomBaseUrl(config: AIProviderConfig, baseUrl?: string): boolean {
   const trimmed = baseUrl?.trim();
   if (!trimmed) return false;
-  return normalizeBaseUrl(trimmed) !== normalizeBaseUrl(config.defaultBaseUrl);
+  return !isProviderDefault(config, trimmed);
 }
 
 export function openAITransport(config: AIProviderConfig, baseUrl?: string): OpenAITransport {

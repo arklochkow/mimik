@@ -5,8 +5,9 @@ import { MAX_TITLE_LENGTH, sanitizeGuideTitle } from '@/core/guides/title';
 import type { Step } from '@/core/guides/types';
 import { logger } from '@/core/logger';
 import { composePrompt } from './custom-prompts';
+import { defaultAILanguage } from './language';
 import { GUIDE_META_JSON_SUFFIX } from './prompts';
-import { createModel } from './provider';
+import { createModel, localModelOptions } from './provider';
 import { unwrapQuotes } from './text';
 
 export interface GuideMeta {
@@ -69,7 +70,7 @@ export async function generateGuideMeta(
 
   const formatted = steps.map((s, i) => `${i + 1}. [${s.place}] ${s.description}`).join('\n');
   const settings = await localStorage.get(['aiLanguage', 'aiPrompts']);
-  const locale = (settings.aiLanguage as string) || 'en';
+  const locale = (settings.aiLanguage as string) || defaultAILanguage();
   const prompt = composePrompt('guide', settings.aiPrompts, locale, formatted);
   const aiModel = createModel(provider, model, apiKey, baseUrl, headers);
   const deadline = new AbortController();
@@ -82,6 +83,7 @@ export async function generateGuideMeta(
       prompt,
       maxOutputTokens: 1024,
       abortSignal: deadline.signal,
+      ...localModelOptions(provider, baseUrl),
     });
     clearTimeout(timer);
     return toGuideMeta(object.title, object.description);
@@ -95,6 +97,7 @@ export async function generateGuideMeta(
       prompt: prompt + GUIDE_META_JSON_SUFFIX,
       maxOutputTokens: 1024,
       abortSignal: deadline.signal,
+      ...localModelOptions(provider, baseUrl),
     });
     return parseGuideMeta(text);
   } catch (err) {

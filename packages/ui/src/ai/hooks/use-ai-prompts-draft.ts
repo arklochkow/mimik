@@ -6,6 +6,7 @@ import {
   resolvePrompt,
   swapExamples,
 } from '@mimik/core/capture/ai/custom-prompts';
+import { defaultAILanguage } from '@mimik/core/capture/ai/language';
 import type { AILanguageCode } from '@mimik/core/capture/ai/prompts';
 import { localStorage } from '@mimik/core/env';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -35,12 +36,12 @@ function text(value: unknown): string {
 
 export function useAiPromptsDraft({ open, onSaved }: Options) {
   const [drafts, setDrafts] = useState<Drafts>(EMPTY);
-  const [draftLanguage, setDraftLanguage] = useState<AILanguageCode>('en');
+  const [draftLanguage, setDraftLanguage] = useState<AILanguageCode>(defaultAILanguage);
   const [loaded, setLoaded] = useState(false);
   const [flash, setFlash] = useState(false);
   const [switched, setSwitched] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const openedLanguage = useRef<AILanguageCode>('en');
+  const openedLanguage = useRef<AILanguageCode>(defaultAILanguage());
 
   useEffect(() => {
     if (!open) return;
@@ -52,7 +53,7 @@ export function useAiPromptsDraft({ open, onSaved }: Options) {
     let cancelled = false;
     void localStorage.get(['aiPrompts', 'aiLanguage']).then(({ aiPrompts, aiLanguage }) => {
       if (cancelled) return;
-      const language = (typeof aiLanguage === 'string' ? aiLanguage : 'en') as AILanguageCode;
+      const language = (typeof aiLanguage === 'string' ? aiLanguage : defaultAILanguage()) as AILanguageCode;
       openedLanguage.current = language;
       setDraftLanguage(language);
       setDrafts({

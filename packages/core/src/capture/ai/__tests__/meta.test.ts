@@ -12,7 +12,11 @@ vi.mock('ai', () => ({
   jsonSchema: (schema: unknown) => schema,
 }));
 
-vi.mock('../provider', () => ({ createModel: () => ({ id: 'test-model' }) }));
+vi.mock('../provider', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../provider')>()),
+  createModel: () => ({ id: 'test-model' }),
+  // `localModelOptions` stays real: it is what decides whether a call is told not to think.
+}));
 
 vi.mock('@/core/env', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/core/env')>()),
