@@ -157,8 +157,14 @@ export function clickAction(button: number): StepAction {
   return button === 2 ? 'auxclick' : 'click';
 }
 
+const CONTAINER_ROLES = new Set(['pane', 'group', 'window', 'text']);
+
 export function typedTextFor(field: ScreenElement | null, buffer: string, readField = true): string | null {
-  if (!field || !isTextField(field)) return null;
+  if (!field) return null;
+  if (!isTextField(field)) {
+    const container = !field.password && (field.role === null || CONTAINER_ROLES.has(field.role));
+    return container ? buffer || null : null;
+  }
   if (!readField) return buffer || null;
   const shown = (field.textContent ?? '').replace(HIDDEN_CHARACTERS, '');
   if (!shown.trim()) return buffer || null;

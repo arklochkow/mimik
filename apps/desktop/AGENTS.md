@@ -31,8 +31,8 @@ exactly as the extension does. The preload exposes `window.mimik` with context i
 - A click frames the window under the pointer (`windowAt`). A typing step frames the window its
   field is in. A key step reads the focused window.
 - Typing is an `InputSession`, finalized like the extension's. Its text is read from the focused field,
-  and `typedTextFor` falls back to the keystroke buffer when the field has no value, spans lines or
-  holds more than 200 characters.
+  and `typedTextFor` falls back to the keystroke buffer when the field has no value, spans lines,
+  holds more than 200 characters or is only a container control (a pane, group, window or text).
 - A failed screenshot still writes the step, without a picture. A failed lookup is `null`, never an
   error.
 - A desktop step is an ordinary `Guide` / `Step` / `Screenshot`. There is no desktop step type, and

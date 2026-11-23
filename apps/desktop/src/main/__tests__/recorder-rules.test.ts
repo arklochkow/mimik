@@ -20,6 +20,7 @@ import type { ScreenElement } from '../capture/element';
 import type { KeyAction } from '../capture/input-hook';
 import {
   clickAction,
+  DesktopRecorder,
   frameFor,
   isBoundShortcut,
   isRepeatClick,
@@ -159,15 +160,51 @@ describe('keys', () => {
 });
 
 describe('typed text', () => {
-  it("reads the field's text, and falls back to the keystrokes for long or multi-line fields", () => {
+  it("reads the field's text, and falls back to the keystrokes for long, multi-line or container fields", () => {
     expect(typedTextFor(editor('a short note'), 'a sho', false)).toBe('a sho');
     expect(typedTextFor(editor('a short note'), 'a sho')).toBe('a short note');
     expect(typedTextFor(editor(null), 'typed')).toBe('typed');
     expect(typedTextFor({ ...editor('﻿hi​'), role: 'textbox' }, '')).toBe('hi');
     expect(typedTextFor({ ...editor('Save'), role: 'button' }, 'typed')).toBeNull();
+    expect(typedTextFor({ ...editor(null), role: 'pane' }, 'typed')).toBe('typed');
+    expect(typedTextFor({ ...editor('whole document'), role: 'group' }, 'typed')).toBe('typed');
+    expect(typedTextFor({ ...editor('whole document'), role: null }, 'typed')).toBe('typed');
+    expect(typedTextFor({ ...editor(null), role: 'pane' }, '')).toBeNull();
+    expect(typedTextFor({ ...editor(null), role: 'pane', password: true }, 'secret')).toBeNull();
     expect(typedTextFor(editor('x'.repeat(201)), 'ab')).toBe('ab');
     expect(typedTextFor(editor('y'.repeat(200)), 'ab')).toBe('y'.repeat(200));
     expect(typedTextFor(editor('Last login\n➜  ~ testing'), 'testing')).toBe('testing');
     expect(typedTextFor(editor('line one\nline two'), '')).toBe('line one\nline two');
+  });
+
+  it('writes a typing step when the focused control is only a container', async () => {
+    const sent: { action: string; inputValue?: string }[] = [];
+    const recorder = new DesktopRecorder(
+      () => region,
+      (work) => work(),
+      async (request) => {
+        sent.push(request);
+      },
+      {
+        grab: async () => async (area) => ({
+          png: Buffer.from([1]),
+          width: area.width,
+          height: area.height,
+          scaleFactor: 1,
+          displayId: 1,
+        }),
+        settings: () => DEFAULT_CAPTURE_SETTINGS,
+        windowAt: async () => ({
+          ok: true,
+          window: { title: 'Editor', app: { name: 'Editor' }, bounds: region },
+        }),
+      },
+    );
+
+    await recorder.writeTyping('typed text', { field: { ...editor(null), role: 'pane' }, fresh: true });
+
+    expect(sent).toHaveLength(1);
+    expect(sent[0]?.action).toBe('input');
+    expect(sent[0]?.inputValue).toBe('typed text');
   });
 });
