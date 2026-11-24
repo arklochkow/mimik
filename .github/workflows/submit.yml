@@ -50,9 +50,9 @@ jobs:
       - name: Upload zips to GitHub release
         run: |
           gh release upload "${{ inputs.tag }}" \
-            .output/*-chrome.zip \
-            .output/*-firefox.zip \
-            .output/*-sources.zip \
+            apps/extension/.output/*-chrome.zip \
+            apps/extension/.output/*-firefox.zip \
+            apps/extension/.output/*-sources.zip \
             --clobber
         env:
           GH_TOKEN: ${{ github.token }}
@@ -60,7 +60,7 @@ jobs:
       - name: Submit to Chrome Web Store
         if: inputs.targets != 'firefox' && !inputs.dryRun
         run: |
-          pnpm wxt submit --chrome-zip .output/*-chrome.zip
+          pnpm wxt submit --chrome-zip apps/extension/.output/*-chrome.zip
         env:
           CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
           CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
@@ -71,8 +71,8 @@ jobs:
         if: inputs.targets != 'chrome' && !inputs.dryRun
         run: |
           pnpm wxt submit \
-            --firefox-zip .output/*-firefox.zip \
-            --firefox-sources-zip .output/*-sources.zip
+            --firefox-zip apps/extension/.output/*-firefox.zip \
+            --firefox-sources-zip apps/extension/.output/*-sources.zip
         env:
           FIREFOX_EXTENSION_ID: ${{ secrets.FIREFOX_EXTENSION_ID }}
           FIREFOX_JWT_ISSUER: ${{ secrets.FIREFOX_JWT_ISSUER }}

@@ -63,13 +63,14 @@ jobs:
 
       # A tag that disagrees with the manifest would ship a build whose version is not the one
       # users clicked on. Either tag style is allowed; the version is what has to match.
-      - name: Check the tag against package.json
+      # Since the monorepo move the version lives in the extension's own package, not the root one.
+      - name: Check the tag against the extension version
         run: |
           set -euo pipefail
-          version="$(node -p "require('./package.json').version")"
-          name="$(node -p "require('./package.json').name")"
+          version="$(node -p "require('./apps/extension/package.json').version")"
+          name="$(node -p "require('./apps/extension/package.json').name")"
           if [ "${TAG#v}" != "$version" ]; then
-            echo "::error::Tag $TAG does not match package.json version $version"
+            echo "::error::Tag $TAG does not match apps/extension/package.json version $version"
             exit 1
           fi
           {
@@ -94,7 +95,7 @@ jobs:
         run: |
           set -euo pipefail
           for target in chrome firefox sources; do
-            zip=".output/$PKG_NAME-$PKG_VERSION-$target.zip"
+            zip="apps/extension/.output/$PKG_NAME-$PKG_VERSION-$target.zip"
             if [ ! -f "$zip" ]; then
               echo "::error::$zip is missing - the READMEs tell users to download exactly this name"
               exit 1
@@ -113,12 +114,12 @@ jobs:
             *-*) flags+=(--prerelease) ;;
           esac
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" .output/*.zip SHA256SUMS.txt --clobber
+            gh release upload "$TAG" apps/extension/.output/*.zip SHA256SUMS.txt --clobber
           else
             # Only a pushed tag reaches this branch. Creating the release publishes it, which
             # fires this workflow once more; that run takes the branch above and rewrites the
             # same assets with --clobber. A wasted run, not a duplicate asset.
-            gh release create "$TAG" .output/*.zip SHA256SUMS.txt \
+            gh release create "$TAG" apps/extension/.output/*.zip SHA256SUMS.txt \
               --verify-tag \
               --title "Mimik RU $TAG" \
               --generate-notes \
@@ -132,7 +133,7 @@ jobs:
             echo
             echo "| asset | size | sha256 |"
             echo "| --- | --- | --- |"
-            for zip in .output/*.zip; do
+            for zip in apps/extension/.output/*.zip; do
               printf '| %s | %s | `%s` |\n' \
                 "$(basename "$zip")" \
                 "$(du -h "$zip" | cut -f1)" \
